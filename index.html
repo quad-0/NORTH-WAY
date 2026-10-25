@@ -2428,15 +2428,25 @@ function bkPartner(code){
 function bkDaily(prePin){
   bkModal(function(box, close){
     box.appendChild(el("h3",null,"Daily bookings"));
+    var nav = null;
+    if (prePin) {                                                                  /* opened from "Only owner": same row of tabs, so you can go to the other screens */
+      nav = el("div","bkbtns");
+      [["Bookings", null], ["Numbers", "n"], ["Providers", "p"], ["Settings", "s"]].forEach(function(x){
+        var b = el("button","btn2",x[0]); b.type = "button";
+        if (x[1]) b.addEventListener("click", function(){ clearTimeout(idle); clearTimeout(timer); document.removeEventListener("visibilitychange", onHide); close(); nwOwner(x[1]); });
+        else b.disabled = true;
+        nav.appendChild(b); });
+      box.appendChild(nav);
+    }
     var pin = bkInput("password"); pin.inputMode = "numeric"; pin.autocomplete = "off"; pin.maxLength = 12;
     try { sessionStorage.removeItem("nw-opin"); } catch(x){}                      /* the PIN is never remembered: it is asked every time */
     var f = {}; bkField(box, f, "opin", "Owner PIN", pin);
     var go = el("button","btn","Open"); go.type = "button"; box.appendChild(go);
     if (prePin) { pin.value = prePin; setTimeout(function(){ go.click(); }, 30); }          /* coming from "Only owner": the key was already typed there */
-    var idle = null;                                                              /* auto-lock: after 2 minutes without a touch, or when the app goes to the background, the screen closes and the PIN is forgotten */
-    function lock(){ clearTimeout(idle); pin.value = ""; document.removeEventListener("visibilitychange", onHide); if (document.body.contains(box)) close(); }
+    var idle = null;                                                              /* auto-lock: after 5 minutes without a touch, or when the app goes to the background, the screen closes and the PIN is forgotten */
+    function lock(){ clearTimeout(idle); pin.value = ""; if (prePin) { try { nwOwnerPin = ""; } catch(x){} } document.removeEventListener("visibilitychange", onHide); if (document.body.contains(box)) close(); }
     function onHide(){ if (document.hidden) lock(); }
-    function arm(){ clearTimeout(idle); idle = setTimeout(lock, 120000); }
+    function arm(){ clearTimeout(idle); idle = setTimeout(lock, 300000); }
     box.addEventListener("click", arm); box.addEventListener("input", arm); document.addEventListener("visibilitychange", onHide); arm();
     var msg = el("p","bkerr"), out = el("div"); box.appendChild(msg); box.appendChild(out);
     var timer = null, errs = {pin:"Wrong PIN.", locked:"Too many wrong PINs. Try again in 1 hour.", owner_unset:"Set owner_pin (6 to 12 digits) in the Settings tab first.", network:"No connection.", key:"This phone is not the owner phone any more. Open your secret owner link again."};
@@ -3066,7 +3076,8 @@ var nwOwnerPin = "";                                              /* in memory o
 var OERR = {pin:"Wrong key.", locked:"Too many wrong tries. Press \"Forgot key?\" to reset it with your email.", key:"This phone is not the owner phone. Open your owner link again.", format:"The key must be exactly 4 digits.", code:"Wrong code.", expired:"The code expired. Ask for a new one.", state:"A key is already set.", email:"Type a valid email.", busy:"Too many tries. Try again later.", network:"No connection. Try again.", server:"Problem on the server. Try again.", owner_unset:"No key set yet.", mail:"The email could not be sent. In Apps Script run testOwnerEmail once and allow the permission."};
 function nwO(action, extra, cb){ var o = {a:action, key:nwOwnerKey(), pin:nwOwnerPin}; for (var k in extra) o[k] = extra[k]; bkPost(o, cb); }
 function nwOwnerOpen(){ if (nwOwnerKey()) nwOwner(); }
-function nwOwner(){
+function nwOwnerTabClick(){ nwOwner(); }
+function nwOwner(openTab){
   if (!nwOwnerKey()) return;
   bkModal(function(box, close){
     var idle = null, view = el("div"), msg = el("p","bkerr"), waiting = false;        /* waiting = a code was sent to your email: you may leave the app to read it */
@@ -3074,7 +3085,7 @@ function nwOwner(){
     box.appendChild(el("h3",null,"Only owner")); box.appendChild(view);
     function lock(){ clearTimeout(idle); nwOwnerPin = ""; document.removeEventListener("visibilitychange", onHide); if (document.body.contains(box)) close(); }
     function onHide(){ if (document.hidden && !waiting) lock(); }
-    function arm(){ clearTimeout(idle); idle = setTimeout(lock, waiting ? 600000 : 120000); }      /* 2 minutes without a touch, or leaving the app: it locks */
+    function arm(){ clearTimeout(idle); idle = setTimeout(lock, waiting ? 600000 : 300000); }      /* 5 minutes without a touch, or leaving the app: it locks */
     box.addEventListener("click", arm); box.addEventListener("input", arm); document.addEventListener("visibilitychange", onHide); arm();
     function clear(){ while (view.firstChild) view.removeChild(view.firstChild); msg.textContent = ""; }
     function field(label, type){ var l = el("label","bkf",label), i = bkInput(type || "text"); if (type === "password") { i.inputMode = "numeric"; i.maxLength = 4; i.autocomplete = "off"; } l.appendChild(i); view.appendChild(l); return i; }
@@ -3161,12 +3172,12 @@ function nwOwner(){
           note("This link opens the owner screen on a new phone or computer. It still asks for your 4-digit key. Never send it to anyone.");
           var lk = btn("Show my owner link", function(bt){ bt.style.display = "none"; var u = n3Site() + "#o=" + nwOwnerKey(), p = el("p","bkcode",u); p.setAttribute("dir","ltr"); p.style.wordBreak = "break-all"; view.appendChild(p); }, "btn2");
           btn("Lock now", lock, "btn2"); }
-        view.appendChild(nav); view.appendChild(body); view.appendChild(msg); show("n");
+        view.appendChild(nav); view.appendChild(body); view.appendChild(msg); show(tab || "n");
         var lb = el("button","btn2","Lock now"); lb.type = "button"; lb.addEventListener("click", lock); view.appendChild(lb);
         var fb = el("button","btn2","Remove owner access from this phone"); fb.type = "button"; fb.addEventListener("click", forget); view.appendChild(fb);
       });
     }
-    start();
+    if (nwOwnerPin) home(openTab); else start();        /* coming back from Bookings: the key is still in memory, so no need to type it again */
   });
 }
 /* the tab, only on the phone that holds the owner key */
@@ -3174,7 +3185,7 @@ var _render6 = render;
 render = function(){
   _render6();
   var tabs = document.getElementById("tabs"); if (!tabs || !nwOwnerKey() || document.getElementById("nwOwnerTab")) return;
-  var li = el("li"), b = el("button",null,"Only owner"); b.id = "nwOwnerTab"; b.type = "button"; b.addEventListener("click", nwOwner); li.appendChild(b); tabs.insertBefore(li, tabs.firstChild);          /* first in the row, so it is seen without scrolling */
+  var li = el("li"), b = el("button",null,"Only owner"); b.id = "nwOwnerTab"; b.type = "button"; b.addEventListener("click", nwOwnerTabClick); li.appendChild(b); tabs.insertBefore(li, tabs.firstChild);          /* first in the row, so it is seen without scrolling */
 };
 
 /* ===== CONTENT FROM THE GOOGLE SHEET (optional) ===== */

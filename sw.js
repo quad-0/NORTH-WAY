@@ -1,5 +1,5 @@
 // Simple offline support: the guide opens even with no signal.
-var CACHE = "qlay3at-v64";
+var CACHE = "qlay3at-v65";
 var FILES = ["./", "./index.html", "./manifest.webmanifest", "./privacy.html", "./fonts/ibm-plex-sans-arabic-v15-arabic_latin-500.woff2", "./fonts/ibm-plex-sans-arabic-v15-arabic_latin-600.woff2", "./fonts/ibm-plex-sans-arabic-v15-arabic_latin-regular.woff2", "./fonts/ibm-plex-sans-v23-latin_latin-ext-500.woff2", "./fonts/ibm-plex-sans-v23-latin_latin-ext-600.woff2", "./fonts/ibm-plex-sans-v23-latin_latin-ext-regular.woff2", "./fonts/outfit-v15-latin-600.woff2", "./fonts/outfit-v15-latin-700.woff2", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function (e) {

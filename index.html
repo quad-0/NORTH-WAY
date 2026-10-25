@@ -894,14 +894,20 @@ try { prefs = JSON.parse(localStorage.getItem("kyt-alerts") || "{}") || {}; } ca
 try { var hv = (location.hash || "").replace("#",""); if (VIEWS.indexOf(hv) > -1 && hv !== "saved" && hv !== "mybook") { view = hv; pageMode = true; } } catch(e){}
 
 function contactLine(label){
-  var d = el("div","contactline");
+  var d = el("div","contactline"), any = false;
   if (SITE.whatsapp && /^[0-9]{6,15}$/.test(SITE.whatsapp)) {
     var a = el("a","wabtn","\uD83D\uDCAC WhatsApp"); a.href = "https://wa.me/" + SITE.whatsapp; a.target = "_blank"; a.rel = "noopener";
-    d.appendChild(a);
-  } else if (SITE.contact) {
-    d.appendChild(document.createTextNode(label + ": " + SITE.contact));
-  } else return null;
-  return d;
+    d.appendChild(a); any = true;
+  }
+  if (SITE.phone && /^\+?[0-9]{6,15}$/.test(SITE.phone)) {
+    var ph = el("div"); ph.appendChild(document.createTextNode("\u260E "));
+    var pa = el("a",null,SITE.phone); pa.href = "tel:" + SITE.phone; pa.setAttribute("dir","ltr"); ph.appendChild(pa); d.appendChild(ph); any = true;
+  }
+  if (SITE.contact && !(SITE.whatsapp && /^[0-9]{6,15}$/.test(SITE.whatsapp) && !SITE.showEmail)) {
+    var em = el("div"); em.appendChild(document.createTextNode(label + ": "));
+    var ea = el("a",null,SITE.contact); ea.href = "mailto:" + SITE.contact; ea.setAttribute("dir","ltr"); em.appendChild(ea); d.appendChild(em); any = true;
+  }
+  return any ? d : null;
 }
 function el(tag, cls, txt){ var n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; }
 function tr(x){ if (x && typeof x === "object") return x[lang] || x.en || x.ar || ""; return x || ""; }
@@ -1232,7 +1238,7 @@ function render(){
   });
   var ft = document.getElementById("siteFooter"); ft.textContent = "";
   ft.appendChild(el("div",null,s.footer));
-  var cl = contactLine(s.contact_label); if (cl && SITE.whatsapp) ft.appendChild(cl);
+  var cl = contactLine(s.contact_label); if (cl) ft.appendChild(cl);
   var when = SITE.updated;
   try { when = new Date(SITE.updated + "T00:00:00").toLocaleDateString(lang === "ar" ? "ar" : (lang === "fr" ? "fr-FR" : "en-GB"), {day:"numeric", month:"long", year:"numeric"}); } catch(e){}
   var meta = s.updated_label + ": " + when + (SITE.owner ? "  ·  © " + new Date(SITE.updated + "T00:00:00").getFullYear() + " " + SITE.owner : "");
@@ -3227,6 +3233,9 @@ function applyContent(j){
   if (typeof st.taxi_min_fare === "string" && parseFloat(st.taxi_min_fare) >= 0) TAXI_MIN = parseFloat(st.taxi_min_fare);
   if (typeof st.whatsapp_url === "string" && /^https:\/\//i.test(st.whatsapp_url)) WHATSAPP_URL = st.whatsapp_url;
   if (typeof st.contact_whatsapp === "string" && /^[0-9]{6,15}$/.test(st.contact_whatsapp)) SITE.whatsapp = st.contact_whatsapp;
+  if (typeof st.contact_phone === "string" && /^\+?[0-9]{6,15}$/.test(st.contact_phone)) SITE.phone = st.contact_phone;   /* a plain phone number shown in the footer: Settings tab, contact_phone */
+  if (typeof st.contact_email === "string" && st.contact_email) SITE.showEmail = true;
+  if (typeof st.contact_email === "string" && /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(st.contact_email) && st.contact_email.length <= 80) SITE.contact = st.contact_email;   /* contact email shown in the app: change it in the Settings tab (contact_email) */
   if (typeof st.news_url === "string" && /^https:\/\//i.test(st.news_url)) NEWS_URL = st.news_url;
   if (typeof st.qyt_url === "string" && /^https:\/\//i.test(st.qyt_url)) QYT_URL = st.qyt_url;
   if (typeof st.beirut_url === "string" && /^https:\/\//i.test(st.beirut_url)) BEIRUT_URL = st.beirut_url;

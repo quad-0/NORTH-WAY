@@ -75,7 +75,7 @@ h1{margin:6px 0 4px;font-size:1.6rem}h2{margin:26px 0 6px;font-size:1.15rem}p,li
 <h2>7. Providers (businesses)</h2>
 <ul>
 <li>You must give true details: name, phone, Google Maps place, and prices.</li>
-<li>The first 20 providers joining North Way get a free subscription for one year. After the free year, restaurants pay $20 per month and hotels, taxis and car rentals pay a commission on bookings made through the app. If a restaurant does not pay, it is removed from the app.</li>
+<li>The first <span data-offer="total">20</span> providers joining North Way get a free subscription for one year. After the free year, restaurants pay <span data-offer="fee">$20 per month</span> and hotels, taxis and car rentals pay a commission on bookings made through the app. If a restaurant does not pay, it is removed from the app.</li>
 <li>We may hide or remove a business that gives false information, receives serious complaints, or does not respect a booking.</li>
 </ul>
 
@@ -138,7 +138,7 @@ h1{margin:6px 0 4px;font-size:1.6rem}h2{margin:26px 0 6px;font-size:1.15rem}p,li
 <h2>7. Prestataires (établissements)</h2>
 <ul>
 <li>Vous devez fournir des informations exactes : nom, téléphone, lieu sur Google Maps et prix.</li>
-<li>Les 20 premiers prestataires qui rejoignent North Way bénéficient d'un abonnement gratuit pendant un an. Après l'année gratuite, les restaurants paient 20 $ par mois, et les hôtels, taxis et loueurs paient une commission sur les réservations faites via l'application. Un restaurant qui ne paie pas est retiré de l'application.</li>
+<li>Les <span data-offer="total">20</span> premiers prestataires qui rejoignent North Way bénéficient d'un abonnement gratuit pendant un an. Après l'année gratuite, les restaurants paient <span data-offer="fee">20 $ par mois</span>, et les hôtels, taxis et loueurs paient une commission sur les réservations faites via l'application. Un restaurant qui ne paie pas est retiré de l'application.</li>
 <li>Nous pouvons masquer ou retirer un établissement qui donne de fausses informations, reçoit des plaintes graves ou ne respecte pas une réservation.</li>
 </ul>
 
@@ -201,7 +201,7 @@ h1{margin:6px 0 4px;font-size:1.6rem}h2{margin:26px 0 6px;font-size:1.15rem}p,li
 <h2>7. مزوّدو الخدمة (المنشآت)</h2>
 <ul>
 <li>عليك تقديم بيانات صحيحة: الاسم والهاتف وموقعك على خرائط غوغل والأسعار.</li>
-<li>أول 20 مزوّداً ينضمون إلى طريق الشمال يحصلون على اشتراك مجاني لمدة سنة. بعد السنة المجانية تدفع المطاعم 20 دولاراً شهرياً، وتدفع الفنادق وسيارات الأجرة وشركات التأجير عمولة على الحجوزات عبر التطبيق. المطعم الذي لا يدفع يُزال من التطبيق.</li>
+<li>أول <span data-offer="total">20</span> مزوّداً ينضمون إلى طريق الشمال يحصلون على اشتراك مجاني لمدة سنة. بعد السنة المجانية تدفع المطاعم <span data-offer="fee">20 دولاراً شهرياً</span>، وتدفع الفنادق وسيارات الأجرة وشركات التأجير عمولة على الحجوزات عبر التطبيق. المطعم الذي لا يدفع يُزال من التطبيق.</li>
 <li>يحق لنا إخفاء أو إزالة منشأة تقدم معلومات كاذبة أو تتلقى شكاوى جدية أو لا تحترم حجزاً.</li>
 </ul>
 
@@ -228,6 +228,27 @@ h1{margin:6px 0 4px;font-size:1.6rem}h2{margin:26px 0 6px;font-size:1.15rem}p,li
   btns.forEach(function(b){ b.addEventListener("click", function(){ show(b.getAttribute("data-l")); }); });
   var l="en"; try{ var s=localStorage.getItem("kyt-lang"); if(/^(en|fr|ar)$/.test(s)) l=s; else if(/^ar/.test(navigator.language)) l="ar"; else if(/^fr/.test(navigator.language)) l="fr"; }catch(e){}
   show(l);
+})();
+
+/* the number of free places and the restaurant fee come from the Google Sheet (Settings tab), so this page always matches the app */
+(function(){
+  var URL="https://script.google.com/macros/s/AKfycbwjNtN3O5WLVNqqkkGqC_k2SILcdW47HaCRG8aD2qm8mRSVehmolUylh_FYuYTP_v1o/exec";
+  function fee(o,l){ var n=o.fee, y=o.per==="year";
+    if(l==="ar") return n+" دولاراً "+(y?"سنوياً":"شهرياً");
+    if(l==="fr") return n+" $ "+(y?"par an":"par mois");
+    return "$"+n+(y?" per year":" per month"); }
+  try{
+    var x=new XMLHttpRequest(); x.open("GET",URL); x.timeout=8000;
+    x.onload=function(){ try{
+      var o=JSON.parse(x.responseText).offer; if(!o||typeof o.total!=="number"||typeof o.fee!=="number") return;
+      ["en","fr","ar"].forEach(function(l){
+        var root=document.getElementById("l-"+l); if(!root) return;
+        Array.prototype.forEach.call(root.querySelectorAll("[data-offer]"),function(sp){
+          sp.textContent = sp.getAttribute("data-offer")==="total" ? String(Math.floor(o.total)) : fee({fee:o.fee,per:o.per==="year"?"year":"month"},l); });
+      });
+    }catch(e){} };
+    x.send();
+  }catch(e){}
 })();
 </script>
 </body>

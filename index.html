@@ -325,6 +325,27 @@ body{margin:0}
 .install p{margin:0;font-size:.9rem;min-width:0;flex:1 1 14rem}
 .install .ix{background:transparent;color:var(--muted);font-size:1.5rem;line-height:1;padding:4px 10px;min-height:44px;min-width:44px}
 .install button{background:var(--amber);color:var(--amber-ink);border:0;border-radius:6px;padding:10px 18px;font:inherit;font-weight:600;min-height:44px;cursor:pointer}
+
+/* v68 home layout */
+.top{justify-content:flex-start;gap:8px}.top .tright{margin-inline-start:auto}
+.ownbtn{flex:none;font:inherit;font-size:.74rem;font-weight:700;line-height:1.1;text-align:center;background:transparent;color:var(--band-ink);border:2px solid var(--amber);border-radius:8px;padding:5px 8px;min-height:38px;cursor:pointer}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wxchip{flex:none;font:inherit;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);color:var(--band-ink);border:2px solid var(--amber);border-radius:12px;padding:5px 10px;min-height:44px;cursor:pointer}
+.wxchip[hidden]{display:none}.wxci{font-size:1.45rem;line-height:1}.wxct{display:flex;flex-direction:column;text-align:start;line-height:1.1}.wxct b{font-size:1.05rem}.wxct small{font-size:.72rem;color:#c3d0e4}
+.wxchip::after{content:"\25BE";font-size:.7rem;color:var(--amber)}
+body.pm .wxchip{display:none}
+header.band .tagline{font-size:.84rem;line-height:1.35;max-width:none;margin-top:-4px}
+.band-in .unofficial{margin-inline:-16px;padding:6px 16px;font-size:.7rem;line-height:1.35}
+.band-in .unofficial p{max-width:none;margin:0}
+.nwquick{margin-top:2px!important}.nwquick ul{display:grid!important;grid-template-columns:1fr 1fr;gap:5px;padding:0!important}
+nav.tabs.nwquick button{width:100%;white-space:normal;text-align:center;line-height:1.15;font-size:.74rem;min-height:30px;padding:4px 6px;border-width:1.5px}
+.biztabs{max-width:44rem;margin:0 auto;padding:10px 12px 0}
+.biztabs ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.biztabs li.wide{grid-column:1/-1}
+.biztabs button{width:100%;background:var(--amber);border:0;border-radius:8px;color:var(--amber-ink);font:inherit;font-weight:700;font-size:.86rem;line-height:1.15;padding:6px;min-height:42px;cursor:pointer;white-space:normal}
+.biztabs button[aria-selected="true"]{background:#0b1f3a;color:#fff;box-shadow:0 0 0 2px var(--amber)}
+body.pm .biztabs{display:none}
+body:not(.pm) #tabs li.m7{display:none}
+.homebox{max-width:44rem;margin:0 auto;padding:0 16px}.homebox .offer20{margin:12px 0 0}.homebox[hidden]{display:none}
 </style>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "325cd696198f48b4a5ff4f9fbe40e655"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
@@ -348,11 +369,12 @@ body{margin:0}
         <button id="themeBtn" class="themebtn" type="button"></button>
       </div>
     </div>
-    <h1 data-i="title">North Way</h1>
+    <div class="trow"><h1 data-i="title">North Way</h1><button id="wxChip" class="wxchip" type="button" aria-expanded="false" aria-controls="wx" hidden></button></div>
     <p class="tagline" data-i="tagline"></p>
+    <div class="unofficial"><p data-i="unofficial"></p></div>
   </div>
 </header>
-<div class="unofficial"><p data-i="unofficial"></p></div>
+<nav class="biztabs" id="bizTabs" aria-label="Main"><ul id="bizList" role="tablist"></ul></nav>
 <div class="install" id="install" hidden>
   <div class="install-in">
     <p id="installText" data-i="install_text"></p>
@@ -361,7 +383,6 @@ body{margin:0}
   </div>
 </div>
 
-<div class="wx" id="cdq" hidden></div>
 <div class="wx" id="wx" hidden></div>
 
 <div class="sticky">
@@ -372,6 +393,8 @@ body{margin:0}
   </div>
   <nav class="tabs"><ul id="tabs" role="tablist"></ul></nav>
 </div>
+<div class="homebox" id="offerWrap"><div id="offerBox"></div></div>
+<div class="wx" id="cdq" hidden></div>
 
 <main class="wrap">
   <div id="results" hidden></div>
@@ -384,7 +407,6 @@ body{margin:0}
       <div id="flights"></div>
       <div class="board-f" id="boardFoot"></div>
     </div>
-    <div id="offerBox"></div>
     <div id="qytBox"></div>
     <div id="notices"></div>
   </section>
@@ -516,8 +538,8 @@ body{margin:0}
 var T = {
  en:{
   title:"North Way",
-  tagline:"Your travel guide for Akkar and the north. Flights, routes and local tips around René Mouawad Airport, also spelled Qlayaat, Qleiaat and Kleyate.",
-  unofficial:"For information only. This site and app are not run by the airport, the airlines or the government, and are not travel, safety or legal advice. Always confirm with your airline before you travel.",
+  tagline:"Your travel guide for Akkar and the north: flights, routes and local tips around René Mouawad Airport.",
+  unofficial:"For information only. Not run by the airport, airlines or government. Not travel or legal advice. Confirm with your airline.",
   ticker_label:"Latest news",
   search_label:"Search", search_ph:"Search flights, hotels, restaurants, taxis, cars, sites",
   clear_label:"Clear search", results_for:"Results for", results_none:"Nothing found. Try another word.", go_section:"Open section",
@@ -600,8 +622,8 @@ var T = {
  },
  ar:{
   title:"طريق الشمال",
-  tagline:"دليلك للسفر في عكار والشمال. رحلات وطرق ونصائح محلية حول مطار رينيه معوض في القليعات. بالعربية والإنجليزية والفرنسية للمقيمين والمغتربين.",
-  unofficial:"للمعلومات فقط. لا يتبع هذا الموقع والتطبيق للمطار ولا لشركات الطيران ولا للدولة، وليسا نصيحة للسفر أو السلامة أو القانون. تأكد دائماً من شركة الطيران قبل السفر.",
+  tagline:"دليلك للسفر في عكار والشمال: رحلات وطرق ونصائح محلية حول مطار رينيه معوض في القليعات.",
+  unofficial:"للمعلومات فقط. غير تابع للمطار أو شركات الطيران أو الدولة، وليس نصيحة للسفر أو القانون. تأكد من شركة الطيران.",
   ticker_label:"آخر الأخبار",
   search_label:"بحث", search_ph:"ابحث عن رحلات وفنادق ومطاعم وتاكسي وسيارات ومواقع",
   clear_label:"مسح البحث", results_for:"نتائج البحث عن", results_none:"لا توجد نتائج. جرّب كلمة أخرى.", go_section:"فتح القسم",
@@ -684,8 +706,8 @@ var T = {
  },
  fr:{
   title:"North Way",
-  tagline:"Votre guide de voyage pour l'Akkar et le Nord. Vols, itinéraires et conseils locaux autour de l'aéroport René Mouawad (René Mouawad), aussi écrit Qlayaat, Qleiaat ou Kleyate.",
-  unofficial:"À titre d'information uniquement. Ce site et cette application ne sont pas gérés par l'aéroport, les compagnies aériennes ou le gouvernement, et ne constituent pas un conseil de voyage, de sécurité ou juridique. Confirmez toujours auprès de votre compagnie aérienne avant de voyager.",
+  tagline:"Votre guide de voyage pour l'Akkar et le Nord : vols, itinéraires et conseils autour de l'aéroport René Mouawad.",
+  unofficial:"Information uniquement. Non géré par l'aéroport, les compagnies ou l'État. Pas un conseil de voyage ou juridique. Confirmez avec votre compagnie.",
   ticker_label:"Dernières nouvelles",
   search_label:"Rechercher", search_ph:"Rechercher vols, hôtels, restaurants, taxis, voitures, sites",
   clear_label:"Effacer la recherche", results_for:"Résultats pour", results_none:"Aucun résultat. Essayez un autre mot.", go_section:"Ouvrir la section",
@@ -1097,10 +1119,11 @@ function applyView(){
   document.body.classList.toggle("pm", pageMode);
   VIEWS.forEach(function(v){ document.getElementById("v-" + v).hidden = searching || v !== view; });
   document.getElementById("results").hidden = !searching;
-  var wxb = document.getElementById("wx"); if (wxb) wxb.hidden = searching || !window.__wxReady;
+  var wxb = document.getElementById("wx"); if (wxb) wxb.hidden = searching || !window.__wxReady || !wxOpen;
+  var ofw = document.getElementById("offerWrap"); if (ofw) ofw.hidden = searching || view !== "qyt";
   var cdb = document.getElementById("cdq"); if (cdb && cdb.firstChild) cdb.hidden = searching;
   document.getElementById("qclear").hidden = !searching;
-  Array.prototype.forEach.call(document.querySelectorAll("#tabs button"), function(b){
+  Array.prototype.forEach.call(document.querySelectorAll("#tabs button, #bizList button"), function(b){
     b.setAttribute("aria-selected", (!searching && b.getAttribute("data-v") === view) ? "true" : "false");
   });
   if (searching) renderResults();
@@ -1164,10 +1187,16 @@ function render(){
   document.getElementById("qclear").setAttribute("aria-label", s.clear_label);
 
   var tabs = document.getElementById("tabs"); tabs.textContent = "";
+  var MAIN7 = ["qyt","bey","hotels","restaurants","cars","taxis","far"], bl = document.getElementById("bizList"); bl.textContent = "";
   VIEWS.filter(viewOn).forEach(function(v){
-    var li = el("li"), b = el("button",null,s["tab_" + v]); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v);
+    var li = el("li", MAIN7.indexOf(v) > -1 ? "m7" : null), b = el("button",null,s["tab_" + v]); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v);
     b.addEventListener("click", function(){ setView(v); });
     li.appendChild(b); tabs.appendChild(li);
+  });
+  MAIN7.filter(viewOn).forEach(function(v){
+    var li = el("li", v === "far" ? "wide" : null), b = el("button",null,s["tab_" + v]); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v);
+    b.addEventListener("click", function(){ setView(v); });
+    li.appendChild(b); bl.appendChild(li);
   });
 
   var f = document.getElementById("flights"); f.textContent = "";
@@ -1271,7 +1300,7 @@ var WX_PLACES = [
   {id:"tri", lat:34.4367, lng:35.8497},
   {id:"bey", lat:33.8938, lng:35.5018}
 ];
-var wxPlace = "qyt", wxData = {}, distState = null;
+var wxPlace = "qyt", wxData = {}, distState = null, wxOpen = false;
 function wxCode(c){
   var t = T[lang].wx_codes;
   var map = c===0?0 : c===1?1 : c===2?2 : c===3?3 : (c===45||c===48)?45 : (c>=51&&c<=57)?51 : (c>=61&&c<=63)?61 : (c>=64&&c<=67)?65 : (c>=71&&c<=77||c===85||c===86)?71 : (c>=80&&c<=82)?80 : c>=95?95 : 2;
@@ -1369,16 +1398,29 @@ function renderWx(){
       det.appendChild(g); card.appendChild(det);
     }
     card.appendChild(el("p","wxnote",s.wx_note));
-    box.hidden = false;
+    box.hidden = !wxOpen;
   } else {
     card.removeChild(top);
   }
-  box.hidden = false;
+  box.hidden = !wxOpen;
   renderDist(card);
   if (!(d && d.cur)) { var dd = card.querySelector(".dist"); if (dd) dd.style.cssText = "margin:0;border:0;padding:0"; }
   box.appendChild(card);
   box.setAttribute("lang", lang);
+  renderWxChip();
 }
+/* the small weather button next to the title: place + temperature. Tap it to open the full weather card and choose another place. */
+function renderWxChip(){
+  var c = document.getElementById("wxChip"); if (!c) return;
+  var s = T[lang], d = wxData[wxPlace], ok = !!(d && d.cur);
+  c.textContent = "";
+  c.appendChild(el("span","wxci", ok ? wxCode(d.cur.weather_code)[0] : "\u26C5"));
+  var tx = el("span","wxct"); var tb = el("b",null, ok ? Math.round(d.cur.temperature_2m) + "\u00B0C" : "--\u00B0C"); tb.setAttribute("dir","ltr"); tx.appendChild(tb); tx.appendChild(el("small",null,s.wx_places[wxPlace])); c.appendChild(tx);
+  c.setAttribute("aria-label", s.wx_h + ": " + s.wx_places[wxPlace] + (ok ? " " + Math.round(d.cur.temperature_2m) + "\u00B0C" : ""));
+  c.setAttribute("aria-expanded", wxOpen ? "true" : "false");
+  c.hidden = false;
+}
+(function(){ var c = document.getElementById("wxChip"); if (c) c.addEventListener("click", function(){ wxOpen = !wxOpen; applyView(); renderWxChip(); }); })();
 function initWx(){ renderWx(); wxLoad(wxPlace); }
 
 /* ===== COUNTDOWN, QUICK BUTTONS, SHARE, NUMBERS, EVENTS, PHRASES, SAVED ===== */
@@ -3111,7 +3153,7 @@ function nwOwner(openTab){
     function forget(){                                          /* one click: this phone forgets the owner key and the tab disappears */
       if (!confirm("Remove owner access from this phone? To use it again you must open your owner link.")) return;
       try { localStorage.removeItem("nw-owner"); } catch(e){}
-      lock(); var t = document.getElementById("nwOwnerTab"); if (t && t.parentNode) t.parentNode.parentNode && t.parentNode.parentNode.removeChild(t.parentNode);
+      lock(); var t = document.getElementById("nwOwnerTab"); if (t && t.parentNode) t.parentNode.removeChild(t);
     }
 
     function start(){
@@ -3199,8 +3241,8 @@ function nwOwner(openTab){
 var _render6 = render;
 render = function(){
   _render6();
-  var tabs = document.getElementById("tabs"); if (!tabs || !nwOwnerKey() || document.getElementById("nwOwnerTab")) return;
-  var li = el("li"), b = el("button",null,"Only owner"); b.id = "nwOwnerTab"; b.type = "button"; b.addEventListener("click", nwOwnerTabClick); li.appendChild(b); tabs.insertBefore(li, tabs.firstChild);          /* first in the row, so it is seen without scrolling */
+  var top = document.querySelector("header.band .top"), hb = document.getElementById("homeBtn"); if (!top || !hb || !nwOwnerKey() || document.getElementById("nwOwnerTab")) return;
+  var b = el("button",null,"Only owner"); b.id = "nwOwnerTab"; b.className = "ownbtn"; b.type = "button"; b.addEventListener("click", nwOwnerTabClick); top.insertBefore(b, hb.nextSibling);          /* between the app icon and the language buttons */
 };
 
 /* ===== CONTENT FROM THE GOOGLE SHEET (optional) ===== */

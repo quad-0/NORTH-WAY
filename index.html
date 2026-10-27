@@ -354,6 +354,14 @@ nav.tabs.nwquick button{width:100%;white-space:normal;text-align:center;line-hei
 .top .themebtn{width:34px;height:36px;flex:none}
 .ownbtn{font-size:.68rem;padding:3px 6px;max-width:4.2rem;overflow-wrap:anywhere}
 @media (max-width:340px){.top .lang button{padding:6px 5px;font-size:.76rem}.ownbtn{font-size:.62rem;padding:3px 4px}.top .logo{width:32px;height:32px}}
+/* v71: on the home page the six main tabs float at the top while scrolling (not the tourist-sites row) */
+body:not(.pm) .sticky{position:static}
+.floattabs{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:8;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.floattabs[hidden]{display:none}
+.floattabs ul{list-style:none;margin:0 auto;padding:6px 8px;max-width:44rem;display:flex;gap:6px;overflow-x:auto}
+.floattabs button{flex:none;background:var(--amber);border:0;border-radius:8px;color:var(--amber-ink);font:inherit;font-weight:700;font-size:.86rem;padding:8px 12px;white-space:nowrap;cursor:pointer;min-height:40px}
+.floattabs button[aria-selected="true"]{background:#0b1f3a;color:#fff;box-shadow:0 0 0 2px var(--amber)}
+body.pm .floattabs{display:none}
 body.pm .biztabs{display:none}
 body:not(.pm) #tabs li.m7{display:none}
 .homebox{max-width:44rem;margin:0 auto;padding:0 16px}.homebox .offer20{margin:12px 0 0}.homebox[hidden]{display:none}
@@ -396,6 +404,7 @@ body:not(.pm) #tabs li.m7{display:none}
 
 <div class="wx" id="wx" hidden></div>
 
+<nav class="floattabs" id="floatTabs" aria-label="Main" hidden><ul id="floatList" role="tablist"></ul></nav>
 <div class="sticky">
   <div class="search">
     <label class="sr" for="q" data-i="search_label"></label>
@@ -419,6 +428,10 @@ body:not(.pm) #tabs li.m7{display:none}
       <div class="board-f" id="boardFoot"></div>
     </div>
     <div id="qytBox"></div>
+  </section>
+
+  <section id="v-notices" hidden>
+    <h2 data-i="notice_t"></h2>
     <div id="notices"></div>
   </section>
 
@@ -578,7 +591,7 @@ var T = {
   list_join:"Own a business? Contact the guide's owner to be listed.",
   phone_label:"Phone", site_label:"Visit page", sponsored_tag:"Sponsored",
   info_h:"Travel info", info_lead:"Routes, practical tips, alerts and legal notes.",
-  cat_qyt:"Qlayaat flights", cat_bey:"Beirut flights", cat_hotels:"Hotels", cat_taxis:"Taxis", cat_restaurants:"Restaurants", cat_cars:"Rent a car", cat_sites:"Tourist sites", cat_history:"History", cat_info:"Travel info",
+  cat_notices:"Notices", cat_qyt:"Qlayaat flights", cat_bey:"Beirut flights", cat_hotels:"Hotels", cat_taxis:"Taxis", cat_restaurants:"Restaurants", cat_cars:"Rent a car", cat_sites:"Tourist sites", cat_history:"History", cat_info:"Travel info",
   get_h:"Getting there", get_lead:"Approximate driving times. Traffic, checkpoints and road works change them, so leave extra time. This is not live traffic or navigation.",
   routes:[
    {from:"From Beirut",time:"1.5 to 2",unit:"hours",txt:"Take the coastal highway north through Tripoli, then follow the signs toward Akkar and Qlayaat."},
@@ -662,7 +675,7 @@ var T = {
   list_join:"تملك نشاطاً تجارياً؟ تواصل مع مالك الدليل ليُدرج.",
   phone_label:"الهاتف", site_label:"زيارة الصفحة", sponsored_tag:"إعلان مدفوع",
   info_h:"معلومات السفر", info_lead:"الطرق والنصائح العملية والتنبيهات والملاحظات القانونية.",
-  cat_qyt:"رحلات القليعات", cat_bey:"رحلات بيروت", cat_hotels:"فنادق", cat_taxis:"تاكسي", cat_restaurants:"مطاعم", cat_cars:"تأجير سيارات", cat_sites:"مواقع سياحية", cat_history:"التاريخ", cat_info:"معلومات السفر",
+  cat_notices:"إشعارات", cat_qyt:"رحلات القليعات", cat_bey:"رحلات بيروت", cat_hotels:"فنادق", cat_taxis:"تاكسي", cat_restaurants:"مطاعم", cat_cars:"تأجير سيارات", cat_sites:"مواقع سياحية", cat_history:"التاريخ", cat_info:"معلومات السفر",
   get_h:"كيف تصل", get_lead:"أوقات القيادة تقريبية. الازدحام والحواجز والأشغال تغيّرها، فاترك وقتاً إضافياً. هذه ليست حركة مرور مباشرة ولا ملاحة.",
   routes:[
    {from:"من بيروت",time:"1.5 إلى 2",unit:"ساعة",txt:"خذ الأوتوستراد الساحلي شمالاً عبر طرابلس، ثم اتبع اللوحات باتجاه عكار والقليعات."},
@@ -746,7 +759,7 @@ var T = {
   list_join:"Vous avez une entreprise ? Contactez le propriétaire du guide pour être listé.",
   phone_label:"Téléphone", site_label:"Voir la page", sponsored_tag:"Sponsorisé",
   info_h:"Infos voyage", info_lead:"Itinéraires, conseils pratiques, alertes et mentions légales.",
-  cat_qyt:"Vols Qlayaat", cat_bey:"Vols Beyrouth", cat_hotels:"Hôtels", cat_taxis:"Taxis", cat_restaurants:"Restaurants", cat_cars:"Location de voiture", cat_sites:"Sites touristiques", cat_history:"Histoire", cat_info:"Infos voyage",
+  cat_notices:"Avis", cat_qyt:"Vols Qlayaat", cat_bey:"Vols Beyrouth", cat_hotels:"Hôtels", cat_taxis:"Taxis", cat_restaurants:"Restaurants", cat_cars:"Location de voiture", cat_sites:"Sites touristiques", cat_history:"Histoire", cat_info:"Infos voyage",
   get_h:"Comment s'y rendre", get_lead:"Durées de trajet approximatives. La circulation, les barrages et les travaux les modifient : prévoyez de la marge. Ce n'est ni le trafic en direct ni un système de navigation.",
   routes:[
    {from:"Depuis Beyrouth",time:"1,5 à 2",unit:"heures",txt:"Prenez l'autoroute côtière vers le nord en passant par Tripoli, puis suivez les panneaux vers l'Akkar et Qlayaat."},
@@ -920,7 +933,7 @@ var TIMELINE = [
  {date:{en:"19 Aug 2026",fr:"19 août 2026",ar:"19 آب 2026"}, text:{en:"An update says a partial opening is targeted for the end of October, and the terminal grows from 2,000 to 4,700 square metres.",fr:"Une mise à jour indique qu'une ouverture partielle est visée pour fin octobre, et que le terminal passe de 2 000 à 4 700 mètres carrés.",ar:"تفيد مستجدات بأن الافتتاح الجزئي مستهدف في نهاية تشرين الأول، وأن مساحة المبنى ترتفع من 2000 إلى 4700 متر مربع."}},
  {date:{en:"8 Oct 2026",fr:"8 octobre 2026",ar:"8 تشرين الأول 2026"}, text:{en:"Prime Minister Nawaf Salam announces 15 November 2026 as the date of the first commercial flight.",fr:"Le Premier ministre Nawaf Salam annonce que le 15 novembre 2026 sera la date du premier vol commercial.",ar:"يعلن رئيس الحكومة نواف سلام أن 15 تشرين الثاني 2026 هو موعد إقلاع أول رحلة تجارية."}}
 ];
-var VIEWS = ["qyt","far","bey","hotels","restaurants","taxis","cars","sites","events","phrases","history","info","saved"];
+var VIEWS = ["qyt","far","bey","hotels","restaurants","taxis","cars","sites","events","phrases","history","info","saved","notices"];
 var lang = "en", prefs = {}, view = "qyt", pageMode = false;
 try { var sl = localStorage.getItem("kyt-lang"); if (sl === "ar" || sl === "en" || sl === "fr") lang = sl; } catch(e){}
 try { prefs = JSON.parse(localStorage.getItem("kyt-alerts") || "{}") || {}; } catch(e){ prefs = {}; }
@@ -1060,6 +1073,13 @@ function renderTicker(){
   });
   tk.style.animationDuration = Math.max(30, Math.round(chars * 0.2)) + "s";
 }
+/* the news stripe opens the Notices page */
+(function(){
+  var tk = document.getElementById("ticker"); if (!tk) return;
+  tk.style.cursor = "pointer"; tk.setAttribute("tabindex","0");
+  tk.addEventListener("click", function(){ setView("notices"); });
+  tk.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setView("notices"); } });
+})();
 function timelineNode(t){ var c = el("div","card"); c.appendChild(el("h3",null,tr(t.date))); c.appendChild(el("p",null,tr(t.text))); return c; }
 function episodeNode(e){
   var s = T[lang], c = el("div","card");
@@ -1077,7 +1097,7 @@ function buildIndex(){
   FLIGHTS.forEach(function(r){
     out.push({cat:"qyt", hay:[r.time, L(r.city), L(r.type), L(r.status)].join(" "), build:function(){ return flightCard(r); }});
   });
-  NOTICES.forEach(function(n){ out.push({cat:"qyt", hay:[L(n.date), n.en, n.ar, n.fr || "", n.source].join(" "), build:function(){ return noticeNode(n); }}); });
+  NOTICES.forEach(function(n){ out.push({cat:"notices", hay:[L(n.date), n.en, n.ar, n.fr || "", n.source].join(" "), build:function(){ return noticeNode(n); }}); });
   if (qytOn()) out.push({cat:"qyt", hay:"official airport page website qlayaat rené mouawad la page officielle de laéroport الصفحة الرسمية للمطار موقع القليعات", build:qytNode});
   out.push({cat:"bey", hay:"beirut rafic hariri airport flights arrivals departures official بيروت مطار رفيق الحريري رحلات وصول مغادرة", build:beirutNode});
   [["hotels",HOTELS],["restaurants",RESTAURANTS],["taxis",TAXIS],["cars",CARS],["sites",SITES]].forEach(function(p){
@@ -1134,10 +1154,17 @@ function applyView(){
   var ofw = document.getElementById("offerWrap"); if (ofw) ofw.hidden = searching || view !== "qyt";
   var cdb = document.getElementById("cdq"); if (cdb && cdb.firstChild) cdb.hidden = searching;
   document.getElementById("qclear").hidden = !searching;
-  Array.prototype.forEach.call(document.querySelectorAll("#tabs button, #bizList button"), function(b){
+  Array.prototype.forEach.call(document.querySelectorAll("#tabs button, #bizList button, #floatList button"), function(b){
     b.setAttribute("aria-selected", (!searching && b.getAttribute("data-v") === view) ? "true" : "false");
   });
+  floatTabsUpdate();
   if (searching) renderResults();
+}
+/* Beirut flights (and Qlayaat flights, once qyt_url is set in the Sheet) open the official airport website directly */
+function tabGo(v){
+  if (v === "bey" && /^https:\/\//.test(BEIRUT_URL)) { window.open(BEIRUT_URL, "_blank", "noopener"); return; }
+  if (v === "qyt" && qytOn()) { window.open(QYT_URL, "_blank", "noopener"); return; }
+  setView(v);
 }
 function setView(v){
   view = v; pageMode = true; document.getElementById("q").value = "";
@@ -1199,15 +1226,15 @@ function render(){
 
   var tabs = document.getElementById("tabs"); tabs.textContent = "";
   var MAIN7 = ["qyt","bey","hotels","restaurants","cars","taxis","far"], bl = document.getElementById("bizList"); bl.textContent = "";
-  VIEWS.filter(viewOn).forEach(function(v){
-    var li = el("li", MAIN7.indexOf(v) > -1 ? "m7" : null), b = el("button",null,s["tab_" + v]); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v);
-    b.addEventListener("click", function(){ setView(v); });
-    li.appendChild(b); tabs.appendChild(li);
+  function tabLabel(v){ var t = s["tab_" + v]; if (v === "bey" || (v === "qyt" && qytOn())) t += " \u2197"; return t; }      /* the arrow: this tab opens the official website */
+  function tabBtn(v){ var b = el("button",null,tabLabel(v)); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v); b.addEventListener("click", function(){ tabGo(v); }); return b; }
+  VIEWS.filter(function(v){ return v !== "notices" && viewOn(v); }).forEach(function(v){
+    var li = el("li", MAIN7.indexOf(v) > -1 ? "m7" : null); li.appendChild(tabBtn(v)); tabs.appendChild(li);
   });
+  var fl = document.getElementById("floatList"); fl.textContent = "";
+  ["qyt","bey","hotels","restaurants","cars","taxis"].filter(viewOn).forEach(function(v){ var li = el("li"); li.appendChild(tabBtn(v)); fl.appendChild(li); });
   MAIN7.filter(viewOn).forEach(function(v){
-    var li = el("li", v === "far" ? "wide" : null), b = el("button",null,s["tab_" + v]); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v);
-    b.addEventListener("click", function(){ setView(v); });
-    li.appendChild(b); bl.appendChild(li);
+    var li = el("li", v === "far" ? "wide" : null); li.appendChild(tabBtn(v)); bl.appendChild(li);
   });
 
   var f = document.getElementById("flights"); f.textContent = "";
@@ -1224,7 +1251,6 @@ function render(){
   document.getElementById("boardFoot").textContent = anyEx ? s.board_foot_ex : s.board_foot;
 
   var nb = document.getElementById("notices"); nb.textContent = "";
-  nb.appendChild(el("h3","sub",s.notice_t));
   if (!NOTICES.length) nb.appendChild(el("div","notice",s.notice_empty));
   NOTICES.forEach(function(n){ nb.appendChild(noticeNode(n)); });
 
@@ -1432,6 +1458,13 @@ function renderWxChip(){
   c.hidden = false;
 }
 (function(){ var c = document.getElementById("wxChip"); if (c) c.addEventListener("click", function(){ wxOpen = !wxOpen; applyView(); renderWxChip(); }); })();
+/* the floating row shows once the big tab grid has scrolled out of view */
+function floatTabsUpdate(){
+  var f = document.getElementById("floatTabs"), g = document.getElementById("bizTabs"); if (!f || !g) return;
+  var on = !pageMode && g.getBoundingClientRect().bottom < 0;
+  if (f.hidden === on) f.hidden = !on;
+}
+(function(){ var tk = false; window.addEventListener("scroll", function(){ if (tk) return; tk = true; (window.requestAnimationFrame || setTimeout)(function(){ tk = false; floatTabsUpdate(); }); }, {passive:true}); window.addEventListener("resize", floatTabsUpdate); })();
 function initWx(){ renderWx(); wxLoad(wxPlace); }
 
 /* ===== COUNTDOWN, QUICK BUTTONS, SHARE, NUMBERS, EVENTS, PHRASES, SAVED ===== */

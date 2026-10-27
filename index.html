@@ -3306,8 +3306,9 @@ render = function(){
 var CONTENT_KEY = "kyt-content", contentFetchedAt = 0;
 function cleanVal(k, v){
   if (typeof v === "string") {
-    v = v.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "").slice(0, 500);
-    if (/^(url|link|img)$/.test(k) && v && !/^https:\/\//i.test(v)) return "";
+    v = v.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+    if (/^(url|link|img)$/.test(k)) { if (v && (!/^https:\/\//i.test(v) || v.length > 1500)) return ""; return v; }      /* a cut link would not open, so links are kept whole (up to 1500 characters) or dropped */
+    v = v.slice(0, 500);
     return v;
   }
   if (Array.isArray(v)) return v.slice(0, 60).map(function(x){ return cleanVal(k, x); }).filter(function(x){ return x !== "" && x != null; });

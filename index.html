@@ -124,6 +124,7 @@ html[lang="ar"] .board-h strong{letter-spacing:0;text-transform:none}
 .card h3{margin:0;font-size:1.05rem;min-width:0}
 .card .area{color:var(--muted);font-size:.88rem;margin-top:2px}
 .card p{margin:8px 0 0;color:var(--muted);font-size:.93rem}
+.qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;margin:12px 0 4px}.qa a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;padding:8px 4px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--sea);text-decoration:none;font-weight:600;font-size:.82rem;text-align:center}.qa a i{font-style:normal;font-size:1.2rem;line-height:1}.qa a:active{background:var(--line)}
 .card .meta{margin-top:8px;font-size:.9rem;display:flex;gap:14px;flex-wrap:wrap}
 .card small{display:block;margin-top:8px;color:var(--muted)}
 .fnote{font-size:.85rem;color:var(--muted);margin:12px 0 0}
@@ -589,7 +590,7 @@ var T = {
   list_note:"Listings appear only with each business's agreement. Paid or sponsored listings are marked.",
   list_note_ex:"Entries marked Example show the layout. Real listings are added with each business's agreement, and paid ones are marked.",
   list_join:"Own a business? Contact the guide's owner to be listed.",
-  phone_label:"Phone", site_label:"Visit page", sponsored_tag:"Sponsored",
+  phone_label:"Phone", call_label:"Call", site_label:"Visit page", sponsored_tag:"Sponsored",
   info_h:"Travel info", info_lead:"Routes, practical tips, alerts and legal notes.",
   cat_notices:"Notices", cat_qyt:"Qlayaat flights", cat_bey:"Beirut flights", cat_hotels:"Hotels", cat_taxis:"Taxis", cat_restaurants:"Restaurants", cat_cars:"Rent a car", cat_sites:"Tourist sites", cat_history:"History", cat_info:"Travel info",
   get_h:"Getting there", get_lead:"Approximate driving times. Traffic, checkpoints and road works change them, so leave extra time. This is not live traffic or navigation.",
@@ -673,7 +674,7 @@ var T = {
   list_note:"لا تظهر الإدراجات إلا بموافقة أصحابها. تُوسَم الإدراجات المدفوعة أو الممولة.",
   list_note_ex:"الإدخالات الموسومة بتجريبي تعرض الشكل فقط. تُضاف الإدراجات الحقيقية بموافقة أصحابها، وتُوسَم المدفوعة منها.",
   list_join:"تملك نشاطاً تجارياً؟ تواصل مع مالك الدليل ليُدرج.",
-  phone_label:"الهاتف", site_label:"زيارة الصفحة", sponsored_tag:"إعلان مدفوع",
+  phone_label:"الهاتف", call_label:"اتصال", site_label:"زيارة الصفحة", sponsored_tag:"إعلان مدفوع",
   info_h:"معلومات السفر", info_lead:"الطرق والنصائح العملية والتنبيهات والملاحظات القانونية.",
   cat_notices:"إشعارات", cat_qyt:"رحلات القليعات", cat_bey:"رحلات بيروت", cat_hotels:"فنادق", cat_taxis:"تاكسي", cat_restaurants:"مطاعم", cat_cars:"تأجير سيارات", cat_sites:"مواقع سياحية", cat_history:"التاريخ", cat_info:"معلومات السفر",
   get_h:"كيف تصل", get_lead:"أوقات القيادة تقريبية. الازدحام والحواجز والأشغال تغيّرها، فاترك وقتاً إضافياً. هذه ليست حركة مرور مباشرة ولا ملاحة.",
@@ -757,7 +758,7 @@ var T = {
   list_note:"Les fiches n'apparaissent qu'avec l'accord de chaque entreprise. Les fiches payantes ou sponsorisées sont signalées.",
   list_note_ex:"Les entrées marquées Exemple montrent la mise en page. Les vraies fiches sont ajoutées avec l'accord de chaque entreprise, et les fiches payantes sont signalées.",
   list_join:"Vous avez une entreprise ? Contactez le propriétaire du guide pour être listé.",
-  phone_label:"Téléphone", site_label:"Voir la page", sponsored_tag:"Sponsorisé",
+  phone_label:"Téléphone", call_label:"Appeler", site_label:"Voir la page", sponsored_tag:"Sponsorisé",
   info_h:"Infos voyage", info_lead:"Itinéraires, conseils pratiques, alertes et mentions légales.",
   cat_notices:"Avis", cat_qyt:"Vols Qlayaat", cat_bey:"Vols Beyrouth", cat_hotels:"Hôtels", cat_taxis:"Taxis", cat_restaurants:"Restaurants", cat_cars:"Location de voiture", cat_sites:"Sites touristiques", cat_history:"Histoire", cat_info:"Infos voyage",
   get_h:"Comment s'y rendre", get_lead:"Durées de trajet approximatives. La circulation, les barrages et les travaux les modifient : prévoyez de la marge. Ce n'est ni le trafic en direct ni un système de navigation.",
@@ -935,7 +936,10 @@ var TIMELINE = [
 ];
 var VIEWS = ["qyt","far","bey","hotels","restaurants","taxis","cars","sites","events","phrases","history","info","saved","notices"];
 var lang = "en", prefs = {}, view = "qyt", pageMode = false;
-try { var sl = localStorage.getItem("kyt-lang"); if (sl === "ar" || sl === "en" || sl === "fr") lang = sl; } catch(e){}
+try { var sl = localStorage.getItem("kyt-lang"); if (sl === "ar" || sl === "en" || sl === "fr") lang = sl; else {   /* first visit: follow the phone language */
+  var nl = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"]);
+  for (var li = 0; li < nl.length; li++) { var lc = String(nl[li] || "").slice(0,2).toLowerCase(); if (lc === "ar" || lc === "fr" || lc === "en") { lang = lc; break; } }
+} } catch(e){}
 try { prefs = JSON.parse(localStorage.getItem("kyt-alerts") || "{}") || {}; } catch(e){ prefs = {}; }
 try { var hv = (location.hash || "").replace("#",""); if (VIEWS.indexOf(hv) > -1 && hv !== "saved" && hv !== "mybook") { view = hv; pageMode = true; } } catch(e){}
 
@@ -1005,20 +1009,19 @@ function entryNode(e, saveable){
   if (typeof bkNearLine === "function") { var nl = bkNearLine(e); if (nl) c.appendChild(el("div","dnear",nl)); }
   if (e.note) c.appendChild(el("p",null,tr(e.note)));
   if (e.offer && tr(e.offer)) { var of = el("div","offer"); of.appendChild(el("b",null,s.offer_label + ":")); of.appendChild(document.createTextNode(tr(e.offer))); c.appendChild(of); }
-  if (e.phone || e.link || e.whatsapp) {
+  var qa = el("div","qa"), hasLL = typeof e.lat === "number" && typeof e.lng === "number";
+  if (e.phone) { var qc = el("a"); qc.href = "tel:" + e.phone.replace(/[^+0-9]/g,""); qc.appendChild(el("i",null,"\uD83D\uDCDE")); qc.appendChild(el("span",null,s.call_label)); qc.setAttribute("aria-label", s.call_label + " " + e.phone); qa.appendChild(qc); }
+  if (e.whatsapp && /^[0-9]{6,15}$/.test(String(e.whatsapp))) { var qw = el("a"); qw.href = "https://wa.me/" + e.whatsapp; qw.target = "_blank"; qw.rel = "noopener"; qw.appendChild(el("i",null,"\uD83D\uDCAC")); qw.appendChild(el("span",null,s.wa_label)); qa.appendChild(qw); }
+  var mapHref = hasLL ? "https://www.google.com/maps/dir/?api=1&destination=" + e.lat + "," + e.lng : (e.map && /^https?:\/\//i.test(e.map) ? e.map : "");
+  if (mapHref) { var qm = el("a","dirlink"); qm.href = mapHref; qm.target = "_blank"; qm.rel = "noopener"; qm.appendChild(el("i",null,"\uD83D\uDCCD")); qm.appendChild(el("span",null,hasLL ? s.dir_label : bk("map_open"))); qa.appendChild(qm); }
+  if (qa.children.length) c.appendChild(qa);
+  if (e.phone || (e.link && /^https?:\/\//i.test(e.link))) {
     var m = el("div","meta");
     if (e.phone) { var ph = el("span"); ph.appendChild(document.createTextNode(s.phone_label + ": ")); var pa = el("a",null,e.phone); pa.href = "tel:" + e.phone.replace(/[^+0-9]/g,""); pa.setAttribute("dir","ltr"); ph.appendChild(pa); m.appendChild(ph); }
-    if (e.whatsapp && /^[0-9]{6,15}$/.test(String(e.whatsapp))) m.appendChild(extLink("https://wa.me/" + e.whatsapp, "\uD83D\uDCAC " + s.wa_label));
     if (e.link && /^https?:\/\//i.test(e.link)) m.appendChild(extLink(e.link, s.site_label));
     c.appendChild(m);
   }
   if (BOOKING_ON && e.book && e.id && (e.cat !== "taxi" || TAXIPLACES.length)) { var bkb = el("button","btn",bk(e.cat === "restaurant" ? "book_table" : "book")); bkb.type = "button"; bkb.setAttribute("data-book","1"); bkb.addEventListener("click", function(){ bkForm(e); }); c.appendChild(bkb); }
-  if (typeof e.lat === "number" && typeof e.lng === "number") {
-    var dm = el("div","meta"), da = el("a","dirlink",s.dir_label);
-    da.href = "https://www.google.com/maps/dir/?api=1&destination=" + e.lat + "," + e.lng; da.target = "_blank"; da.rel = "noopener";
-    dm.appendChild(da); c.appendChild(dm);
-  }
-  if (!(typeof e.lat === "number" && typeof e.lng === "number") && e.map) { var mm = el("div","meta"); mm.appendChild(extLink(e.map, bk("map_open"))); c.appendChild(mm); }
   if (e.source) {
     var sm = el("small"); sm.appendChild(document.createTextNode(s.source_label + ": "));
     if (e.url) sm.appendChild(extLink(e.url, e.source)); else sm.appendChild(document.createTextNode(e.source));

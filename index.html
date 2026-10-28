@@ -70,7 +70,7 @@ html[lang="ar"] .ticker-label{direction:rtl}
 .ticker-view{flex:1;min-width:0;overflow:hidden;direction:rtl;display:flex;align-items:center}
 .ticker-track{display:inline-flex;white-space:nowrap;padding-right:100%;animation:tick 60s linear infinite;will-change:transform}
 .ticker-item{padding:8px 0;unicode-bidi:isolate}
-.ticker-item+.ticker-item::before{content:"\25C6";color:var(--amber);margin:0 18px}
+.ticker-item::after{content:"\25C6";color:var(--amber);margin:0 18px}
 .ticker:hover .ticker-track,.ticker:focus-within .ticker-track,.ticker:active .ticker-track{animation-play-state:paused}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(100%)}}
 @keyframes tickL{from{transform:translateX(0)}to{transform:translateX(-100%)}}
@@ -113,7 +113,7 @@ html[lang="ar"] .board-h strong{letter-spacing:0;text-transform:none}
 .pill.ok{background:#12351f;color:#7fe0ac}.pill.late{background:#3d2a08;color:#ffc477}
 .board-f{padding:10px 14px;font-size:.82rem;color:#c3d0e4;background:#0e2a4a}
 
-.notice{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-inline-start:5px solid var(--warn);border-radius:6px;padding:12px 14px}
+.notice{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-inline-start:5px solid var(--warn);border-radius:6px;padding:12px 14px}
 .notice b{display:block}
 .notice small{color:var(--muted)}
 .notice a,.card a{color:var(--sea)}
@@ -346,7 +346,7 @@ header.band .tagline{font-size:.84rem;line-height:1.35;max-width:none;margin-top
 nav.tabs.nwquick button{width:100%;white-space:normal;text-align:center;line-height:1.15;font-size:.74rem;min-height:30px;padding:4px 6px;border-width:1.5px}
 .biztabs{max-width:44rem;margin:0 auto;padding:10px 12px 0}
 .biztabs ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.biztabs li.wide{grid-column:1/-1}
-.biztabs button{width:100%;background:var(--amber);border:0;border-radius:8px;color:var(--amber-ink);font:inherit;font-weight:700;font-size:.86rem;line-height:1.15;padding:6px;min-height:42px;cursor:pointer;white-space:normal}
+.biztabs button{width:100%;letter-spacing:-.01em;background:var(--amber);border:0;border-radius:8px;color:var(--amber-ink);font:inherit;font-weight:700;font-size:.86rem;line-height:1.15;padding:6px;min-height:42px;cursor:pointer;white-space:normal}
 .biztabs button[aria-selected="true"]{background:#0b1f3a;color:#fff;box-shadow:0 0 0 2px var(--amber)}
 /* one row: icon, Only owner, languages, moon (also on narrow phones) */
 .top{flex-wrap:nowrap!important;gap:6px}.top .tright{flex:1 1 auto;min-width:0;justify-content:flex-end;gap:6px}
@@ -364,7 +364,7 @@ body:not(.pm) .sticky{position:static}
 body.pm .floattabs{display:none}
 body.pm .biztabs{display:none}
 body:not(.pm) #tabs li.m7{display:none}
-.homebox{max-width:44rem;margin:0 auto;padding:0 16px}.homebox .offer20{margin:12px 0 0}.homebox[hidden]{display:none}
+.homebox{max-width:44rem;margin:0 auto;padding:0 16px}.homebox .offer20{margin:10px 0 0;padding:9px 12px}.offer20 h3{margin:0;font-size:.95rem;line-height:1.25}.offer20 .ofrow{display:flex;align-items:center;gap:10px;margin:4px 0 2px}.offer20 .ofrow .of-left{margin:0;font-size:.82rem;white-space:nowrap}.offer20 .ofrow .of-bar{flex:1;margin:0;height:8px}.offer20 details{margin:4px 0 0}.offer20 summary{cursor:pointer;font-size:.82rem;color:var(--sea);font-weight:600}.offer20 details p{font-size:.84rem;margin:6px 0 0}.offer20 .btn{margin-top:6px;padding:6px 14px;min-height:34px;font-size:.88rem}.homebox[hidden]{display:none}
 </style>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "325cd696198f48b4a5ff4f9fbe40e655"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
@@ -1226,7 +1226,7 @@ function render(){
 
   var tabs = document.getElementById("tabs"); tabs.textContent = "";
   var MAIN7 = ["qyt","bey","hotels","restaurants","cars","taxis","far"], bl = document.getElementById("bizList"); bl.textContent = "";
-  function tabLabel(v){ var t = s["tab_" + v]; if (v === "bey" || (v === "qyt" && qytOn())) t += " \u2197"; return t; }      /* the arrow: this tab opens the official website */
+  function tabLabel(v){ var t = s["tab_" + v]; if (v === "bey" || (v === "qyt" && qytOn())) t += "\u00A0\u2197"; return t; }      /* the arrow: this tab opens the official website */
   function tabBtn(v){ var b = el("button",null,tabLabel(v)); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v); b.addEventListener("click", function(){ tabGo(v); }); return b; }
   VIEWS.filter(function(v){ return v !== "notices" && viewOn(v); }).forEach(function(v){
     var li = el("li", MAIN7.indexOf(v) > -1 ? "m7" : null); li.appendChild(tabBtn(v)); tabs.appendChild(li);
@@ -1457,7 +1457,8 @@ function renderWxChip(){
   c.setAttribute("aria-expanded", wxOpen ? "true" : "false");
   c.hidden = false;
 }
-(function(){ var c = document.getElementById("wxChip"); if (c) c.addEventListener("click", function(){ wxOpen = !wxOpen; applyView(); renderWxChip(); }); })();
+/* tap the weather button: open or close the normal weather card (place picker) and bring it into view */
+(function(){ var c = document.getElementById("wxChip"); if (c) c.addEventListener("click", function(){ wxOpen = !wxOpen; applyView(); renderWxChip(); if (wxOpen) { var w = document.getElementById("wx"); if (w && w.scrollIntoView) w.scrollIntoView({behavior:"smooth", block:"start"}); } }); })();
 /* the floating row shows once the big tab grid has scrolled out of view */
 function floatTabsUpdate(){
   var f = document.getElementById("floatTabs"), g = document.getElementById("bizTabs"); if (!f || !g) return;
@@ -2099,7 +2100,7 @@ var BK = {
   d_hotel:"Check-in date", d_restaurant:"Date", d_taxi:"Pickup date", d_car:"Pickup date",
   q_hotel:"Number of nights", q_restaurant:"Number of people", q_taxi:"Number of passengers", q_car:"Number of days",
   f_time:"Time (optional)", f_note:"Note (optional)", est:"Estimated total: ${x}",
-  consent:"I have read and agree to the terms and privacy policy. I agree that North Way sends my name and phone number to this business so it can contact me about this booking. They are kept for up to 180 days, then erased.", pay_hotel:"I also agree to pay through North Way. North Way holds my payment until I arrive at the hotel, then passes it to the hotel.", pay_car:"I also agree to pay through North Way. North Way holds my payment until I take the car, then passes it to the rental company.", pay_taxi:"I also agree to pay through North Way. North Way holds my payment until I get in the taxi, then passes it to the driver.",
+  consent:"I have read and agree to the terms and privacy policy. I agree that North Way sends my name and phone number to this business so it can contact me about this booking. They are kept for up to 180 days, then erased.", pay_hotel:"I also agree to pay through North Way. North Way holds my payment until the hotel confirms my booking by scanning my QR code, then passes it to the hotel.", pay_car:"I also agree to pay through North Way. North Way holds my payment until the rental company confirms my booking by scanning my QR code, then passes it to the rental company.", pay_taxi:"I also agree to pay through North Way. North Way holds my payment until the driver confirms my booking by scanning my QR code, then passes it to the driver.",
   f_terms:"For information only. North Way is an independent guide. The business confirms the booking and provides the service.",
   send:"Send booking request", sending:"Sending...", close:"Close",
   e_consent:"Please tick the box to agree.", e_details:"Please check your name, phone, date and number.", e_date:"Please choose a date from today.", e_unavailable:"This business is not taking bookings right now.", e_limit:"Too many bookings today. Please try again tomorrow.", e_network:"No connection. Please try again.", e_closed:"Booking is not open yet.", e_server:"Something went wrong. Please try again.",
@@ -2121,7 +2122,7 @@ var BK = {
   near_hotels:"How far are the hotels from me?", near_restaurants:"How far are the restaurants from me?", near_taxis:"How far are the taxis from me?", near_cars:"How far are the rental cars from me?", near_sites:"How far are the sites from me?",
   near_txt:"About {km} km from you · {t} by car", near_sorted:"Sorted from the nearest. Your location stays on your phone.", n_unsup:"Your browser cannot share its location.", n_denied:"Location was not shared. You can allow it in your browser settings and try again.", n_wait:"Finding your location...",
   tc_title:"How much is a taxi?", tc_note:"Estimate by road distance. The driver confirms the final price.", per_person:"/ person", map_open:"Open in Google Maps",
-  of_t:"Free for 1 year for the first {total} providers", of_left:"{n} of {total} free spots left", of_p:"Hotels, taxis and car rentals: your subscription is free for one year, with no commission, for the first {total} providers. After the free year, you pay a small commission on bookings.", of_r:"Restaurants: free for one year if you join on or before {until}. After that, {fee}. Table booking in the app stays free for guests.", of_btn:"Join free", of_fm:"${n} per month", of_fy:"${n} per year",
+  of_t:"Free for 1 year for the first {total} providers", of_left:"{n} of {total} free spots left", of_p:"Hotels, taxis and car rentals: your subscription is free for one year, with no commission, for the first {total} providers. After the free year, you pay a small commission on bookings.", of_r:"Restaurants: free for one year if you join on or before {until}. After that, {fee}. Table booking in the app stays free for guests.", of_btn:"Join free", of_more:"Details", of_rt:"Restaurants: free first year", of_fm:"${n} per month", of_fy:"${n} per year",
   book_table:"Book a table", menu:"Menu", t_me:"My current location", pay_nofee:"You pay only the price shown. No extra fees.", pay_same:"Please send it from the same phone number you gave in this booking, so we can match your payment.",
   lg_t:"Bookings and your data",
   lg1:"When you send a booking request, North Way saves your name, phone number, date and note in its booking sheet (a Google Sheets file) and sends them to the business you chose, so it can contact you. They are kept for up to 180 days and then erased. North Way does not sell your data.",
@@ -2132,7 +2133,7 @@ var BK = {
   d_hotel:"تاريخ الوصول", d_restaurant:"التاريخ", d_taxi:"تاريخ الاستلام", d_car:"تاريخ الاستلام",
   q_hotel:"عدد الليالي", q_restaurant:"عدد الأشخاص", q_taxi:"عدد الركاب", q_car:"عدد الأيام",
   f_time:"الوقت (اختياري)", f_note:"ملاحظة (اختياري)", est:"المجموع التقريبي: {x}$",
-  consent:"قرأتُ شروط الاستخدام وسياسة الخصوصية وأوافق عليها. وأوافق على أن يرسل «طريق الشمال» اسمي ورقم هاتفي إلى هذا المكان ليتواصل معي بخصوص هذا الحجز. يُحتفظ بهما حتى 180 يوماً ثم يُمحيان.", pay_hotel:"وأوافق أيضاً على الدفع عبر «طريق الشمال». يحتفظ «طريق الشمال» بدفعتي إلى أن أصل إلى الفندق، ثم يحوّلها إلى الفندق.", pay_car:"وأوافق أيضاً على الدفع عبر «طريق الشمال». يحتفظ «طريق الشمال» بدفعتي إلى أن أستلم السيارة، ثم يحوّلها إلى شركة التأجير.", pay_taxi:"وأوافق أيضاً على الدفع عبر «طريق الشمال». يحتفظ «طريق الشمال» بدفعتي إلى أن أركب سيارة الأجرة، ثم يحوّلها إلى السائق.",
+  consent:"قرأتُ شروط الاستخدام وسياسة الخصوصية وأوافق عليها. وأوافق على أن يرسل «طريق الشمال» اسمي ورقم هاتفي إلى هذا المكان ليتواصل معي بخصوص هذا الحجز. يُحتفظ بهما حتى 180 يوماً ثم يُمحيان.", pay_hotel:"وأوافق أيضاً على الدفع عبر «طريق الشمال». يحتفظ «طريق الشمال» بدفعتي إلى أن يؤكد الفندق حجزي بمسح رمز QR الخاص بي، ثم يحوّلها إلى الفندق.", pay_car:"وأوافق أيضاً على الدفع عبر «طريق الشمال». يحتفظ «طريق الشمال» بدفعتي إلى أن تؤكد شركة التأجير حجزي بمسح رمز QR الخاص بي، ثم يحوّلها إلى شركة التأجير.", pay_taxi:"وأوافق أيضاً على الدفع عبر «طريق الشمال». يحتفظ «طريق الشمال» بدفعتي إلى أن يؤكد السائق حجزي بمسح رمز QR الخاص بي، ثم يحوّلها إلى السائق.",
   f_terms:"للمعلومات فقط. «طريق الشمال» دليل مستقل، والمكان هو من يؤكد الحجز ويقدّم الخدمة.",
   send:"أرسل طلب الحجز", sending:"جارٍ الإرسال...", close:"إغلاق",
   e_consent:"يرجى وضع علامة الموافقة.", e_details:"يرجى التحقق من الاسم والهاتف والتاريخ والعدد.", e_date:"يرجى اختيار تاريخ من اليوم فصاعداً.", e_unavailable:"هذا المكان لا يقبل الحجوزات حالياً.", e_limit:"عدد كبير من الحجوزات اليوم. حاول غداً.", e_network:"لا يوجد اتصال. حاول مجدداً.", e_closed:"الحجز غير متاح بعد.", e_server:"حدث خطأ. حاول مجدداً.",
@@ -2154,7 +2155,7 @@ var BK = {
   near_hotels:"كم تبعد الفنادق عني؟", near_restaurants:"كم تبعد المطاعم عني؟", near_taxis:"كم يبعد التاكسي عني؟", near_cars:"كم تبعد السيارات المؤجرة عني؟", near_sites:"كم تبعد المواقع عني؟",
   near_txt:"حوالي {km} كم عنك · {t} بالسيارة", near_sorted:"مرتبة من الأقرب. يبقى موقعك على هاتفك.", n_unsup:"متصفحك لا يستطيع مشاركة الموقع.", n_denied:"لم تتم مشاركة الموقع. يمكنك السماح به من إعدادات المتصفح وإعادة المحاولة.", n_wait:"جارٍ تحديد موقعك...",
   tc_title:"كم تبلغ أجرة التاكسي؟", tc_note:"تقدير حسب مسافة الطريق. يؤكد السائق السعر النهائي.", per_person:"/ للشخص", map_open:"افتح في خرائط غوغل",
-  of_t:"مجاني لمدة سنة لأول {total} مزوّد خدمة", of_left:"بقي {n} من {total} مكاناً مجانياً", of_p:"فنادق وتاكسي وتأجير سيارات: اشتراكك مجاني لمدة سنة وبلا عمولة لأول {total} مزوّد. بعد السنة المجانية تدفع عمولة صغيرة على الحجوزات.", of_r:"المطاعم: مجاناً لمدة سنة إذا انضممت حتى {until}. بعد ذلك {fee}. حجز الطاولات في التطبيق يبقى مجانياً للضيوف.", of_btn:"انضم مجاناً", of_fm:"{n} دولاراً شهرياً", of_fy:"{n} دولاراً سنوياً",
+  of_t:"مجاني لمدة سنة لأول {total} مزوّد خدمة", of_left:"بقي {n} من {total} مكاناً مجانياً", of_p:"فنادق وتاكسي وتأجير سيارات: اشتراكك مجاني لمدة سنة وبلا عمولة لأول {total} مزوّد. بعد السنة المجانية تدفع عمولة صغيرة على الحجوزات.", of_r:"المطاعم: مجاناً لمدة سنة إذا انضممت حتى {until}. بعد ذلك {fee}. حجز الطاولات في التطبيق يبقى مجانياً للضيوف.", of_btn:"انضم مجاناً", of_more:"التفاصيل", of_rt:"المطاعم: السنة الأولى مجاناً", of_fm:"{n} دولاراً شهرياً", of_fy:"{n} دولاراً سنوياً",
   book_table:"احجز طاولة", menu:"القائمة", t_me:"موقعي الحالي", pay_nofee:"تدفع فقط السعر المعروض. بلا أي رسوم إضافية.", pay_same:"يرجى الإرسال من رقم الهاتف نفسه الذي كتبته في هذا الحجز، لنتمكن من مطابقة دفعتك.",
   lg_t:"الحجوزات وبياناتك",
   lg1:"عند إرسال طلب حجز، يحفظ «طريق الشمال» اسمك ورقم هاتفك والتاريخ والملاحظة في جدول الحجوزات (ملف Google Sheets) ويرسلها إلى المكان الذي اخترته ليتواصل معك. يُحتفظ بها حتى 180 يوماً ثم تُمحى. لا يبيع «طريق الشمال» بياناتك.",
@@ -2165,7 +2166,7 @@ var BK = {
   d_hotel:"Date d'arrivée", d_restaurant:"Date", d_taxi:"Date de prise en charge", d_car:"Date de prise en charge",
   q_hotel:"Nombre de nuits", q_restaurant:"Nombre de personnes", q_taxi:"Nombre de passagers", q_car:"Nombre de jours",
   f_time:"Heure (facultatif)", f_note:"Note (facultatif)", est:"Total estimé : {x} $",
-  consent:"J'ai lu et j'accepte les conditions d'utilisation et la politique de confidentialité. J'accepte que North Way transmette mon nom et mon numéro à cet établissement pour qu'il me contacte au sujet de cette réservation. Ils sont conservés 180 jours au plus, puis effacés.", pay_hotel:"J'accepte aussi de payer via North Way. North Way conserve mon paiement jusqu'à mon arrivée à l'hôtel, puis le transmet à l'hôtel.", pay_car:"J'accepte aussi de payer via North Way. North Way conserve mon paiement jusqu'à la prise du véhicule, puis le transmet à la société de location.", pay_taxi:"J'accepte aussi de payer via North Way. North Way conserve mon paiement jusqu'à ce que je monte dans le taxi, puis le transmet au chauffeur.",
+  consent:"J'ai lu et j'accepte les conditions d'utilisation et la politique de confidentialité. J'accepte que North Way transmette mon nom et mon numéro à cet établissement pour qu'il me contacte au sujet de cette réservation. Ils sont conservés 180 jours au plus, puis effacés.", pay_hotel:"J'accepte aussi de payer via North Way. North Way conserve mon paiement jusqu'à ce que l'hôtel confirme ma réservation en scannant mon code QR, puis le transmet à l'hôtel.", pay_car:"J'accepte aussi de payer via North Way. North Way conserve mon paiement jusqu'à ce que la société de location confirme ma réservation en scannant mon code QR, puis le transmet à la société de location.", pay_taxi:"J'accepte aussi de payer via North Way. North Way conserve mon paiement jusqu'à ce que le chauffeur confirme ma réservation en scannant mon code QR, puis le transmet au chauffeur.",
   f_terms:"À titre d'information. North Way est un guide indépendant. C'est l'établissement qui confirme la réservation et fournit le service.",
   send:"Envoyer la demande", sending:"Envoi...", close:"Fermer",
   e_consent:"Veuillez cocher la case.", e_details:"Vérifiez votre nom, téléphone, date et nombre.", e_date:"Choisissez une date à partir d'aujourd'hui.", e_unavailable:"Cet établissement n'accepte pas de réservations pour le moment.", e_limit:"Trop de réservations aujourd'hui. Réessayez demain.", e_network:"Pas de connexion. Réessayez.", e_closed:"La réservation n'est pas encore ouverte.", e_server:"Une erreur s'est produite. Réessayez.",
@@ -2187,7 +2188,7 @@ var BK = {
   near_hotels:"À quelle distance sont les hôtels ?", near_restaurants:"À quelle distance sont les restaurants ?", near_taxis:"À quelle distance sont les taxis ?", near_cars:"À quelle distance sont les loueurs ?", near_sites:"À quelle distance sont les sites ?",
   near_txt:"Environ {km} km de vous · {t} en voiture", near_sorted:"Triés du plus proche. Votre position reste sur votre téléphone.", n_unsup:"Votre navigateur ne peut pas partager la position.", n_denied:"Position non partagée. Vous pouvez l'autoriser dans les réglages du navigateur et réessayer.", n_wait:"Recherche de votre position...",
   tc_title:"Combien coûte un taxi ?", tc_note:"Estimation selon la distance par la route. Le chauffeur confirme le prix final.", per_person:"/ personne", map_open:"Ouvrir dans Google Maps",
-  of_t:"Gratuit pendant 1 an pour les {total} premiers prestataires", of_left:"Il reste {n} places gratuites sur {total}", of_p:"Hôtels, taxis et locations de voitures : votre abonnement est gratuit pendant un an et sans commission pour les {total} premiers prestataires. Après l'année gratuite, vous payez une petite commission sur les réservations.", of_r:"Restaurants : gratuit pendant un an si vous rejoignez au plus tard le {until}. Ensuite, {fee}. La réservation de table dans l'application reste gratuite pour les clients.", of_btn:"Rejoindre gratuitement", of_fm:"{n} $ par mois", of_fy:"{n} $ par an",
+  of_t:"Gratuit pendant 1 an pour les {total} premiers prestataires", of_left:"Il reste {n} places gratuites sur {total}", of_p:"Hôtels, taxis et locations de voitures : votre abonnement est gratuit pendant un an et sans commission pour les {total} premiers prestataires. Après l'année gratuite, vous payez une petite commission sur les réservations.", of_r:"Restaurants : gratuit pendant un an si vous rejoignez au plus tard le {until}. Ensuite, {fee}. La réservation de table dans l'application reste gratuite pour les clients.", of_btn:"Rejoindre gratuitement", of_more:"Détails", of_rt:"Restaurants : première année gratuite", of_fm:"{n} $ par mois", of_fy:"{n} $ par an",
   book_table:"Réserver une table", menu:"Menu", t_me:"Ma position actuelle", pay_nofee:"Vous payez uniquement le prix affiché. Aucun frais supplémentaire.", pay_same:"Merci d'envoyer depuis le même numéro de téléphone que celui saisi dans cette réservation, afin que nous puissions rapprocher votre paiement.",
   lg_t:"Réservations et vos données",
   lg1:"Lorsque vous envoyez une demande de réservation, North Way enregistre votre nom, votre numéro, la date et la note dans sa feuille de réservations (un fichier Google Sheets) et les transmet à l'établissement choisi pour qu'il vous contacte. Ces données sont conservées 180 jours au plus, puis effacées. North Way ne vend pas vos données.",
@@ -2652,16 +2653,18 @@ function bkRenderOffer(){
   if (!spots && !rf) return;
   var c = el("div","card offer20");
   var fee = bkFmt(bk(FREE_OFFER.per === "year" ? "of_fy" : "of_fm"), {n:FREE_OFFER.fee});
+  c.appendChild(el("h3",null, spots ? bkFmt(bk("of_t"), {total:tot}) : bk("of_rt")));
   if (spots) {
-    c.appendChild(el("h3",null,bkFmt(bk("of_t"), {total:tot})));
-    c.appendChild(el("p","of-left",bkFmt(bk("of_left"), {n:n, total:tot})));
-    var bar = el("div","of-bar"), fill = el("span"); fill.style.width = Math.max(0, Math.min(100, Math.round((tot - n) / tot * 100))) + "%"; bar.appendChild(fill); c.appendChild(bar);
-    c.appendChild(el("p",null,bkFmt(bk("of_p"), {total:tot})));
+    var row = el("div","ofrow"); row.appendChild(el("span","of-left",bkFmt(bk("of_left"), {n:n, total:tot})));
+    var bar = el("div","of-bar"), fill = el("span"); fill.style.width = Math.max(0, Math.min(100, Math.round((tot - n) / tot * 100))) + "%"; bar.appendChild(fill); row.appendChild(bar); c.appendChild(row);
   }
+  var det = el("details"); det.appendChild(el("summary",null,bk("of_more")));
+  if (spots) det.appendChild(el("p",null,bkFmt(bk("of_p"), {total:tot})));
   if (rf) {
     var d = rf.until; try { var dt = new Date(rf.until + "T12:00:00"); if (!isNaN(dt)) d = dt.toLocaleDateString(lang === "ar" ? "ar" : lang === "fr" ? "fr" : "en-GB", {day:"numeric", month:"long", year:"numeric"}); } catch (e) {}
-    c.appendChild(el("p",null,bkFmt(bk("of_r"), {until:d, fee:fee})));
+    det.appendChild(el("p",null,bkFmt(bk("of_r"), {until:d, fee:fee})));
   }
+  c.appendChild(det);
   var a = el("a","btn",bk("of_btn")); a.href = (SITE.whatsapp && /^[0-9]{6,15}$/.test(SITE.whatsapp)) ? "https://wa.me/" + SITE.whatsapp : "mailto:" + SITE.contact; a.target = "_blank"; a.rel = "noopener"; c.appendChild(a);
   box.appendChild(c);
 }

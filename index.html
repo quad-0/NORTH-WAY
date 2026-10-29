@@ -3266,6 +3266,7 @@ function nwOwner(openTab){
         clear(); var nav = el("div","bkbtns");
         [["Bookings", function(){ var p = nwOwnerPin; clearTimeout(idle); document.removeEventListener("visibilitychange", onHide); close(); bkDaily(p); }], ["Numbers", function(){ show("n"); }], ["Providers", function(){ show("p"); }], ["Settings", function(){ show("s"); }]].forEach(function(x){
           var b = el("button","btn2", x[0] + (x[0] === "Bookings" && r.bookings.todo ? " (" + r.bookings.todo + ")" : "")); b.type = "button"; b.addEventListener("click", function(){ arm(); x[1](); }); nav.appendChild(b); });
+        if (r.sheet_url && /^https:\/\/docs\.google\.com\/spreadsheets\//.test(r.sheet_url)) { var sl = el("a","btn2","Open my Google Sheet"); sl.href = r.sheet_url; sl.target = "_blank"; sl.rel = "noopener noreferrer"; sl.style.cssText = "display:inline-block;text-align:center;text-decoration:none"; nav.appendChild(sl); }
         var body = el("div");
         function show(w){ while (body.firstChild) body.removeChild(body.firstChild); msg.textContent = ""; var save = view; view = body;
           try { if (w === "n") numbers(r); else if (w === "p") providers(r); else settings(r); } catch(ex){ view = body; note("Error: " + (ex && ex.message)); }

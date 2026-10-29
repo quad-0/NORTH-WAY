@@ -2130,7 +2130,7 @@ var BK = {
   lg_t:"Bookings and your data",
   lg1:"When you send a booking request, North Way saves your name, phone number, date and note in its booking sheet (a Google Sheets file) and sends them to the business you chose, so it can contact you. They are kept for up to 180 days and then erased. North Way does not sell your data.",
   lg2:"North Way is an independent guide. It is not a hotel, restaurant, taxi or rental company. The business confirms the booking and provides the service. Prices are set by each business and may change. A booking request is not a guarantee.",
-  lg3:"When prepayment by Whish is offered, the payment is received by North Way and passed to the business after you arrive. To cancel or ask for a refund, use the contact details on this page."},
+  lg3:"When prepayment by Whish is offered, the payment is received by North Way and held until the business confirms your booking by scanning your QR code, then it is passed to the business. To cancel or ask for a refund, use the contact details on this page."},
  ar:{book:"احجز", from:"من", night:"/ الليلة", km:"/ كم", day:"/ اليوم",
   f_title:"احجز: {n}", f_name:"الاسم الكامل", f_phone:"رقم الهاتف (يفضل واتساب)",
   d_hotel:"تاريخ الوصول", d_restaurant:"التاريخ", d_taxi:"تاريخ الاستلام", d_car:"تاريخ الاستلام",
@@ -2163,7 +2163,7 @@ var BK = {
   lg_t:"الحجوزات وبياناتك",
   lg1:"عند إرسال طلب حجز، يحفظ «طريق الشمال» اسمك ورقم هاتفك والتاريخ والملاحظة في جدول الحجوزات (ملف Google Sheets) ويرسلها إلى المكان الذي اخترته ليتواصل معك. يُحتفظ بها حتى 180 يوماً ثم تُمحى. لا يبيع «طريق الشمال» بياناتك.",
   lg2:"«طريق الشمال» دليل مستقل وليس فندقاً ولا مطعماً ولا شركة تاكسي أو تأجير. المكان هو من يؤكد الحجز ويقدّم الخدمة. الأسعار يحددها كل مكان وقد تتغير. طلب الحجز ليس ضماناً.",
-  lg3:"عند توفر الدفع المسبق عبر ويش، تصل الدفعة إلى «طريق الشمال» وتُحوَّل إلى المكان بعد وصولك. للإلغاء أو طلب استرداد، استخدم بيانات التواصل في هذه الصفحة."},
+  lg3:"عند توفر الدفع المسبق عبر ويش، تصل الدفعة إلى «طريق الشمال» وتُحتجز إلى أن يؤكد المكان حجزك بمسح رمز QR الخاص بك، ثم تُحوَّل إلى المكان. للإلغاء أو طلب استرداد، استخدم بيانات التواصل في هذه الصفحة."},
  fr:{book:"Réserver", from:"Dès", night:"/ nuit", km:"/ km", day:"/ jour",
   f_title:"Réserver : {n}", f_name:"Nom complet", f_phone:"Numéro de téléphone (WhatsApp si possible)",
   d_hotel:"Date d'arrivée", d_restaurant:"Date", d_taxi:"Date de prise en charge", d_car:"Date de prise en charge",
@@ -2196,7 +2196,7 @@ var BK = {
   lg_t:"Réservations et vos données",
   lg1:"Lorsque vous envoyez une demande de réservation, North Way enregistre votre nom, votre numéro, la date et la note dans sa feuille de réservations (un fichier Google Sheets) et les transmet à l'établissement choisi pour qu'il vous contacte. Ces données sont conservées 180 jours au plus, puis effacées. North Way ne vend pas vos données.",
   lg2:"North Way est un guide indépendant. Ce n'est ni un hôtel, ni un restaurant, ni une société de taxi ou de location. C'est l'établissement qui confirme la réservation et fournit le service. Les prix sont fixés par chaque établissement et peuvent changer. Une demande de réservation n'est pas une garantie.",
-  lg3:"Lorsque le prépaiement par Whish est proposé, le paiement est reçu par North Way puis transmis à l'établissement après votre arrivée. Pour annuler ou demander un remboursement, utilisez les coordonnées de cette page."}
+  lg3:"Lorsque le prépaiement par Whish est proposé, le paiement est reçu par North Way et conservé jusqu'à ce que l'établissement confirme votre réservation en scannant votre code QR, puis il est transmis à l'établissement. Pour annuler ou demander un remboursement, utilisez les coordonnées de cette page."}
 };
 ["en","ar","fr"].forEach(function(l){ var lg = T[l].legal; lg.splice(Math.max(0, lg.length - 1), 0, [BK[l].lg_t, [BK[l].lg1, BK[l].lg2, BK[l].lg3]]); });
 var FREE_OFFER = null;

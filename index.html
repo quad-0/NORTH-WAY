@@ -3275,7 +3275,44 @@ function nwOwner(openTab){
           row("App visits today / 7 days / 30 days", S.t[0] + " / " + S.w[0] + " / " + S.m[0]); row("Installs (Android, computer)", S.t[1] + " / " + S.w[1] + " / " + S.m[1]); row("Opened from the icon", S.t[2] + " / " + S.w[2] + " / " + S.m[2]);
           row("Bookings this week", r.bookings.week); row("Confirmed by QR", r.bookings.confirmed); row("Value of confirmed", "$" + r.bookings.usd); row("Your commission", "$" + r.bookings.commission); row("To do now (payments, shares)", r.bookings.todo);
           row("New provider sign-ups", r.signups_new); row("New problem reports", r.reports_new); row("Customers with verified email", r.verified); row("Customer points given this week", r.customer_points_week); }
-        function providers(r){ row("Free places left", r.free.left + " of " + r.free.total);
+        function providers(r){
+          var P = r.provs || [], tot = r.free.total, st = r.settings || {};
+          function D(d){ try { var t = new Date(d + "T12:00:00"); if (!isNaN(t)) return t.toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"}); } catch(e){} return d || ""; }
+          var sum = el("div"); sum.style.cssText = "display:flex;gap:6px;margin:6px 0";
+          [[tot, "free places"], [tot - r.free.left, "used"], [r.ending || 0, "ending in 30 days"]].forEach(function(x){
+            var d = el("div"); d.style.cssText = "flex:1;text-align:center;padding:8px 4px;border-radius:10px;background:var(--bg)";
+            var b = el("b", null, String(x[0])); b.style.cssText = "display:block;font-size:1.25rem"; var sp = el("span", null, x[1]); sp.style.cssText = "font-size:.7rem;color:var(--muted)";
+            d.appendChild(b); d.appendChild(sp); sum.appendChild(d); });
+          view.appendChild(sum);
+          var pills = el("div"), list = el("div"), filt = "all"; pills.style.cssText = "display:flex;gap:6px;margin:8px 0";
+          function isFree(s){ return s === "wait" || s === "soon" || s === "free" || s === "gift"; }
+          function pct(c){ return c === "hotel" ? st.commission_hotels : c === "taxi" ? st.commission_taxis : st.commission_cars; }
+          function tagOf(o){
+            var s = o.s, t, col, bd = "var(--muted)", fill = "transparent";
+            if (s === "wait") { t = "Free \u00b7 waiting 1st booking"; col = "var(--ok)"; bd = "var(--ok)"; fill = "color-mix(in srgb, var(--ok) 16%, transparent)"; }
+            else if (s === "soon") { t = "Free \u00b7 starting soon"; col = "var(--ok)"; bd = "var(--ok)"; fill = "color-mix(in srgb, var(--ok) 16%, transparent)"; }
+            else if (s === "free") { t = o.u ? "Free until " + D(o.u) : "Free"; col = "var(--amber-ink)"; bd = "var(--amber)"; fill = "var(--amber)"; }
+            else if (s === "gift") { t = o.u ? "Free (gift) until " + D(o.u) : "Free (gift)"; col = "var(--sea)"; bd = "var(--sea)"; }
+            else if (s === "hidden") { t = "Not paid \u00b7 hidden"; col = "#d9473f"; bd = "#d9473f"; fill = "color-mix(in srgb, #d9473f 14%, transparent)"; }
+            else if (o.c === "restaurant") { t = "Not free \u00b7 " + (o.u ? "paid until " + D(o.u) : "$" + st.restaurant_fee + "/" + (st.restaurant_fee_period || "year")); col = "var(--muted)"; }
+            else { t = "Not free \u00b7 " + (pct(o.c) || "10") + "% commission"; col = "var(--muted)"; }
+            var e = el("span", null, t); e.style.cssText = "flex:none;font-weight:700;font-size:.72rem;border-radius:999px;padding:4px 10px;white-space:nowrap;border:1.5px solid " + bd + ";color:" + col + ";background:" + fill; return e; }
+          function subOf(o){
+            return o.s === "wait" ? "No booking yet" : o.s === "soon" ? "Year starts " + D(o.st) : o.s === "free" ? "Free year started " + D(o.st) : o.s === "gift" ? "Owner gift" :
+              o.s === "ended" ? "Free year ended " + D(o.u) : o.s === "hidden" ? "Year ended, not paid, hidden from the app" : o.c === "restaurant" ? (o.u ? "Paid until " + D(o.u) : "No paid-until date") : "Not in the free places"; }
+          var GN = {hotel:"Hotels", taxi:"Taxis", car:"Car rentals", restaurant:"Restaurants"};
+          function draw(){
+            while (list.firstChild) list.removeChild(list.firstChild); var any = false;
+            ["hotel","taxi","car","restaurant"].forEach(function(c){
+              var g = P.filter(function(o){ return o.c === c && (filt === "all" || (filt === "free") === isFree(o.s)); }); if (!g.length) return; any = true;
+              var h = el("h4", null, GN[c] + " (" + g.length + ")"); list.appendChild(h);
+              g.forEach(function(o){ var d = el("div"); d.style.cssText = "display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line,#ddd)";
+                var l = el("div"), n = el("div", null, o.n), sb = el("div", null, subOf(o)); n.style.cssText = "font-weight:600"; sb.style.cssText = "font-size:.75rem;color:var(--muted)"; l.appendChild(n); l.appendChild(sb); d.appendChild(l); d.appendChild(tagOf(o)); list.appendChild(d); }); });
+            if (!any) list.appendChild(el("p", "note", P.length ? "None in this filter." : "No published providers yet.")); }
+          [["all","All"],["free","Free"],["notfree","Not free"]].forEach(function(x){
+            var b = el("button", "btn2", x[1]); b.type = "button"; b.style.cssText = "padding:4px 12px;font-size:.8rem"; b.addEventListener("click", function(){ filt = x[0]; arm(); draw(); }); pills.appendChild(b); });
+          view.appendChild(pills); view.appendChild(list); draw();
+          note("The same status is written in your Google Sheet each night (columns free_status and free_until).");
           view.appendChild(el("h4",null,"Provider points (top 10)")); if (!r.top.length) note("No points yet."); r.top.forEach(function(t){ row(t.name, t.points + " pts, " + t.months + " free month(s) earned"); });
           view.appendChild(el("h4",null,"Paused after reports")); if (!r.paused.length) note("None."); r.paused.forEach(function(n){ row(n, "paused"); });
           note("To change a provider, open the tab in your Google Sheet."); }

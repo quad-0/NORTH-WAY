@@ -3466,8 +3466,35 @@ document.getElementById("installBtn").addEventListener("click", function(){
     dp.userChoice.then(function(){ deferredPrompt = null; window.__nwBIP = null; updateInstallBar(); }, function(){ installGuide("and"); });
   } catch(e){ deferredPrompt = null; window.__nwBIP = null; installGuide(ios ? "ios" : "and"); }
 });
+/* Open  northwaylb.com/#installcheck  on any phone: shows why the install button is (not) there. Send a screenshot of it. */
+function installCheck(){
+  bkModal(function(box, close){
+    box.appendChild(el("h3", null, "Install check (v83)"));
+    var list = el("div"); box.appendChild(list);
+    function row(k, v){ var d = el("div"); d.style.cssText = "display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line,#ddd);font-size:.85rem"; d.appendChild(el("span", null, k)); var b = el("b", null, String(v)); b.style.cssText = "text-align:end;word-break:break-word"; d.appendChild(b); list.appendChild(d); }
+    var ua = navigator.userAgent, m;
+    var br = (m = /SamsungBrowser\/([\d.]+)/.exec(ua)) ? "Samsung Internet " + m[1] : (m = /(?:Chrome|CriOS)\/([\d.]+)/.exec(ua)) ? "Chrome " + m[1] : /Safari/.test(ua) ? "Safari" : "other";
+    var os = (m = /Android ([\d.]+)/.exec(ua)) ? "Android " + m[1] : (m = /OS ([\d_]+) like Mac/.exec(ua)) ? "iOS " + m[1].replace(/_/g, ".") : "other";
+    row("Phone system", os); row("Browser", br);
+    row("In-app browser (Instagram, Facebook, WebView)", /FBAN|FBAV|Instagram|Line\/|Snapchat|TikTok|Messenger|; wv\)/i.test(ua) ? "YES (cannot install)" : "no");
+    row("Desktop site mode", (/Android|iPhone|iPad/i.test(ua) ? "no" : (navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) < 900 ? "YES (touch phone with a computer user-agent)" : "no")));
+    row("Opened as installed app", standalone() ? "YES" : "no");
+    var cl = ""; try { cl = localStorage.getItem("kyt-install-x"); } catch(e){ cl = "storage blocked"; }
+    row("Install bar was closed before", cl ? (cl === "storage blocked" ? cl : "YES, on " + new Date(+cl).toLocaleDateString("en-GB")) : "no");
+    row("Install bar visible now", document.getElementById("install").hidden ? "NO" : "yes");
+    var pr = el("b", null, "waiting..."); var pd = el("div"); pd.style.cssText = "display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line,#ddd);font-size:.85rem"; pd.appendChild(el("span", null, "Browser offers the install prompt")); pd.appendChild(pr); list.appendChild(pd);
+    var sd = el("b", null, "checking..."); var sdd = el("div"); sdd.style.cssText = pd.style.cssText; sdd.appendChild(el("span", null, "Offline helper (service worker)")); sdd.appendChild(sd); list.appendChild(sdd);
+    setTimeout(function(){ pr.textContent = (deferredPrompt || window.__nwBIP) ? "YES" : "NO (the browser did not offer it)"; }, 2500);
+    try { navigator.serviceWorker.getRegistration().then(function(r){ sd.textContent = r ? (r.active ? "running" : "starting") : "NOT registered"; }, function(){ sd.textContent = "error"; }); } catch(e){ sd.textContent = "not supported"; }
+    row("Screen", screen.width + " x " + screen.height + ", touch " + navigator.maxTouchPoints);
+    var show = el("button", "btn2", "Show the install bar again"); show.type = "button"; show.style.marginTop = "10px"; show.addEventListener("click", function(){ try { localStorage.removeItem("kyt-install-x"); } catch(e){} updateInstallBar(); close(); }); box.appendChild(show);
+    var ok = el("button", "btn", T[lang].ig_ok); ok.type = "button"; ok.style.marginTop = "10px"; ok.addEventListener("click", close); box.appendChild(ok);
+  });
+}
+window.addEventListener("hashchange", function(){ if (location.hash === "#installcheck") installCheck(); });
 var _render = render;
 render = function(){ _render(); updateInstallBar(); };
+if (location.hash === "#installcheck") setTimeout(installCheck, 600);
 render();
 bkHash();
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {

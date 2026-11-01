@@ -3443,7 +3443,8 @@ function updateInstallBar(){
   document.getElementById("installX").setAttribute("aria-label", T[lang].install_close);
   if (!deferredPrompt && window.__nwBIP) deferredPrompt = window.__nwBIP;
   if (standalone() || installDismissed()) { bar.hidden = true; return; }
-  var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua), android = /android/i.test(ua);
+  var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /android/i.test(ua);
+  if (!ios && !android && navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) < 900 && /Linux|X11/.test(ua)) android = true;      /* a phone set to "Desktop site" */
   var inapp = /FBAN|FBAV|Instagram|Line\/|Snapchat|TikTok|Messenger|; wv\)/i.test(ua);
   var msg = "", showBtn = false;
   if (inapp) msg = T[lang].install_inapp;
@@ -3456,7 +3457,7 @@ document.getElementById("installX").addEventListener("click", function(){ try { 
 window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferredPrompt = e; updateInstallBar(); });
 window.addEventListener("appinstalled", function(){ deferredPrompt = null; window.__nwBIP = null; updateInstallBar(); });
 document.getElementById("installBtn").addEventListener("click", function(){
-  var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua);
+  var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
   if (!deferredPrompt && window.__nwBIP) deferredPrompt = window.__nwBIP;
   if (!deferredPrompt) { installGuide(ios ? "ios" : "and"); return; }
   var dp = deferredPrompt;

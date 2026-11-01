@@ -34,50 +34,5 @@
     "travel",
     "navigation"
   ],
-  "shortcuts": [
-    {
-      "name": "Hotels",
-      "short_name": "Hotels",
-      "url": "./#hotels",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Taxis",
-      "short_name": "Taxis",
-      "url": "./#taxis",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Restaurants",
-      "short_name": "Restaurants",
-      "url": "./#restaurants",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Car rentals",
-      "short_name": "Car rentals",
-      "url": "./#cars",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    }
-  ]
+  "prefer_related_applications": false
 }

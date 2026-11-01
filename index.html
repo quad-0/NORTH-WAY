@@ -22,6 +22,7 @@
 <meta name="twitter:image" content="https://northwaylb.com/share.png">
 <link rel="canonical" href="https://northwaylb.com/">
 <link rel="manifest" href="manifest.webmanifest">
+<script>window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__nwBIP=e;});</script>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <title>North Way</title>
@@ -199,7 +200,7 @@ details .body p{margin:0 0 8px}
 .tag.feat{background:var(--amber);color:var(--amber-ink)}
 .foundbox{margin:10px 0 14px;padding:12px 14px;border-radius:10px;background:var(--note-bg);color:var(--note-ink);font-size:.92rem;border-inline-start:4px solid var(--amber)}
 .foundbox b{color:var(--ink)}
-.bkov{position:fixed;inset:0;background:rgba(5,12,24,.62);z-index:1100;display:flex;align-items:flex-end;justify-content:center}
+.bkov{position:fixed;inset:0;background:rgba(5,12,24,.62);z-index:1300;display:flex;align-items:flex-end;justify-content:center}
 .bkbox{background:var(--surface);color:var(--ink);width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:14px 14px 0 0;padding:16px 16px 22px}
 @media (min-width:600px){.bkov{align-items:center}.bkbox{border-radius:14px}}
 .bkbox h3{margin:0 0 6px}.bkbox h4{margin:12px 0 4px}
@@ -614,6 +615,7 @@ var T = {
   alert_h:"Alerts", alert_lead:"Choose what you want to hear about. Your choices are saved on this device.",
   alerts:[["airline","New airline announced"],["route","New route announced"],["delay","Delays and closures"],["news","Airport news"]],
   alert_save:"Saved on this device.",
+  install_how:"Install app", ig_h:"Install North Way", ig_ios1:"Tap the Share button (the square with an arrow) at the bottom of Safari.", ig_ios2:"Scroll down and tap Add to Home Screen.", ig_ios3:"Tap Add. The North Way icon appears on your phone.", ig_and1:"Tap the menu (three dots) at the top right of Chrome.", ig_and2:"Tap Install app, or Add to Home screen.", ig_and3:"Tap Install. The North Way icon appears on your phone.", ig_safari:"On iPhone, if you do not see Add to Home Screen, open this page in Safari.", ig_ok:"OK", ig_fail:"If the install fails, you can keep using North Way in your browser. Nothing is lost.", 
   install_text:"Install this guide on your phone to open it like an app.", install_btn:"Install app", install_ios:"On iPhone: tap the Share button, then Add to Home Screen.", install_android:"To install: tap the browser menu (three dots), then Install app or Add to Home screen.", install_inapp:"To install the app, open this page in Chrome or Safari.", install_ios_other:"To install on iPhone, open this page in Safari, tap Share, then Add to Home Screen.", install_close:"Close",
   tab_events:"Events", tab_phrases:"Quotes & phrases", tab_saved:"Saved",
   cat_events:"Events", cat_phrases:"Quotes & phrases", cat_saved:"Saved",
@@ -698,6 +700,7 @@ var T = {
   alert_h:"التنبيهات", alert_lead:"اختر ما تريد معرفته. تُحفظ اختياراتك على هذا الجهاز.",
   alerts:[["airline","إعلان شركة طيران جديدة"],["route","إعلان وجهة جديدة"],["delay","التأخير والإغلاق"],["news","أخبار المطار"]],
   alert_save:"تم الحفظ على هذا الجهاز.",
+  install_how:"تثبيت التطبيق", ig_h:"تثبيت طريق الشمال", ig_ios1:"اضغط زر المشاركة (المربع الذي فيه سهم) أسفل متصفح سفاري.", ig_ios2:"مرّر للأسفل واضغط إضافة إلى الشاشة الرئيسية.", ig_ios3:"اضغط إضافة. ستظهر أيقونة طريق الشمال على هاتفك.", ig_and1:"اضغط القائمة (ثلاث نقاط) أعلى يمين كروم.", ig_and2:"اضغط تثبيت التطبيق، أو إضافة إلى الشاشة الرئيسية.", ig_and3:"اضغط تثبيت. ستظهر أيقونة طريق الشمال على هاتفك.", ig_safari:"على الآيفون، إذا لم تجد إضافة إلى الشاشة الرئيسية، افتح هذه الصفحة في سفاري.", ig_ok:"حسناً", ig_fail:"إذا فشل التثبيت، يمكنك متابعة استخدام طريق الشمال في المتصفح. لن يضيع شيء.", 
   install_text:"ثبّت هذا الدليل على هاتفك ليفتح مثل التطبيق.", install_btn:"تثبيت التطبيق", install_ios:"على الآيفون: اضغط زر المشاركة ثم أضف إلى الشاشة الرئيسية.", install_android:"للتثبيت: اضغط قائمة المتصفح (ثلاث نقاط) ثم تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية.", install_inapp:"لتثبيت التطبيق، افتح هذه الصفحة في كروم أو سفاري.", install_ios_other:"للتثبيت على الآيفون، افتح هذه الصفحة في سفاري ثم اضغط مشاركة ثم إضافة إلى الشاشة الرئيسية.", install_close:"إغلاق",
   tab_events:"فعاليات", tab_phrases:"اقتباسات وعبارات", tab_saved:"المحفوظات",
   cat_events:"فعاليات", cat_phrases:"اقتباسات وعبارات", cat_saved:"المحفوظات",
@@ -782,6 +785,7 @@ var T = {
   alert_h:"Alertes", alert_lead:"Choisissez ce que vous voulez suivre. Vos choix sont enregistrés sur cet appareil.",
   alerts:[["airline","Nouvelle compagnie annoncée"],["route","Nouvelle ligne annoncée"],["delay","Retards et fermetures"],["news","Actualités de l'aéroport"]],
   alert_save:"Enregistré sur cet appareil.",
+  install_how:"Installer l'application", ig_h:"Installer North Way", ig_ios1:"Touchez le bouton Partager (le carré avec une flèche) en bas de Safari.", ig_ios2:"Faites défiler et touchez Sur l'écran d'accueil.", ig_ios3:"Touchez Ajouter. L'icône North Way apparaît sur votre téléphone.", ig_and1:"Touchez le menu (trois points) en haut à droite de Chrome.", ig_and2:"Touchez Installer l'application, ou Ajouter à l'écran d'accueil.", ig_and3:"Touchez Installer. L'icône North Way apparaît sur votre téléphone.", ig_safari:"Sur iPhone, si vous ne voyez pas Sur l'écran d'accueil, ouvrez cette page dans Safari.", ig_ok:"OK", ig_fail:"Si l'installation échoue, vous pouvez continuer à utiliser North Way dans votre navigateur. Rien n'est perdu.", 
   install_text:"Installez ce guide sur votre téléphone pour l'ouvrir comme une application.", install_btn:"Installer l'application", install_ios:"Sur iPhone : touchez le bouton Partager, puis Sur l'écran d'accueil.", install_android:"Pour installer : touchez le menu du navigateur (trois points), puis Installer l'application ou Ajouter à l'écran d'accueil.", install_inapp:"Pour installer l'application, ouvrez cette page dans Chrome ou Safari.", install_ios_other:"Pour installer sur iPhone, ouvrez cette page dans Safari, touchez Partager, puis Sur l'écran d'accueil.", install_close:"Fermer",
   tab_events:"Événements", tab_phrases:"Citations et phrases", tab_saved:"Favoris",
   cat_events:"Événements", cat_phrases:"Citations et phrases", cat_saved:"Favoris",
@@ -3422,35 +3426,51 @@ loadContent();
 // ---- app install and offline support ----
 var deferredPrompt = null;
 function standalone(){ return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; }
-function installDismissed(){ try { var t = +localStorage.getItem("kyt-install-x"); return t && Date.now() - t < 14 * 86400000; } catch(e){ return false; } }
+function installDismissed(){ try { var t = +localStorage.getItem("kyt-install-x"); return t && Date.now() - t < 3 * 86400000; } catch(e){ return false; } }
+function installGuide(kind){
+  bkModal(function(box, close){
+    box.appendChild(el("h3", null, T[lang].ig_h));
+    var ol = el("ol"); ol.style.cssText = "padding-inline-start:1.3rem;line-height:1.6;margin:10px 0";
+    ["1","2","3"].forEach(function(n){ ol.appendChild(el("li", null, T[lang]["ig_" + kind + n])); });
+    box.appendChild(ol);
+    if (kind === "ios") { var q = el("p", "note", T[lang].ig_safari); box.appendChild(q); }
+    var f = el("p", "note", T[lang].ig_fail); box.appendChild(f);
+    var ok = el("button", "btn", T[lang].ig_ok); ok.type = "button"; ok.addEventListener("click", close); box.appendChild(ok);
+  });
+}
 function updateInstallBar(){
   var bar = document.getElementById("install"), btn = document.getElementById("installBtn"), txt = document.getElementById("installText");
   document.getElementById("installX").setAttribute("aria-label", T[lang].install_close);
+  if (!deferredPrompt && window.__nwBIP) deferredPrompt = window.__nwBIP;
   if (standalone() || installDismissed()) { bar.hidden = true; return; }
   var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua), android = /android/i.test(ua);
   var inapp = /FBAN|FBAV|Instagram|Line\/|Snapchat|TikTok|Messenger|; wv\)/i.test(ua);
   var msg = "", showBtn = false;
   if (inapp) msg = T[lang].install_inapp;
   else if (deferredPrompt) { msg = T[lang].install_text; showBtn = true; }
-  else if (ios) msg = /CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua) ? T[lang].install_ios_other : T[lang].install_ios;
-  else if (android) msg = T[lang].install_android;
+  else if (ios || android) { msg = T[lang].install_text; showBtn = true; }      /* no one-tap install on this phone: the button opens a short picture guide */
   if (!msg) { bar.hidden = true; return; }
-  txt.textContent = msg; btn.hidden = !showBtn; bar.hidden = false;
+  txt.textContent = msg; btn.textContent = T[lang].install_btn; btn.hidden = !showBtn; bar.hidden = false;
 }
 document.getElementById("installX").addEventListener("click", function(){ try { localStorage.setItem("kyt-install-x", String(Date.now())); } catch(e){} document.getElementById("install").hidden = true; });
 window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferredPrompt = e; updateInstallBar(); });
-window.addEventListener("appinstalled", function(){ deferredPrompt = null; updateInstallBar(); });
+window.addEventListener("appinstalled", function(){ deferredPrompt = null; window.__nwBIP = null; updateInstallBar(); });
 document.getElementById("installBtn").addEventListener("click", function(){
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(function(){ deferredPrompt = null; updateInstallBar(); });
+  var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua);
+  if (!deferredPrompt && window.__nwBIP) deferredPrompt = window.__nwBIP;
+  if (!deferredPrompt) { installGuide(ios ? "ios" : "and"); return; }
+  var dp = deferredPrompt;
+  try {
+    dp.prompt();
+    dp.userChoice.then(function(){ deferredPrompt = null; window.__nwBIP = null; updateInstallBar(); }, function(){ installGuide("and"); });
+  } catch(e){ deferredPrompt = null; window.__nwBIP = null; installGuide(ios ? "ios" : "and"); }
 });
 var _render = render;
 render = function(){ _render(); updateInstallBar(); };
 render();
 bkHash();
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
-  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+  navigator.serviceWorker.register("sw.js").catch(function(){});
 }
 </script>
 </body>

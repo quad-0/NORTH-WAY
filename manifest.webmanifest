@@ -34,5 +34,14 @@
     "travel",
     "navigation"
   ],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "share_target": {
+    "action": "./index.html",
+    "method": "GET",
+    "params": {
+      "title": "t",
+      "text": "x",
+      "url": "u"
+    }
+  }
 }

@@ -3186,10 +3186,11 @@ bkForm = function(e){
 /* ANONYMOUS COUNTER: at most one "visit" per device per day and one "install"; no names, no IDs, only totals */
 (function(){
   function os(){ var u = navigator.userAgent || ""; return /android/i.test(u) ? "android" : /iphone|ipad|ipod/i.test(u) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) ? "ios" : "desktop"; }
+  function did(){ try { var d = localStorage.getItem("nw-did"); if (!d) { d = ""; var c = "abcdefghijklmnopqrstuvwxyz0123456789"; for (var i = 0; i < 16; i++) d += c.charAt(Math.floor(Math.random() * 36)); localStorage.setItem("nw-did", d); } return d; } catch(e){ return ""; } }
   function sa(){ try { return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true ? "1" : "0"; } catch(e){ return "0"; } }
-  function send(k){ try { if (typeof CONTENT_URL === "string" && CONTENT_URL) bkPost({a:"hit", k:k, lang:lang, os:os(), sa:sa()}, function(){}); } catch(e){} }
+  function send(k){ try { if (typeof CONTENT_URL === "string" && CONTENT_URL) bkPost({a:"hit", k:k, lang:lang, os:os(), sa:sa(), did:did()}, function(){}); } catch(e){} }
   setTimeout(function(){
-    try { var d = new Date().toISOString().slice(0, 10); if (localStorage.getItem("nw-hit") === d) return; localStorage.setItem("nw-hit", d); } catch(e){}
+    try { var d = new Date().toISOString().slice(0, 10) + sa(); if (localStorage.getItem("nw-hit") === d) return; localStorage.setItem("nw-hit", d); } catch(e){}
     send("visit");
   }, 2500);
   window.addEventListener("appinstalled", function(){ send("install"); });
@@ -3278,6 +3279,8 @@ function nwOwner(openTab){
           view = save; box.scrollTop = 0; try { body.scrollIntoView(); } catch(e){} }
         function numbers(r){ var S = r.stats;
           row("App visits today / 7 days / 30 days", S.t[0] + " / " + S.w[0] + " / " + S.m[0]); row("Installs (Android, computer)", S.t[1] + " / " + S.w[1] + " / " + S.m[1]); row("Opened from the icon", S.t[2] + " / " + S.w[2] + " / " + S.m[2]);
+          var D = r.devices || {known:0, installed:0, week:0, android:0, ios:0, desktop:0};
+          row("Installed phones (total)", D.installed); row("New installed phones, last 7 days", D.week); row("Installed: Android / iPhone / computer", D.android + " / " + D.ios + " / " + D.desktop); row("Phones counted so far (any visit)", D.known);
           row("Bookings this week", r.bookings.week); row("Confirmed by QR", r.bookings.confirmed); row("Value of confirmed", "$" + r.bookings.usd); row("Your commission", "$" + r.bookings.commission); row("To do now (payments, shares)", r.bookings.todo);
           row("New provider sign-ups", r.signups_new); row("New problem reports", r.reports_new); row("Customers with verified email", r.verified); row("Customer points given this week", r.customer_points_week); }
         function providers(r){

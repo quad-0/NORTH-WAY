@@ -2119,7 +2119,7 @@ var BK = {
   st_pending:"Waiting for the business", st_unpaid:"Waiting for your payment", st_claimed:"Payment being checked", st_paid:"Confirmed and paid", st_arrived:"You said you arrived", st_confirmed:"Done. Thank you!", st_cancelled:"Cancelled", st_expired:"Expired",
   b_qr:"Show QR", b_arrived:"I arrived", b_cancel:"Cancel booking", b_refresh:"Refresh", b_cancel_ask:"Cancel this booking?", e_early:"You can tap this on the booking date.",
   p_link:"For providers (hotels, taxis, restaurants, car rental)", p_title:"Provider check-in", p_biz:"Your business", p_pin:"Your PIN", p_code:"Booking code", p_scan:"Scan QR", p_check:"Check booking",
-  p_none:"Scanning is not available on this phone. Please type the code.", p_hidden:"The guest's name, phone and details appear here after North Way receives the guest's payment. You can still confirm the guest when he arrives.", p_amount:"Total paid by the guest (US$)", p_confirm:"Confirm: guest arrived", p_done:"Confirmed. Thank you!",
+  p_none:"Scanning is not available on this phone. Please type the code.", e_unpaid:"This guest has not paid yet, or North Way has not received the payment. Ask the guest to pay first, then scan again.", p_pinfirst:"Type your PIN, then tap Confirm.", p_hidden:"The guest's name, phone and details appear here after North Way receives the guest's payment. You can still confirm the guest when he arrives.", p_amount:"Total paid by the guest (US$)", p_confirm:"Confirm: guest arrived", p_done:"Confirmed. Thank you!",
   p_paid:"Prepaid by the guest through North Way. Do not charge the guest.", p_notpaid:"Not prepaid: the guest pays you directly.", p_nobiz:"No bookable businesses found yet. Check your connection and try again.",
   e_pin:"Wrong PIN.", e_locked:"Too many wrong PINs. Try again in 1 hour.", e_notfound:"Booking not found for this business.", e_state:"This booking is cancelled or expired.", e_amount:"Please enter the total amount.",
   p_guest:"Guest", p_phone:"Phone", p_date:"Date", p_qty:"Quantity", p_note:"Note", p_status:"Status",
@@ -2152,7 +2152,7 @@ var BK = {
   st_pending:"بانتظار المكان", st_unpaid:"بانتظار دفعتك", st_claimed:"جارٍ التحقق من الدفعة", st_paid:"مؤكد ومدفوع", st_arrived:"أبلغت أنك وصلت", st_confirmed:"تم. شكراً!", st_cancelled:"ملغى", st_expired:"منتهي",
   b_qr:"عرض QR", b_arrived:"وصلت", b_cancel:"إلغاء الحجز", b_refresh:"تحديث", b_cancel_ask:"إلغاء هذا الحجز؟", e_early:"يمكنك الضغط هنا في يوم الحجز.",
   p_link:"لمقدمي الخدمة (فنادق، تاكسي، مطاعم، تأجير سيارات)", p_title:"تسجيل وصول الضيف", p_biz:"مؤسستك", p_pin:"الرمز السري", p_code:"رمز الحجز", p_scan:"مسح QR", p_check:"تحقق من الحجز",
-  p_none:"المسح غير متاح على هذا الهاتف. اكتب الرمز.", p_hidden:"تظهر هنا بيانات الضيف (الاسم والهاتف والتفاصيل) بعد أن تستلم «طريق الشمال» دفعة الضيف. يمكنك تأكيد الضيف عند وصوله.", p_amount:"المبلغ الإجمالي الذي دفعه الضيف (دولار)", p_confirm:"تأكيد: وصل الضيف", p_done:"تم التأكيد. شكراً!",
+  p_none:"المسح غير متاح على هذا الهاتف. اكتب الرمز.", e_unpaid:"لم يدفع هذا الضيف بعد، أو لم تستلم «طريق الشمال» الدفعة. اطلب من الضيف أن يدفع أولاً ثم امسح الرمز مجدداً.", p_pinfirst:"اكتب رمز PIN ثم اضغط تأكيد.", p_hidden:"تظهر هنا بيانات الضيف (الاسم والهاتف والتفاصيل) بعد أن تستلم «طريق الشمال» دفعة الضيف. يمكنك تأكيد الضيف عند وصوله.", p_amount:"المبلغ الإجمالي الذي دفعه الضيف (دولار)", p_confirm:"تأكيد: وصل الضيف", p_done:"تم التأكيد. شكراً!",
   p_paid:"دفع الضيف مسبقاً عبر «طريق الشمال». لا تطلب منه الدفع.", p_notpaid:"غير مدفوع مسبقاً: يدفع الضيف لك مباشرة.", p_nobiz:"لا توجد مؤسسات تقبل الحجز بعد. تحقق من الاتصال وحاول مجدداً.",
   e_pin:"الرمز السري خاطئ.", e_locked:"محاولات خاطئة كثيرة. حاول بعد ساعة.", e_notfound:"الحجز غير موجود لهذه المؤسسة.", e_state:"هذا الحجز ملغى أو منتهي.", e_amount:"يرجى إدخال المبلغ الإجمالي.",
   p_guest:"الضيف", p_phone:"الهاتف", p_date:"التاريخ", p_qty:"العدد", p_note:"ملاحظة", p_status:"الحالة",
@@ -2185,7 +2185,7 @@ var BK = {
   st_pending:"En attente de l'établissement", st_unpaid:"En attente de votre paiement", st_claimed:"Paiement en vérification", st_paid:"Confirmée et payée", st_arrived:"Vous avez dit être arrivé", st_confirmed:"Terminé. Merci !", st_cancelled:"Annulée", st_expired:"Expirée",
   b_qr:"Voir le QR", b_arrived:"Je suis arrivé", b_cancel:"Annuler la réservation", b_refresh:"Actualiser", b_cancel_ask:"Annuler cette réservation ?", e_early:"Vous pouvez appuyer le jour de la réservation.",
   p_link:"Espace prestataires (hôtels, taxis, restaurants, location)", p_title:"Arrivée du client", p_biz:"Votre établissement", p_pin:"Votre code PIN", p_code:"Code de réservation", p_scan:"Scanner le QR", p_check:"Vérifier la réservation",
-  p_none:"Le scan n'est pas disponible sur ce téléphone. Saisissez le code.", p_hidden:"Le nom, le téléphone et les détails du client apparaissent ici après réception du paiement par North Way. Vous pouvez quand même confirmer le client à son arrivée.", p_amount:"Total payé par le client (US$)", p_confirm:"Confirmer : le client est arrivé", p_done:"Confirmé. Merci !",
+  p_none:"Le scan n'est pas disponible sur ce téléphone. Saisissez le code.", e_unpaid:"Ce client n'a pas encore payé, ou North Way n'a pas reçu le paiement. Demandez-lui de payer d'abord, puis scannez à nouveau.", p_pinfirst:"Saisissez votre PIN, puis touchez Confirmer.", p_hidden:"Le nom, le téléphone et les détails du client apparaissent ici après réception du paiement par North Way. Vous pouvez quand même confirmer le client à son arrivée.", p_amount:"Total payé par le client (US$)", p_confirm:"Confirmer : le client est arrivé", p_done:"Confirmé. Merci !",
   p_paid:"Prépayé par le client via North Way. Ne lui demandez pas de payer.", p_notpaid:"Non prépayé : le client vous paie directement.", p_nobiz:"Aucun établissement réservable pour l'instant. Vérifiez la connexion et réessayez.",
   e_pin:"PIN incorrect.", e_locked:"Trop d'erreurs de PIN. Réessayez dans 1 heure.", e_notfound:"Réservation introuvable pour cet établissement.", e_state:"Cette réservation est annulée ou expirée.", e_amount:"Saisissez le montant total.",
   p_guest:"Client", p_phone:"Téléphone", p_date:"Date", p_qty:"Quantité", p_note:"Note", p_status:"Statut",
@@ -2500,6 +2500,24 @@ function bkPartner(code){
     var cin = bkInput("text"); cin.maxLength = 9; cin.setAttribute("dir","ltr"); cin.autocapitalize = "characters"; cin.value = code || ""; bkField(box, f, "code", bk("p_code"), cin);
     var row = el("div","bkbtns"), scan = el("button","btn2",bk("p_scan")), chk = el("button","btn",bk("p_check")); scan.type = chk.type = "button"; row.appendChild(scan); row.appendChild(chk); box.appendChild(row);
     var vid = el("div"), msg = el("p","bkerr"), out = el("div"); box.appendChild(vid); box.appendChild(msg); box.appendChild(out);
+    function drawCard(b){
+      var d = el("div","card");
+        [["p_guest", b.name], ["p_phone", b.phone], ["p_trip", b.route], ["p_date", b.date + (b.time ? " " + b.time : "")], ["p_qty", String(b.qty)], ["p_note", b.note], ["p_status", bk("st_" + (b.status === "pending" && b.paid ? "paid" : b.status))]].forEach(function(p){
+          if (!p[1]) return; var l = el("div","bkrow"); l.appendChild(el("b",null,bk(p[0]) + ": ")); l.appendChild(document.createTextNode(p[1])); d.appendChild(l);
+        });
+        d.appendChild(el("p", b.paid ? "bkok" : "bkterms", b.paid ? bk("p_paid") : b.hidden ? bk("p_hidden") : bk("p_notpaid")));
+      out.appendChild(d);
+    }
+    function confirmNow(c){
+      if (!pin.value) { msg.textContent = bk("p_pinfirst"); return; }
+      msg.textContent = ""; out.textContent = ""; chk.disabled = true;
+      bkPost({a:"confirm", code:c, biz:sel.value, pin:pin.value, amount:""}, function(x){
+        chk.disabled = false;
+        if (x && x.err === "amount") { lookup(); return; }                          /* no price known: show the amount box */
+        if (!x || !x.ok) { msg.textContent = bkErr(x && x.err); return; }
+        drawCard(x.b); out.appendChild(el("p","bkok",bk("p_done")));
+      });
+    }
     function lookup(){
       msg.textContent = ""; out.textContent = "";
       var c = cin.value.toUpperCase().trim(); cin.value = c;
@@ -2509,12 +2527,7 @@ function bkPartner(code){
       bkPost({a:"lookup", code:c, biz:sel.value, pin:pin.value}, function(r){
         chk.disabled = false;
         if (!r || !r.ok) { msg.textContent = bkErr(r && r.err); return; }
-        var b = r.b, d = el("div","card");
-        [["p_guest", b.name], ["p_phone", b.phone], ["p_trip", b.route], ["p_date", b.date + (b.time ? " " + b.time : "")], ["p_qty", String(b.qty)], ["p_note", b.note], ["p_status", bk("st_" + (b.status === "pending" && b.paid ? "paid" : b.status))]].forEach(function(p){
-          if (!p[1]) return; var l = el("div","bkrow"); l.appendChild(el("b",null,bk(p[0]) + ": ")); l.appendChild(document.createTextNode(p[1])); d.appendChild(l);
-        });
-        d.appendChild(el("p", b.paid ? "bkok" : "bkterms", b.paid ? bk("p_paid") : b.hidden ? bk("p_hidden") : bk("p_notpaid")));
-        out.appendChild(d);
+        var b = r.b; drawCard(b);
         if (b.status === "confirmed") { out.appendChild(el("p","bkok",bk("p_done"))); return; }
         var am = null;
         if (b.cat !== "restaurant" && !b.paid) { am = bkInput("number"); am.min = 1; am.step = "any"; am.inputMode = "decimal"; if (b.est !== "" && b.est != null) am.value = b.est; bkField(out, {}, "amount", bk("p_amount"), am); }
@@ -2530,10 +2543,13 @@ function bkPartner(code){
         });
       });
     }
-    chk.addEventListener("click", lookup);
-    scan.addEventListener("click", function(){ msg.textContent = ""; startScan(vid, function(c){ cin.value = c; if (pin.value) lookup(); }, function(){ msg.textContent = bk("p_none"); }); });
+    var viaQr = false;                                                                   /* the code came from a QR scan or QR link: one press confirms it, no second button */
+    function setQr(on){ viaQr = on; chk.textContent = on ? bk("p_confirm") : bk("p_check"); }
+    cin.addEventListener("input", function(){ setQr(false); });
+    chk.addEventListener("click", function(){ if (viaQr) confirmNow(cin.value.toUpperCase().trim()); else lookup(); });
+    scan.addEventListener("click", function(){ msg.textContent = ""; startScan(vid, function(c){ cin.value = c; setQr(true); confirmNow(c); }, function(){ msg.textContent = bk("p_none"); }); });
     bkClose(box, close);
-    if (code && pin.value) lookup();
+    if (code) { setQr(true); if (pin.value) confirmNow(code); }
   });
 }
 

@@ -217,6 +217,7 @@ details .body p{margin:0 0 8px}
 .bkcode{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.4rem;text-align:center;letter-spacing:.08em;font-weight:700;margin:4px 0}
 .bkpay{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:10px}
 .bkpay input{display:block;width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit;min-height:44px}
+.bkopts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.bkopt{margin-top:0!important;background:var(--card,#fff);color:inherit;border:1px solid #8886!important}.bkopt.on{outline:2px solid #1a7f5a}
 .bkbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .bkbox .btn,.bkbtns .btn{border:0;font:inherit;font-weight:600;cursor:pointer;margin-top:12px}
 .btn2{display:inline-block;background:transparent;color:var(--ink);border:1px solid var(--line);font:inherit;font-weight:600;padding:10px 14px;border-radius:6px;min-height:44px;cursor:pointer;margin-top:10px}
@@ -1026,6 +1027,10 @@ function entryNode(e, saveable){
     c.appendChild(m);
   }
   if (BOOKING_ON && e.book && e.id && (e.cat !== "taxi" || TAXIPLACES.length)) { var bkb = el("button","btn",bk(e.cat === "restaurant" ? "book_table" : "book")); bkb.type = "button"; bkb.setAttribute("data-book","1"); bkb.addEventListener("click", function(){ bkForm(e); }); c.appendChild(bkb); }
+  if (e.cat === "hotel" && e.activities === true) {                       /* switched on per hotel by the owner (Hotels tab, column "activities" = yes) */
+    var aq = hasLL ? "https://www.google.com/maps/search/activities+near+by/@" + e.lat + "," + e.lng + ",14z" : "https://www.google.com/maps/search/activities+near+by+" + encodeURIComponent(tr(e.name));
+    var aa = el("a","btn2","\uD83D\uDCCD " + bk("o_act")); aa.href = aq; aa.target = "_blank"; aa.rel = "noopener"; aa.setAttribute("data-act","1"); c.appendChild(aa);
+  }
   if (e.source) {
     var sm = el("small"); sm.appendChild(document.createTextNode(s.source_label + ": "));
     if (e.url) sm.appendChild(extLink(e.url, e.source)); else sm.appendChild(document.createTextNode(e.source));
@@ -2122,7 +2127,7 @@ var BK = {
   p_paid:"Prepaid by the guest through North Way. Do not charge the guest.", p_notpaid:"Not prepaid: the guest pays you directly.", p_nobiz:"No bookable businesses found yet. Check your connection and try again.",
   e_pin:"Wrong PIN.", e_locked:"Too many wrong PINs. Try again in 1 hour.", e_notfound:"Booking not found for this business.", e_state:"This booking is cancelled or expired.", e_amount:"Please enter the total amount.",
   p_guest:"Guest", p_phone:"Phone", p_date:"Date", p_qty:"Quantity", p_note:"Note", p_status:"Status",
-  t_from:"From", t_to:"To", t_pick:"Choose...", t_quote:"Get price", t_est:"About {km} km. Price: ${fare}", t_accept:"Accept and continue", t_fixed:"The price is fixed once you accept. The distance is an estimate by road.", e_route:"Please choose where from and where to (two different places).",
+  o_pick:"Choose a type", o_hotel:"Room types", o_car:"Car types", o_taxi:"Vehicle types", o_guests:"Up to {n} guests", o_book:"Book this one", o_act:"Activities nearby", p_opts:"My room / car / vehicle types", o_name:"Name (for example: Double room)", o_price:"Price (USD)", o_gf:"Guests (optional)", o_det:"Short details (optional)", o_photo:"Photo link (optional)", o_send:"Send for approval", o_wait:"waiting for approval", o_live:"live", o_del:"Remove", o_sent:"Sent. It goes live after North Way approves it.", o_none:"No types yet.", t_from:"From", t_to:"To", t_pick:"Choose...", t_quote:"Get price", t_est:"About {km} km. Price: ${fare}", t_accept:"Accept and continue", t_fixed:"The price is fixed once you accept. The distance is an estimate by road.", e_route:"Please choose where from and where to (two different places).",
   pay_wait:"Your QR code appears here after we receive and confirm your payment. This page updates by itself.", pay_ok:"Payment received. Show this QR code to the provider.", p_trip:"Trip",
   tab_far:"How far is the airport from me?", far_lead:"Find out how far you are from René Mouawad Airport in Qlayaat. Your location stays on your phone.",
   near_hotels:"How far are the hotels from me?", near_restaurants:"How far are the restaurants from me?", near_taxis:"How far are the taxis from me?", near_cars:"How far are the rental cars from me?", near_sites:"How far are the sites from me?",
@@ -2155,7 +2160,7 @@ var BK = {
   p_paid:"دفع الضيف مسبقاً عبر «طريق الشمال». لا تطلب منه الدفع.", p_notpaid:"غير مدفوع مسبقاً: يدفع الضيف لك مباشرة.", p_nobiz:"لا توجد مؤسسات تقبل الحجز بعد. تحقق من الاتصال وحاول مجدداً.",
   e_pin:"الرمز السري خاطئ.", e_locked:"محاولات خاطئة كثيرة. حاول بعد ساعة.", e_notfound:"الحجز غير موجود لهذه المؤسسة.", e_state:"هذا الحجز ملغى أو منتهي.", e_amount:"يرجى إدخال المبلغ الإجمالي.",
   p_guest:"الضيف", p_phone:"الهاتف", p_date:"التاريخ", p_qty:"العدد", p_note:"ملاحظة", p_status:"الحالة",
-  t_from:"من", t_to:"إلى", t_pick:"اختر...", t_quote:"احسب السعر", t_est:"حوالي {km} كم. السعر: {fare}$", t_accept:"موافق، تابع", t_fixed:"السعر ثابت بعد الموافقة. المسافة تقديرية بالطريق.", e_route:"يرجى اختيار مكان الانطلاق والوصول (مكانان مختلفان).",
+  o_pick:"اختر النوع", o_hotel:"أنواع الغرف", o_car:"أنواع السيارات", o_taxi:"أنواع المركبات", o_guests:"حتى {n} أشخاص", o_book:"احجز هذا", o_act:"أنشطة قريبة", p_opts:"أنواع الغرف / السيارات / المركبات", o_name:"الاسم (مثلاً: غرفة مزدوجة)", o_price:"السعر (دولار)", o_gf:"عدد الأشخاص (اختياري)", o_det:"تفاصيل قصيرة (اختياري)", o_photo:"رابط صورة (اختياري)", o_send:"أرسل للموافقة", o_wait:"بانتظار الموافقة", o_live:"ظاهر", o_del:"احذف", o_sent:"تم الإرسال. يظهر بعد موافقة طريق الشمال.", o_none:"لا يوجد أنواع بعد.", t_from:"من", t_to:"إلى", t_pick:"اختر...", t_quote:"احسب السعر", t_est:"حوالي {km} كم. السعر: {fare}$", t_accept:"موافق، تابع", t_fixed:"السعر ثابت بعد الموافقة. المسافة تقديرية بالطريق.", e_route:"يرجى اختيار مكان الانطلاق والوصول (مكانان مختلفان).",
   pay_wait:"يظهر رمز QR هنا بعد أن نستلم دفعتك ونؤكدها. تتحدّث هذه الصفحة تلقائياً.", pay_ok:"تم استلام الدفعة. أظهر رمز QR هذا لمقدّم الخدمة.", p_trip:"الرحلة",
   tab_far:"كم يبعد المطار عني؟", far_lead:"اعرف كم تبعد عن مطار رينيه معوّض في القليعات. يبقى موقعك على هاتفك.",
   near_hotels:"كم تبعد الفنادق عني؟", near_restaurants:"كم تبعد المطاعم عني؟", near_taxis:"كم يبعد التاكسي عني؟", near_cars:"كم تبعد السيارات المؤجرة عني؟", near_sites:"كم تبعد المواقع عني؟",
@@ -2188,7 +2193,7 @@ var BK = {
   p_paid:"Prépayé par le client via North Way. Ne lui demandez pas de payer.", p_notpaid:"Non prépayé : le client vous paie directement.", p_nobiz:"Aucun établissement réservable pour l'instant. Vérifiez la connexion et réessayez.",
   e_pin:"PIN incorrect.", e_locked:"Trop d'erreurs de PIN. Réessayez dans 1 heure.", e_notfound:"Réservation introuvable pour cet établissement.", e_state:"Cette réservation est annulée ou expirée.", e_amount:"Saisissez le montant total.",
   p_guest:"Client", p_phone:"Téléphone", p_date:"Date", p_qty:"Quantité", p_note:"Note", p_status:"Statut",
-  t_from:"De", t_to:"Vers", t_pick:"Choisir...", t_quote:"Voir le prix", t_est:"Environ {km} km. Prix : {fare} $", t_accept:"Accepter et continuer", t_fixed:"Le prix est fixe une fois accepté. La distance est une estimation par la route.", e_route:"Choisissez le départ et l'arrivée (deux lieux différents).",
+  o_pick:"Choisir un type", o_hotel:"Types de chambres", o_car:"Types de voitures", o_taxi:"Types de véhicules", o_guests:"Jusqu'à {n} personnes", o_book:"Réserver celui-ci", o_act:"Activités à proximité", p_opts:"Mes types de chambres / voitures / véhicules", o_name:"Nom (ex. : Chambre double)", o_price:"Prix (USD)", o_gf:"Personnes (facultatif)", o_det:"Détails courts (facultatif)", o_photo:"Lien photo (facultatif)", o_send:"Envoyer pour validation", o_wait:"en attente de validation", o_live:"en ligne", o_del:"Supprimer", o_sent:"Envoyé. Visible après validation par North Way.", o_none:"Aucun type pour le moment.", t_from:"De", t_to:"Vers", t_pick:"Choisir...", t_quote:"Voir le prix", t_est:"Environ {km} km. Prix : {fare} $", t_accept:"Accepter et continuer", t_fixed:"Le prix est fixe une fois accepté. La distance est une estimation par la route.", e_route:"Choisissez le départ et l'arrivée (deux lieux différents).",
   pay_wait:"Votre QR code apparaît ici après réception et confirmation de votre paiement. Cette page se met à jour toute seule.", pay_ok:"Paiement reçu. Montrez ce QR code au prestataire.", p_trip:"Trajet",
   tab_far:"À quelle distance est l'aéroport ?", far_lead:"Voyez à quelle distance vous êtes de l'aéroport René Mouawad à Qlayaat. Votre position reste sur votre téléphone.",
   near_hotels:"À quelle distance sont les hôtels ?", near_restaurants:"À quelle distance sont les restaurants ?", near_taxis:"À quelle distance sont les taxis ?", near_cars:"À quelle distance sont les loueurs ?", near_sites:"À quelle distance sont les sites ?",
@@ -2323,8 +2328,24 @@ function bkForm(e){
   bkModal(function(box, close){
     var cat = e.cat, f = {};
     box.appendChild(el("h3",null,bkFmt(bk("f_title"), {n: tr(e.name)})));
-    var pt = bkPriceText(e); if (pt) box.appendChild(el("p","bkprice",pt));
+    var pt = bkPriceText(e), selOpt = null, ptEl = null, pickFirst = null; if (pt) { ptEl = el("p","bkprice",pt); box.appendChild(ptEl); }
     var host = el("div"), quote = null;
+    function curPrice(){ return selOpt ? selOpt.price : e.price; }
+    if (e.opts && e.opts.length && cat !== "restaurant") {
+      var tabs = el("div","bkopts"); box.appendChild(el("p","bkterms",bk("o_" + cat)));
+      var odet = el("p","bkterms");
+      e.opts.forEach(function(op, ix){
+        var tb = el("button","btn bkopt",tr(op.name)); tb.type = "button"; tb.setAttribute("data-opt", op.id);
+        tb.addEventListener("click", function(){
+          selOpt = op; Array.prototype.forEach.call(tabs.children, function(x){ x.classList.remove("on"); }); tb.classList.add("on");
+          if (ptEl) ptEl.textContent = bkPriceText({cat:cat, price:op.price}).replace(bk("from") + " ", "");
+          odet.textContent = (op.guests ? bkFmt(bk("o_guests"), {n:op.guests}) + ". " : "") + (op.details || "");
+          if (typeof resetQ === "function") resetQ(); if (f.qty) upd();
+        });
+        tabs.appendChild(tb);
+      });
+      box.appendChild(tabs); box.appendChild(odet); pickFirst = function(){ tabs.firstChild.click(); };
+    }
     if (cat === "taxi") {
       host.hidden = true;
       var rb = el("div","bkroute"), sf = el("select"), st2 = el("select");
@@ -2340,7 +2361,7 @@ function bkForm(e){
         if (!sf.value || !st2.value || sf.value === st2.value) { qerr.textContent = bk("e_route"); return; }
         qb.disabled = true;
         function ask(){
-          var body = {a:"quote", biz:e.id, from:sf.value, to:st2.value};
+          var body = {a:"quote", biz:e.id, from:sf.value, to:st2.value}; if (selOpt) body.opt = selOpt.id;
           if (sf.value === "me") { body.from_lat = myPos.lat; body.from_lng = myPos.lng; }
           bkPost(body, function(r){
             qb.disabled = false;
@@ -2360,8 +2381,8 @@ function bkForm(e){
     if (cat === "restaurant" || cat === "taxi") bkField(host, f, "time", bk("f_time"), bkInput("time"));
     bkField(host, f, "note", bk("f_note"), bkInput("text")); f.note.maxLength = 200;
     var est = el("p","bkest"); host.appendChild(est);
-    function upd(){ var q = parseInt(f.qty.value, 10) || 1; est.textContent = (cat === "taxi" && quote) ? bkFmt(bk("t_est"), {km:quote.km, fare:quote.fare}) : (typeof e.price === "number" && (cat === "hotel" || cat === "car")) ? bkFmt(bk("est"), {x: Math.round(e.price * q * 100) / 100}) : ""; }
-    f.qty.addEventListener("input", upd); upd();
+    function upd(){ var q = parseInt(f.qty.value, 10) || 1; est.textContent = (cat === "taxi" && quote) ? bkFmt(bk("t_est"), {km:quote.km, fare:quote.fare}) : (typeof curPrice() === "number" && (cat === "hotel" || cat === "car")) ? bkFmt(bk("est"), {x: Math.round(curPrice() * q * 100) / 100}) : ""; }
+    f.qty.addEventListener("input", upd); upd(); if (pickFirst) pickFirst();
     var hp = bkInput("text"); hp.className = "bkhp"; hp.tabIndex = -1; hp.autocomplete = "off"; hp.setAttribute("aria-hidden","true"); host.appendChild(hp);
     var needPay = PAY_MODE === "whish" && cat !== "restaurant";
     var cl = el("label","bkchk"), cb = bkInput("checkbox"), cs = el("span",null,bk("consent") + (needPay ? " " + bk("pay_" + cat) : "") + " "); cl.appendChild(cb); cl.appendChild(cs);
@@ -2378,7 +2399,7 @@ function bkForm(e){
       if (cat === "taxi" && !quote) { err.textContent = bk("e_route"); return; }
       if (!cb.checked) { err.textContent = bk("e_consent"); return; }
       err.textContent = ""; go.disabled = true; go.textContent = bk("sending");
-      bkPost({a:"book", biz:e.id, name:f.name.value, phone:f.phone.value, date:f.date.value, time: f.time ? f.time.value : "", qty:q, note:f.note.value, consent:true, cref:(typeof nwCrefGet === "function" ? nwCrefGet() : ""), proof:(bkList()[0] ? bkList()[0].code : ""), terms:"v2", pay_terms: needPay ? true : undefined, hp:hp.value, lang:lang, from: f.from ? f.from.value : "", to: f.to ? f.to.value : "", from_lat: (f.from && f.from.value === "me" && myPos) ? myPos.lat : undefined, from_lng: (f.from && f.from.value === "me" && myPos) ? myPos.lng : undefined}, function(r){
+      bkPost({a:"book", biz:e.id, opt: selOpt ? selOpt.id : undefined, name:f.name.value, phone:f.phone.value, date:f.date.value, time: f.time ? f.time.value : "", qty:q, note:f.note.value, consent:true, cref:(typeof nwCrefGet === "function" ? nwCrefGet() : ""), proof:(bkList()[0] ? bkList()[0].code : ""), terms:"v2", pay_terms: needPay ? true : undefined, hp:hp.value, lang:lang, from: f.from ? f.from.value : "", to: f.to ? f.to.value : "", from_lat: (f.from && f.from.value === "me" && myPos) ? myPos.lat : undefined, from_lng: (f.from && f.from.value === "me" && myPos) ? myPos.lng : undefined}, function(r){
         go.disabled = false; go.textContent = bk("send");
         if (!r || !r.ok) { err.textContent = bkErr(r && r.err); return; }
         var rec = {code:r.code, biz:e.id, name:tr(e.name), cat:cat, date:r.date, qty:r.qty, est:r.est, route:r.route || "", pay:r.pay || null, disc:r.discount || 0, status:"pending", payStatus: r.pay ? "unpaid" : "direct"};
@@ -2557,6 +2578,41 @@ function bkPartner(code){
         rtm = setTimeout(readyCheck, 20000);
       });
     }
+    var ob = el("button","btn2",bk("p_opts")); ob.type = "button"; var obox = el("div"); box.appendChild(ob); box.appendChild(obox);
+    function curCat(){ var c = ""; list.forEach(function(x){ if (x.id === sel.value) c = x.cat; }); return c; }
+    function optSync(){ ob.hidden = curCat() === "restaurant"; if (ob.hidden) obox.textContent = ""; }
+    optSync(); sel.addEventListener("change", optSync);
+    function optPaint(){
+      obox.textContent = "";
+      if (pin.value.length < 4) { msg.textContent = bk("p_pinfirst"); return; }
+      bkPost({a:"opt_list", biz:sel.value, pin:pin.value}, function(r){
+        if (!r || !r.ok) { msg.textContent = bkErr(r && r.err); return; }
+        msg.textContent = "";
+        if (!r.opts.length) obox.appendChild(el("p","bkterms",bk("o_none")));
+        r.opts.forEach(function(o){
+          var row = el("div","bkrow"); row.appendChild(el("b",null,o.name + " $" + o.price + " "));
+          row.appendChild(document.createTextNode("(" + bk(o.live ? "o_live" : "o_wait") + ") "));
+          var dl = el("button","btn2",bk("o_del")); dl.type = "button"; dl.addEventListener("click", function(){ bkPost({a:"opt_del", biz:sel.value, pin:pin.value, opt:o.id}, optPaint); });
+          row.appendChild(dl); obox.appendChild(row);
+        });
+        var of = {}, nm = bkInput("text"), pr = bkInput("number"), gu = bkInput("number"), dt = bkInput("text"), ph = bkInput("url");
+        nm.maxLength = 60; pr.min = 1; pr.step = "any"; pr.inputMode = "decimal"; gu.min = 1; gu.max = 60; dt.maxLength = 200; ph.maxLength = 300;
+        bkField(obox, of, "oname", bk("o_name"), nm); bkField(obox, of, "oprice", bk("o_price"), pr);
+        if (curCat() !== "taxi") bkField(obox, of, "oguests", bk("o_gf"), gu);
+        bkField(obox, of, "odet", bk("o_det"), dt); bkField(obox, of, "ophoto", bk("o_photo"), ph);
+        var sb = el("button","btn",bk("o_send")); sb.type = "button"; obox.appendChild(sb);
+        sb.addEventListener("click", function(){
+          if (nm.value.trim().length < 2 || !(parseFloat(pr.value) > 0)) { msg.textContent = bk("e_details"); return; }
+          sb.disabled = true;
+          bkPost({a:"opt_save", biz:sel.value, pin:pin.value, name:nm.value, price:pr.value, guests:gu.value, details:dt.value, photo:ph.value}, function(x){
+            sb.disabled = false;
+            if (!x || !x.ok) { msg.textContent = bkErr(x && x.err); return; }
+            optPaint(); msg.textContent = bk("o_sent");
+          });
+        });
+      });
+    }
+    ob.addEventListener("click", optPaint);
     setReady(false);
     pin.addEventListener("input", function(){ clearTimeout(rtm); rtm = setTimeout(readyCheck, 500); });
     sel.addEventListener("change", function(){ setReady(false); readyCheck(); });

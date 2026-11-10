@@ -220,6 +220,10 @@ details .body p{margin:0 0 8px}
 .bkopts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.bkopt{margin-top:0!important;background:var(--card,#fff);color:inherit;border:1px solid #8886!important}.bkopt.on{outline:2px solid #1a7f5a}
 .bkbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .bkbox .btn,.bkbtns .btn{border:0;font:inherit;font-weight:600;cursor:pointer;margin-top:12px}
+.amen{margin:8px 0}.amen .chip{display:inline-block;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:2px 9px;margin:2px;font-size:13px}
+.bkcalh{display:flex;align-items:center;justify-content:space-between;gap:8px}.bkcalh .btn2{margin-top:0;min-height:36px;padding:4px 12px}
+.bkcal .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;margin:8px 0}.bkcal .cal b{font-size:11px;color:var(--muted)}
+.bkcal .d{border:0;border-radius:6px;padding:9px 0;background:var(--bg);color:var(--ink);font:inherit;cursor:pointer}.bkcal .d.x{background:var(--line);color:var(--muted);text-decoration:line-through}.bkcal .d.p{opacity:.35}.bkcal .d.s{background:var(--amber);color:var(--amber-ink);font-weight:700}.bkcal .d:disabled{cursor:default}
 .btn2{display:inline-block;background:transparent;color:var(--ink);border:1px solid var(--line);font:inherit;font-weight:600;padding:10px 14px;border-radius:6px;min-height:44px;cursor:pointer;margin-top:10px}
 .bkvid{display:block;width:100%;max-height:260px;margin-top:10px;border-radius:8px;background:#000}
 .bkst{font-weight:700;margin:6px 0}.bkst-paid,.bkst-confirmed,.bkst-arrived{color:var(--ok)}.bkst-cancelled,.bkst-expired{color:var(--muted)}
@@ -1025,6 +1029,12 @@ function entryNode(e, saveable){
     if (e.phone) { var ph = el("span"); ph.appendChild(document.createTextNode(s.phone_label + ": ")); var pa = el("a",null,e.phone); pa.href = "tel:" + e.phone.replace(/[^+0-9]/g,""); pa.setAttribute("dir","ltr"); ph.appendChild(pa); m.appendChild(ph); }
     if (e.link && /^https?:\/\//i.test(e.link)) m.appendChild(extLink(e.link, s.site_label));
     c.appendChild(m);
+  }
+  if (e.cat === "hotel" && e.amenities && ((e.amenities.codes && e.amenities.codes.length) || e.amenities.more)) {          /* chosen by the hotel, approved by the owner */
+    var amn = el("div","amen"), AI = {wifi:"\uD83D\uDCF6", parking:"\uD83C\uDD7F\uFE0F", breakfast:"\uD83C\uDF73", pool:"\uD83C\uDFCA", ac:"\u2744\uFE0F", seaview:"\uD83C\uDF0A", kitchen:"\uD83C\uDF7D\uFE0F", pets:"\uD83D\uDC3E", airport:"\u2708\uFE0F", restaurant:"\uD83C\uDF74", gym:"\uD83C\uDFCB\uFE0F", spa:"\uD83D\uDC86", beach:"\uD83C\uDFD6\uFE0F", family:"\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67", heating:"\uD83D\uDD25", tv:"\uD83D\uDCFA", laundry:"\uD83E\uDDFA", reception:"\uD83D\uDECE\uFE0F"};
+    (e.amenities.codes || []).forEach(function(k){ amn.appendChild(el("span","chip",(AI[k] || "") + " " + bk("a_" + k))); });
+    if (e.amenities.more) amn.appendChild(el("span","chip",e.amenities.more));
+    c.appendChild(amn);
   }
   if (BOOKING_ON && e.book && e.id && (e.cat !== "taxi" || TAXIPLACES.length)) { var bkb = el("button","btn",bk(e.cat === "restaurant" ? "book_table" : "book")); bkb.type = "button"; bkb.setAttribute("data-book","1"); bkb.addEventListener("click", function(){ bkForm(e); }); c.appendChild(bkb); }
   if (e.cat === "hotel" && e.activities === true) {                       /* switched on per hotel by the owner (Hotels tab, column "activities" = yes) */
@@ -2127,7 +2137,7 @@ var BK = {
   p_paid:"Prepaid by the guest through North Way. Do not charge the guest.", p_notpaid:"Not prepaid: the guest pays you directly.", p_nobiz:"No bookable businesses found yet. Check your connection and try again.",
   e_pin:"Wrong PIN.", e_locked:"Too many wrong PINs. Try again in 1 hour.", e_notfound:"Booking not found for this business.", e_state:"This booking is cancelled or expired.", e_amount:"Please enter the total amount.",
   p_guest:"Guest", p_phone:"Phone", p_date:"Date", p_qty:"Quantity", p_note:"Note", p_status:"Status",
-  o_pick:"Choose a type", o_hotel:"Room types", o_car:"Car types", o_taxi:"Vehicle types", o_guests:"Up to {n} guests", o_book:"Book this one", o_act:"Activities nearby", p_opts:"My room / car / vehicle types", o_name:"Name (for example: Double room)", o_price:"Price (USD)", o_gf:"Guests (optional)", o_det:"Short details (optional)", o_photo:"Photo link (optional)", o_send:"Send for approval", o_wait:"waiting for approval", o_live:"live", o_del:"Remove", o_sent:"Sent. It goes live after North Way approves it.", o_none:"No types yet.", t_from:"From", t_to:"To", t_pick:"Choose...", t_quote:"Get price", t_est:"About {km} km. Price: ${fare}", t_accept:"Accept and continue", t_fixed:"The price is fixed once you accept. The distance is an estimate by road.", e_route:"Please choose where from and where to (two different places).",
+  o_pick:"Choose a type", o_hotel:"Room types", o_car:"Car types", o_taxi:"Vehicle types", o_guests:"Up to {n} guests", o_book:"Book this one", o_act:"Activities nearby", p_opts:"My room / car / vehicle types", o_name:"Name (for example: Double room)", o_price:"Price (USD)", o_gf:"Guests (optional)", o_det:"Short details (optional)", o_photo:"Photo link (optional)", o_send:"Send for approval", o_wait:"waiting for approval", o_live:"live", o_del:"Remove", o_sent:"Sent. It goes live after North Way approves it.", o_none:"No types yet.", a_wifi:"Wi-Fi", a_parking:"Parking", a_breakfast:"Breakfast", a_pool:"Pool", a_ac:"Air conditioning", a_seaview:"Sea view", a_kitchen:"Kitchen", a_pets:"Pets allowed", a_airport:"Airport pickup", a_restaurant:"Restaurant", a_gym:"Gym", a_spa:"Spa", a_beach:"Beach access", a_family:"Family rooms", a_heating:"Heating", a_tv:"TV", a_laundry:"Laundry", a_reception:"24h reception", p_avail:"My availability", av_scope:"For", av_all:"Whole business", av_units:"How many rooms / cars do you have? (empty = no limit)", av_hint:"Tap a day to close it (full or not working). Tap again to open it. Days also close by themselves when all are booked.", av_save:"Save", av_saved:"Saved.", p_amen:"My amenities", am_more:"Add your own (optional)", am_send:"Send for approval", am_sent:"Sent. They show after North Way approves them.", am_live:"Your amenities are live.", am_wait:"Waiting for approval.", cal_note:"Grey days are not available. The final confirmation comes from the provider.", e_unavail_dates:"These dates are not available. Please choose other dates.", comm_terms:"I agree that North Way keeps a commission of 10% of the booking total, calculated on the price I display in the app (price × nights, days or km). The guest pays only the displayed price, with no extra fee. This commission is 0% during my free year.", t_from:"From", t_to:"To", t_pick:"Choose...", t_quote:"Get price", t_est:"About {km} km. Price: ${fare}", t_accept:"Accept and continue", t_fixed:"The price is fixed once you accept. The distance is an estimate by road.", e_route:"Please choose where from and where to (two different places).",
   pay_wait:"Your QR code appears here after we receive and confirm your payment. This page updates by itself.", pay_ok:"Payment received. Show this QR code to the provider.", p_trip:"Trip",
   tab_far:"How far is the airport from me?", far_lead:"Find out how far you are from René Mouawad Airport in Qlayaat. Your location stays on your phone.",
   near_hotels:"How far are the hotels from me?", near_restaurants:"How far are the restaurants from me?", near_taxis:"How far are the taxis from me?", near_cars:"How far are the rental cars from me?", near_sites:"How far are the sites from me?",
@@ -2160,7 +2170,7 @@ var BK = {
   p_paid:"دفع الضيف مسبقاً عبر «طريق الشمال». لا تطلب منه الدفع.", p_notpaid:"غير مدفوع مسبقاً: يدفع الضيف لك مباشرة.", p_nobiz:"لا توجد مؤسسات تقبل الحجز بعد. تحقق من الاتصال وحاول مجدداً.",
   e_pin:"الرمز السري خاطئ.", e_locked:"محاولات خاطئة كثيرة. حاول بعد ساعة.", e_notfound:"الحجز غير موجود لهذه المؤسسة.", e_state:"هذا الحجز ملغى أو منتهي.", e_amount:"يرجى إدخال المبلغ الإجمالي.",
   p_guest:"الضيف", p_phone:"الهاتف", p_date:"التاريخ", p_qty:"العدد", p_note:"ملاحظة", p_status:"الحالة",
-  o_pick:"اختر النوع", o_hotel:"أنواع الغرف", o_car:"أنواع السيارات", o_taxi:"أنواع المركبات", o_guests:"حتى {n} أشخاص", o_book:"احجز هذا", o_act:"أنشطة قريبة", p_opts:"أنواع الغرف / السيارات / المركبات", o_name:"الاسم (مثلاً: غرفة مزدوجة)", o_price:"السعر (دولار)", o_gf:"عدد الأشخاص (اختياري)", o_det:"تفاصيل قصيرة (اختياري)", o_photo:"رابط صورة (اختياري)", o_send:"أرسل للموافقة", o_wait:"بانتظار الموافقة", o_live:"ظاهر", o_del:"احذف", o_sent:"تم الإرسال. يظهر بعد موافقة طريق الشمال.", o_none:"لا يوجد أنواع بعد.", t_from:"من", t_to:"إلى", t_pick:"اختر...", t_quote:"احسب السعر", t_est:"حوالي {km} كم. السعر: {fare}$", t_accept:"موافق، تابع", t_fixed:"السعر ثابت بعد الموافقة. المسافة تقديرية بالطريق.", e_route:"يرجى اختيار مكان الانطلاق والوصول (مكانان مختلفان).",
+  o_pick:"اختر النوع", o_hotel:"أنواع الغرف", o_car:"أنواع السيارات", o_taxi:"أنواع المركبات", o_guests:"حتى {n} أشخاص", o_book:"احجز هذا", o_act:"أنشطة قريبة", p_opts:"أنواع الغرف / السيارات / المركبات", o_name:"الاسم (مثلاً: غرفة مزدوجة)", o_price:"السعر (دولار)", o_gf:"عدد الأشخاص (اختياري)", o_det:"تفاصيل قصيرة (اختياري)", o_photo:"رابط صورة (اختياري)", o_send:"أرسل للموافقة", o_wait:"بانتظار الموافقة", o_live:"ظاهر", o_del:"احذف", o_sent:"تم الإرسال. يظهر بعد موافقة طريق الشمال.", o_none:"لا يوجد أنواع بعد.", a_wifi:"واي فاي", a_parking:"موقف سيارات", a_breakfast:"فطور", a_pool:"مسبح", a_ac:"تكييف", a_seaview:"إطلالة على البحر", a_kitchen:"مطبخ", a_pets:"يُسمح بالحيوانات", a_airport:"نقل من المطار", a_restaurant:"مطعم", a_gym:"نادي رياضي", a_spa:"سبا", a_beach:"وصول إلى الشاطئ", a_family:"غرف عائلية", a_heating:"تدفئة", a_tv:"تلفزيون", a_laundry:"غسيل ملابس", a_reception:"استقبال 24 ساعة", p_avail:"التوفّر عندي", av_scope:"لـ", av_all:"المؤسسة كلها", av_units:"كم غرفة / سيارة لديكم؟ (فارغ = بلا حد)", av_hint:"اضغطوا على يوم لإغلاقه (ممتلئ أو لا نعمل). اضغطوا مرة أخرى لفتحه. تُغلق الأيام وحدها عندما يكتمل الحجز.", av_save:"حفظ", av_saved:"تم الحفظ.", p_amen:"المرافق عندي", am_more:"أضيفوا مرافق أخرى (اختياري)", am_send:"أرسل للموافقة", am_sent:"تم الإرسال. تظهر بعد موافقة طريق الشمال.", am_live:"مرافقكم ظاهرة الآن.", am_wait:"بانتظار الموافقة.", cal_note:"الأيام الرمادية غير متاحة. التأكيد النهائي يأتي من مقدّم الخدمة.", e_unavail_dates:"هذه التواريخ غير متاحة. يرجى اختيار تواريخ أخرى.", comm_terms:"أوافق على أن «طريق الشمال» تحتفظ بعمولة 10٪ من إجمالي الحجز، محسوبة على السعر الذي أعرضه في التطبيق (السعر × عدد الليالي أو الأيام أو الكيلومترات). يدفع الزبون السعر المعروض فقط دون أي رسوم إضافية. تكون هذه العمولة 0٪ خلال سنتي المجانية.", t_from:"من", t_to:"إلى", t_pick:"اختر...", t_quote:"احسب السعر", t_est:"حوالي {km} كم. السعر: {fare}$", t_accept:"موافق، تابع", t_fixed:"السعر ثابت بعد الموافقة. المسافة تقديرية بالطريق.", e_route:"يرجى اختيار مكان الانطلاق والوصول (مكانان مختلفان).",
   pay_wait:"يظهر رمز QR هنا بعد أن نستلم دفعتك ونؤكدها. تتحدّث هذه الصفحة تلقائياً.", pay_ok:"تم استلام الدفعة. أظهر رمز QR هذا لمقدّم الخدمة.", p_trip:"الرحلة",
   tab_far:"كم يبعد المطار عني؟", far_lead:"اعرف كم تبعد عن مطار رينيه معوّض في القليعات. يبقى موقعك على هاتفك.",
   near_hotels:"كم تبعد الفنادق عني؟", near_restaurants:"كم تبعد المطاعم عني؟", near_taxis:"كم يبعد التاكسي عني؟", near_cars:"كم تبعد السيارات المؤجرة عني؟", near_sites:"كم تبعد المواقع عني؟",
@@ -2193,7 +2203,7 @@ var BK = {
   p_paid:"Prépayé par le client via North Way. Ne lui demandez pas de payer.", p_notpaid:"Non prépayé : le client vous paie directement.", p_nobiz:"Aucun établissement réservable pour l'instant. Vérifiez la connexion et réessayez.",
   e_pin:"PIN incorrect.", e_locked:"Trop d'erreurs de PIN. Réessayez dans 1 heure.", e_notfound:"Réservation introuvable pour cet établissement.", e_state:"Cette réservation est annulée ou expirée.", e_amount:"Saisissez le montant total.",
   p_guest:"Client", p_phone:"Téléphone", p_date:"Date", p_qty:"Quantité", p_note:"Note", p_status:"Statut",
-  o_pick:"Choisir un type", o_hotel:"Types de chambres", o_car:"Types de voitures", o_taxi:"Types de véhicules", o_guests:"Jusqu'à {n} personnes", o_book:"Réserver celui-ci", o_act:"Activités à proximité", p_opts:"Mes types de chambres / voitures / véhicules", o_name:"Nom (ex. : Chambre double)", o_price:"Prix (USD)", o_gf:"Personnes (facultatif)", o_det:"Détails courts (facultatif)", o_photo:"Lien photo (facultatif)", o_send:"Envoyer pour validation", o_wait:"en attente de validation", o_live:"en ligne", o_del:"Supprimer", o_sent:"Envoyé. Visible après validation par North Way.", o_none:"Aucun type pour le moment.", t_from:"De", t_to:"Vers", t_pick:"Choisir...", t_quote:"Voir le prix", t_est:"Environ {km} km. Prix : {fare} $", t_accept:"Accepter et continuer", t_fixed:"Le prix est fixe une fois accepté. La distance est une estimation par la route.", e_route:"Choisissez le départ et l'arrivée (deux lieux différents).",
+  o_pick:"Choisir un type", o_hotel:"Types de chambres", o_car:"Types de voitures", o_taxi:"Types de véhicules", o_guests:"Jusqu'à {n} personnes", o_book:"Réserver celui-ci", o_act:"Activités à proximité", p_opts:"Mes types de chambres / voitures / véhicules", o_name:"Nom (ex. : Chambre double)", o_price:"Prix (USD)", o_gf:"Personnes (facultatif)", o_det:"Détails courts (facultatif)", o_photo:"Lien photo (facultatif)", o_send:"Envoyer pour validation", o_wait:"en attente de validation", o_live:"en ligne", o_del:"Supprimer", o_sent:"Envoyé. Visible après validation par North Way.", o_none:"Aucun type pour le moment.", a_wifi:"Wi-Fi", a_parking:"Parking", a_breakfast:"Petit-déjeuner", a_pool:"Piscine", a_ac:"Climatisation", a_seaview:"Vue sur la mer", a_kitchen:"Cuisine", a_pets:"Animaux acceptés", a_airport:"Navette aéroport", a_restaurant:"Restaurant", a_gym:"Salle de sport", a_spa:"Spa", a_beach:"Accès plage", a_family:"Chambres familiales", a_heating:"Chauffage", a_tv:"TV", a_laundry:"Blanchisserie", a_reception:"Réception 24h", p_avail:"Mes disponibilités", av_scope:"Pour", av_all:"Tout l'établissement", av_units:"Combien de chambres / voitures avez-vous ? (vide = sans limite)", av_hint:"Touchez un jour pour le fermer (complet ou fermé). Touchez à nouveau pour le rouvrir. Les jours se ferment aussi tout seuls quand tout est réservé.", av_save:"Enregistrer", av_saved:"Enregistré.", p_amen:"Mes équipements", am_more:"Ajoutez les vôtres (facultatif)", am_send:"Envoyer pour validation", am_sent:"Envoyé. Visibles après validation par North Way.", am_live:"Vos équipements sont en ligne.", am_wait:"En attente de validation.", cal_note:"Les jours grisés ne sont pas disponibles. La confirmation finale vient du prestataire.", e_unavail_dates:"Ces dates ne sont pas disponibles. Veuillez choisir d'autres dates.", comm_terms:"J'accepte que North Way conserve une commission de 10 % du total de la réservation, calculée sur le prix que j'affiche dans l'application (prix × nuits, jours ou km). Le client paie uniquement le prix affiché, sans frais supplémentaires. Cette commission est de 0 % pendant mon année gratuite.", t_from:"De", t_to:"Vers", t_pick:"Choisir...", t_quote:"Voir le prix", t_est:"Environ {km} km. Prix : {fare} $", t_accept:"Accepter et continuer", t_fixed:"Le prix est fixe une fois accepté. La distance est une estimation par la route.", e_route:"Choisissez le départ et l'arrivée (deux lieux différents).",
   pay_wait:"Votre QR code apparaît ici après réception et confirmation de votre paiement. Cette page se met à jour toute seule.", pay_ok:"Paiement reçu. Montrez ce QR code au prestataire.", p_trip:"Trajet",
   tab_far:"À quelle distance est l'aéroport ?", far_lead:"Voyez à quelle distance vous êtes de l'aéroport René Mouawad à Qlayaat. Votre position reste sur votre téléphone.",
   near_hotels:"À quelle distance sont les hôtels ?", near_restaurants:"À quelle distance sont les restaurants ?", near_taxis:"À quelle distance sont les taxis ?", near_cars:"À quelle distance sont les loueurs ?", near_sites:"À quelle distance sont les sites ?",
@@ -2324,6 +2334,30 @@ function bkField(box, f, key, label, input){ var l = el("label","bkf",label); in
 function bkInput(type){ var i = el("input"); i.type = type; return i; }
 function bkClose(box, close){ var b = el("button","btn2",bk("close")); b.type = "button"; b.addEventListener("click", close); box.appendChild(b); }
 
+function bkCal(root, o){
+  var shift = 0, lastM = o.months || 12;
+  function draw(){
+    root.textContent = "";
+    var nowD = new Date(), base = new Date(nowD.getFullYear(), nowD.getMonth() + shift, 1);
+    var head = el("div","bkcalh"), pv = el("button","btn2","\u2039"), nx = el("button","btn2","\u203A");
+    pv.type = nx.type = "button"; pv.disabled = shift <= 0; nx.disabled = shift >= lastM;
+    pv.addEventListener("click", function(){ shift--; draw(); }); nx.addEventListener("click", function(){ shift++; draw(); });
+    var ttl; try { ttl = base.toLocaleDateString(lang, {month:"long", year:"numeric"}); } catch(x){ ttl = (base.getMonth() + 1) + "/" + base.getFullYear(); }
+    head.appendChild(pv); head.appendChild(el("b",null,ttl)); head.appendChild(nx); root.appendChild(head);
+    var g = el("div","cal"), i;
+    for (i = 0; i < 7; i++) { var wd; try { wd = new Date(2024, 0, 1 + i).toLocaleDateString(lang, {weekday:"narrow"}); } catch(x){ wd = ""; } g.appendChild(el("b",null,wd)); }
+    var first = (base.getDay() + 6) % 7; for (i = 0; i < first; i++) g.appendChild(el("span"));
+    var n = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
+    for (i = 1; i <= n; i++) {
+      var ds = base.getFullYear() + "-" + ("0" + (base.getMonth() + 1)).slice(-2) + "-" + ("0" + i).slice(-2), st = o.state(ds), c = el("button","d" + (st ? " " + st : ""), String(i));
+      c.type = "button"; c.setAttribute("data-day", ds); if (st === "p" || (st === "x" && o.lock)) c.disabled = true;
+      (function(d, cc){ cc.addEventListener("click", function(){ if (cc.disabled) return; o.click(d); draw(); }); })(ds, c);
+      g.appendChild(c);
+    }
+    root.appendChild(g);
+  }
+  draw(); return {redraw: draw};
+}
 function bkForm(e){
   bkModal(function(box, close){
     var cat = e.cat, f = {};
@@ -2340,7 +2374,7 @@ function bkForm(e){
           selOpt = op; Array.prototype.forEach.call(tabs.children, function(x){ x.classList.remove("on"); }); tb.classList.add("on");
           if (ptEl) ptEl.textContent = bkPriceText({cat:cat, price:op.price}).replace(bk("from") + " ", "");
           odet.textContent = (op.guests ? bkFmt(bk("o_guests"), {n:op.guests}) + ". " : "") + (op.details || "");
-          if (typeof resetQ === "function") resetQ(); if (f.qty) upd();
+          if (typeof resetQ === "function") resetQ(); if (f.qty) upd(); if (calBox) loadAvail();
         });
         tabs.appendChild(tb);
       });
@@ -2378,11 +2412,27 @@ function bkForm(e){
     bkField(host, f, "phone", bk("f_phone"), bkInput("tel")); f.phone.maxLength = 20; f.phone.autocomplete = "tel"; f.phone.setAttribute("dir","ltr");
     bkField(host, f, "date", bk("d_" + cat), bkInput("date")); f.date.min = todayStr();
     bkField(host, f, "qty", bk("q_" + cat), bkInput("number")); f.qty.min = 1; f.qty.max = 60; f.qty.value = cat === "restaurant" ? 2 : 1; if (cat === "taxi") f.qty.parentNode.hidden = true;
+    var unav = {}, cal = null, calBox = null, availMsg = el("p","bkerr");
+    function rangeBad(){
+      var d = f.date.value, q = cat === "taxi" ? 1 : (parseInt(f.qty.value, 10) || 1); if (!d) return false;
+      for (var i = 0; i < q && i < 400; i++) { var x = new Date(d + "T00:00:00Z"); x.setUTCDate(x.getUTCDate() + i); if (unav[x.toISOString().slice(0, 10)]) return true; }
+      return false;
+    }
+    function checkDates(){ availMsg.textContent = rangeBad() ? bk("e_unavail_dates") : ""; }
+    function loadAvail(){
+      if (cat === "restaurant" || !calBox) return;
+      bkPost({a:"avail", biz:e.id, opt: selOpt ? selOpt.id : undefined}, function(r){ unav = {}; if (r && r.ok && r.unavailable) r.unavailable.forEach(function(d){ unav[d] = 1; }); if (cal) cal.redraw(); checkDates(); });
+    }
+    if (cat !== "restaurant") {
+      calBox = el("div","bkcal"); host.appendChild(calBox); host.appendChild(el("p","bkterms",bk("cal_note"))); host.appendChild(availMsg);
+      cal = bkCal(calBox, {lock:true, state:function(d){ return d < todayStr() ? "p" : unav[d] ? "x" : f.date.value === d ? "s" : ""; }, click:function(d){ f.date.value = d; checkDates(); }});
+      f.date.addEventListener("change", function(){ checkDates(); if (cal) cal.redraw(); });
+    }
     if (cat === "restaurant" || cat === "taxi") bkField(host, f, "time", bk("f_time"), bkInput("time"));
     bkField(host, f, "note", bk("f_note"), bkInput("text")); f.note.maxLength = 200;
     var est = el("p","bkest"); host.appendChild(est);
     function upd(){ var q = parseInt(f.qty.value, 10) || 1; est.textContent = (cat === "taxi" && quote) ? bkFmt(bk("t_est"), {km:quote.km, fare:quote.fare}) : (typeof curPrice() === "number" && (cat === "hotel" || cat === "car")) ? bkFmt(bk("est"), {x: Math.round(curPrice() * q * 100) / 100}) : ""; }
-    f.qty.addEventListener("input", upd); upd(); if (pickFirst) pickFirst();
+    f.qty.addEventListener("input", function(){ upd(); checkDates(); }); upd(); if (pickFirst) pickFirst(); loadAvail();
     var hp = bkInput("text"); hp.className = "bkhp"; hp.tabIndex = -1; hp.autocomplete = "off"; hp.setAttribute("aria-hidden","true"); host.appendChild(hp);
     var needPay = PAY_MODE === "whish" && cat !== "restaurant";
     var cl = el("label","bkchk"), cb = bkInput("checkbox"), cs = el("span",null,bk("consent") + (needPay ? " " + bk("pay_" + cat) : "") + " "); cl.appendChild(cb); cl.appendChild(cs);
@@ -2397,6 +2447,7 @@ function bkForm(e){
       if (f.name.value.replace(/\s/g, "").length < 2 || digits.length < 7 || digits.length > 15 || !(q >= 1 && q <= 60)) { err.textContent = bk("e_details"); return; }
       if (!f.date.value || f.date.value < todayStr()) { err.textContent = bk("e_date"); return; }
       if (cat === "taxi" && !quote) { err.textContent = bk("e_route"); return; }
+      if (rangeBad()) { err.textContent = bk("e_unavail_dates"); return; }
       if (!cb.checked) { err.textContent = bk("e_consent"); return; }
       err.textContent = ""; go.disabled = true; go.textContent = bk("sending");
       bkPost({a:"book", biz:e.id, opt: selOpt ? selOpt.id : undefined, name:f.name.value, phone:f.phone.value, date:f.date.value, time: f.time ? f.time.value : "", qty:q, note:f.note.value, consent:true, cref:(typeof nwCrefGet === "function" ? nwCrefGet() : ""), proof:(bkList()[0] ? bkList()[0].code : ""), terms:"v2", pay_terms: needPay ? true : undefined, hp:hp.value, lang:lang, from: f.from ? f.from.value : "", to: f.to ? f.to.value : "", from_lat: (f.from && f.from.value === "me" && myPos) ? myPos.lat : undefined, from_lng: (f.from && f.from.value === "me" && myPos) ? myPos.lng : undefined}, function(r){
@@ -2581,7 +2632,53 @@ function bkPartner(code){
     var ob = el("button","btn2",bk("p_opts")); ob.type = "button"; var obox = el("div"); box.appendChild(ob); box.appendChild(obox);
     function curCat(){ var c = ""; list.forEach(function(x){ if (x.id === sel.value) c = x.cat; }); return c; }
     function optSync(){ ob.hidden = curCat() === "restaurant"; if (ob.hidden) obox.textContent = ""; }
-    optSync(); sel.addEventListener("change", optSync);
+    var ct = el("p","bkterms"); box.insertBefore(ct, ob);
+    var avb = el("button","btn2",bk("p_avail")), avbox = el("div"), amb = el("button","btn2",bk("p_amen")), ambox = el("div");
+    avb.type = amb.type = "button"; box.appendChild(avb); box.appendChild(avbox); box.appendChild(amb); box.appendChild(ambox);
+    function moreSync(){ var c = curCat(); avb.hidden = c === "restaurant"; amb.hidden = c !== "hotel"; ct.textContent = c === "restaurant" ? "" : bk("comm_terms"); if (avb.hidden) avbox.textContent = ""; if (amb.hidden) ambox.textContent = ""; }
+    function avPaint(){
+      avbox.textContent = "";
+      if (pin.value.length < 4) { msg.textContent = bk("p_pinfirst"); return; }
+      bkPost({a:"avail_get", biz:sel.value, pin:pin.value}, function(r){
+        if (!r || !r.ok) { msg.textContent = bkErr(r && r.err); return; }
+        msg.textContent = "";
+        var rows = {}, af = {}, closed = {}, scope = el("select"), o0 = el("option",null,bk("av_all")), today = r.today, cc;
+        r.rows.forEach(function(x){ rows[x.opt] = x; });
+        o0.value = ""; scope.appendChild(o0); r.opts.forEach(function(op){ var o = el("option",null,op.name); o.value = op.id; scope.appendChild(o); });
+        if (r.opts.length) bkField(avbox, af, "avscope", bk("av_scope"), scope);
+        var units = bkInput("number"); units.min = 1; units.max = 999; units.id = "bk-avunits"; if (r.cat !== "taxi") bkField(avbox, af, "avunits", bk("av_units"), units);
+        var calBox = el("div","bkcal"); avbox.appendChild(calBox); avbox.appendChild(el("p","bkterms",bk("av_hint")));
+        function load(){ var x = rows[scope.value] || {units:"", closed:[]}; units.value = x.units || ""; closed = {}; x.closed.forEach(function(d){ closed[d] = 1; }); cc.redraw(); }
+        cc = bkCal(calBox, {state:function(d){ return d < today ? "p" : closed[d] ? "x" : ""; }, click:function(d){ if (closed[d]) delete closed[d]; else closed[d] = 1; }});
+        scope.addEventListener("change", load); load();
+        var sv = el("button","btn",bk("av_save")); sv.type = "button"; avbox.appendChild(sv);
+        sv.addEventListener("click", function(){
+          sv.disabled = true; var list = Object.keys(closed).sort();
+          bkPost({a:"avail_set", biz:sel.value, pin:pin.value, opt:scope.value, units:units.value, closed:list}, function(x){
+            sv.disabled = false; if (!x || !x.ok) { msg.textContent = bkErr(x && x.err); return; }
+            rows[scope.value] = {opt:scope.value, units:parseInt(units.value, 10) || "", closed:list}; msg.textContent = bk("av_saved");
+          });
+        });
+      });
+    }
+    function amPaint(){
+      ambox.textContent = "";
+      if (pin.value.length < 4) { msg.textContent = bk("p_pinfirst"); return; }
+      bkPost({a:"amen_get", biz:sel.value, pin:pin.value}, function(r){
+        if (!r || !r.ok) { msg.textContent = bkErr(r && r.err); return; }
+        msg.textContent = ""; var boxes = {};
+        ambox.appendChild(el("p","bkterms",bk(r.live ? "am_live" : r.codes.length || r.more ? "am_wait" : "p_amen")));
+        r.all.forEach(function(k){ var l = el("label","bkchk"), c = bkInput("checkbox"); c.checked = r.codes.indexOf(k) > -1; c.setAttribute("data-amen", k); boxes[k] = c; l.appendChild(c); l.appendChild(el("span",null,bk("a_" + k))); ambox.appendChild(l); });
+        var mo = bkInput("text"), mf = {}; mo.maxLength = 120; mo.value = r.more || ""; bkField(ambox, mf, "ammore", bk("am_more"), mo);
+        var sb = el("button","btn",bk("am_send")); sb.type = "button"; ambox.appendChild(sb);
+        sb.addEventListener("click", function(){
+          sb.disabled = true; var codes = r.all.filter(function(k){ return boxes[k].checked; });
+          bkPost({a:"amen_save", biz:sel.value, pin:pin.value, codes:codes, more:mo.value}, function(x){ sb.disabled = false; if (!x || !x.ok) { msg.textContent = bkErr(x && x.err); return; } msg.textContent = bk("am_sent"); });
+        });
+      });
+    }
+    avb.addEventListener("click", avPaint); amb.addEventListener("click", amPaint);
+    optSync(); moreSync(); sel.addEventListener("change", function(){ optSync(); moreSync(); });
     function optPaint(){
       obox.textContent = "";
       if (pin.value.length < 4) { msg.textContent = bk("p_pinfirst"); return; }
@@ -2998,6 +3095,8 @@ function nwJoin(){
     var hp = bkInput("text"); hp.className = "bkhp"; hp.tabIndex = -1; hp.autocomplete = "off"; hp.setAttribute("aria-hidden","true"); box.appendChild(hp);
     var cl = el("label","bkchk"), cb = bkInput("checkbox"); cl.appendChild(cb);
     var sp = el("span",null,nw("j_terms") + " "), pa = el("a",null,nw("terms")); pa.href = "privacy.html"; pa.target = "_blank"; pa.rel = "noopener"; sp.appendChild(pa); cl.appendChild(sp); box.appendChild(cl);
+    var ccl = el("label","bkchk"), ccb = bkInput("checkbox"); ccb.id = "bk-jcomm"; ccl.appendChild(ccb); ccl.appendChild(el("span",null,bk("comm_terms"))); box.appendChild(ccl);
+    function ccShow(){ ccl.hidden = sel.value === "restaurant"; } sel.addEventListener("change", ccShow); ccShow();
     var err = el("p","bkerr"); err.setAttribute("role","alert"); box.appendChild(err);
     var go = el("button","btn",nw("j_send")); go.type = "button"; box.appendChild(go); bkClose(box, close);
     go.addEventListener("click", function(){
@@ -3008,9 +3107,9 @@ function nwJoin(){
       if (sel.value !== "restaurant" && !(parseFloat(f.jprice.value) > 0)) { err.textContent = nwErr("price"); return; }
       var wd = f.jwa.value.replace(/\D/g, ""); if (wd && (wd.length < 7 || wd.length > 15)) { err.textContent = bk("e_details"); return; }
       var site = f.jsite.value.trim(); if (site && (!/^https:\/\//i.test(site) || !pcb.checked)) { err.textContent = nw("j_site_err"); return; }
-      if (!cb.checked) { err.textContent = bk("e_consent"); return; }
+      if (!cb.checked || (sel.value !== "restaurant" && !ccb.checked)) { err.textContent = bk("e_consent"); return; }
       err.textContent = ""; go.disabled = true;
-      bkPost({a:"join", cat:sel.value, name:f.jname.value, phone:f.jphone.value, email:f.jemail.value, map_url:f.jmap.value.trim(), price:f.jprice.value, note:f.jnote.value, area:f.jarea.value, whatsapp:f.jwa.value, site:site, photo_ok:!!(site && pcb.checked), consent:true, lang:lang, hp:hp.value, ref:(typeof nwRefGet === "function" ? nwRefGet() : "")}, function(r){
+      bkPost({a:"join", comm:ccb.checked, cat:sel.value, name:f.jname.value, phone:f.jphone.value, email:f.jemail.value, map_url:f.jmap.value.trim(), price:f.jprice.value, note:f.jnote.value, area:f.jarea.value, whatsapp:f.jwa.value, site:site, photo_ok:!!(site && pcb.checked), consent:true, lang:lang, hp:hp.value, ref:(typeof nwRefGet === "function" ? nwRefGet() : "")}, function(r){
         go.disabled = false;
         if (!r || !r.ok) { err.textContent = nwErr(r && r.err); return; }
         try { localStorage.removeItem("nw-ref"); } catch(x){}

@@ -524,6 +524,7 @@ body:not(.pm) #tabs li.m7{display:none}
 
     <div id="shareBox"></div>
 
+
     <h3 class="sub" data-i="get_h"></h3>
     <p class="lead" data-i="get_lead"></p>
     <div class="routes" id="routes"></div>
@@ -574,7 +575,7 @@ var T = {
   ticker_label:"Latest news",
   search_label:"Search", search_ph:"Search flights, hotels, restaurants, taxis, cars, sites",
   clear_label:"Clear search", results_for:"Results for", results_none:"Nothing found. Try another word.", go_section:"Open section",
-  tab_qyt:"Qlayaat flights", tab_bey:"Beirut flights", tab_hotels:"Hotels", tab_taxis:"Taxis", tab_restaurants:"Restaurants", tab_cars:"Rent a car", tab_sites:"Tourist sites", tab_history:"History", tab_info:"Travel info",
+  tab_air:"Airlines", air_h:"Airlines", air_lead:"Airlines that fly to and from René Mouawad (Qlayaat) Airport. Tap one to open its official website.", air_btn:"Open official website", air_foot:"Tickets are sold by the airlines, not by North Way. Check the airline's own website for schedules, prices and baggage rules.", tab_qyt:"Qlayaat flights", tab_bey:"Beirut flights", tab_hotels:"Hotels", tab_taxis:"Taxis", tab_restaurants:"Restaurants", tab_cars:"Rent a car", tab_sites:"Tourist sites", tab_history:"History", tab_info:"Travel info",
   qyt_h:"Qlayaat airport flights", qyt_lead:"Flights at René Mouawad Airport, and notices about delays, closures and openings.",
   board_title:"Today", example_tag:"Example data",
   board_foot:"Flights will appear here once airlines announce their schedules. Always confirm with your airline.",
@@ -659,7 +660,7 @@ var T = {
   ticker_label:"آخر الأخبار",
   search_label:"بحث", search_ph:"ابحث عن رحلات وفنادق ومطاعم وتاكسي وسيارات ومواقع",
   clear_label:"مسح البحث", results_for:"نتائج البحث عن", results_none:"لا توجد نتائج. جرّب كلمة أخرى.", go_section:"فتح القسم",
-  tab_qyt:"رحلات القليعات", tab_bey:"رحلات بيروت", tab_hotels:"فنادق", tab_taxis:"تاكسي", tab_restaurants:"مطاعم", tab_cars:"تأجير سيارات", tab_sites:"مواقع سياحية", tab_history:"التاريخ", tab_info:"معلومات السفر",
+  tab_air:"شركات الطيران", air_h:"شركات الطيران", air_lead:"شركات الطيران التي تسافر من وإلى مطار رينيه معوض (القليعات). اضغط على إحداها لفتح موقعها الرسمي.", air_btn:"فتح الموقع الرسمي", air_foot:"التذاكر تبيعها شركات الطيران وليس طريق الشمال. راجع موقع الشركة نفسها للمواعيد والأسعار وشروط الأمتعة.", tab_qyt:"رحلات القليعات", tab_bey:"رحلات بيروت", tab_hotels:"فنادق", tab_taxis:"تاكسي", tab_restaurants:"مطاعم", tab_cars:"تأجير سيارات", tab_sites:"مواقع سياحية", tab_history:"التاريخ", tab_info:"معلومات السفر",
   qyt_h:"رحلات مطار القليعات", qyt_lead:"الرحلات في مطار رينيه معوض، وإشعارات التأخير والإغلاق والافتتاح.",
   board_title:"اليوم", example_tag:"بيانات تجريبية",
   board_foot:"ستظهر الرحلات هنا عندما تعلن شركات الطيران جداولها. تأكد دائماً من شركة الطيران.",
@@ -744,7 +745,7 @@ var T = {
   ticker_label:"Dernières nouvelles",
   search_label:"Rechercher", search_ph:"Rechercher vols, hôtels, restaurants, taxis, voitures, sites",
   clear_label:"Effacer la recherche", results_for:"Résultats pour", results_none:"Aucun résultat. Essayez un autre mot.", go_section:"Ouvrir la section",
-  tab_qyt:"Vols Qlayaat", tab_bey:"Vols Beyrouth", tab_hotels:"Hôtels", tab_taxis:"Taxis", tab_restaurants:"Restaurants", tab_cars:"Location de voiture", tab_sites:"Sites touristiques", tab_history:"Histoire", tab_info:"Infos voyage",
+  tab_air:"Compagnies aériennes", air_h:"Compagnies aériennes", air_lead:"Les compagnies qui desservent l'aéroport René Mouawad (Qlayaat). Touchez-en une pour ouvrir son site officiel.", air_btn:"Ouvrir le site officiel", air_foot:"Les billets sont vendus par les compagnies, pas par North Way. Consultez le site de la compagnie pour les horaires, les prix et les bagages.", tab_qyt:"Vols Qlayaat", tab_bey:"Vols Beyrouth", tab_hotels:"Hôtels", tab_taxis:"Taxis", tab_restaurants:"Restaurants", tab_cars:"Location de voiture", tab_sites:"Sites touristiques", tab_history:"Histoire", tab_info:"Infos voyage",
   qyt_h:"Vols de l'aéroport de Qlayaat", qyt_lead:"Les vols à l'aéroport René Mouawad, et les avis sur les retards, fermetures et ouvertures.",
   board_title:"Aujourd'hui", example_tag:"Données d'exemple",
   board_foot:"Les vols apparaîtront ici dès que les compagnies annonceront leurs horaires. Confirmez toujours auprès de votre compagnie.",
@@ -874,6 +875,7 @@ var TICKER = [
   en:"Source: Lebanese media reports, 8 October 2026. For information only, follow the official announcements.",
   fr:"Source : médias libanais, 8 octobre 2026. À titre d'information uniquement, suivez les annonces officielles."}
 ];
+var AIRLINES = [];                       /* from the Airlines tab of the Sheet: {name:{en,ar,fr}, url, phone, note:{en,ar,fr}} */
 var NOTICES = [
  {date:{en:"8 Oct 2026",fr:"8 oct. 2026",ar:"8 تشرين الأول 2026"},
   en:"Prime Minister Nawaf Salam announced 15 November 2026 as the date of the first commercial flight from René Mouawad Airport in Qlayaat. The flight schedule and destinations are due on 1 November, when bookings are expected to open.",
@@ -1277,7 +1279,6 @@ function render(){
 
   var qb = document.getElementById("qytBox"); qb.textContent = ""; if (qytOn()) qb.appendChild(qytNode());
   var bb = document.getElementById("beyBox"); bb.textContent = ""; bb.appendChild(beirutNode());
-
   fillList("list-hotels", "note-hotels", HOTELS);
   fillList("list-restaurants", "note-restaurants", RESTAURANTS);
   fillList("list-taxis", "note-taxis", TAXIS);
@@ -3376,6 +3377,21 @@ function n3QuickShow(){
   var res = document.getElementById("results");
   q.hidden = !(view === "qyt" && !(res && !res.hidden));
 }
+/* AIRLINES: a quick button under "Share North Way" opens the list of airlines (Airlines tab of the Sheet). Only airlines with an https website are shown. */
+function airOn(){ return typeof AIRLINES !== "undefined" && AIRLINES.some(function(a){ return /^https:\/\//i.test(a.url || ""); }); }
+function n3Airlines(){
+  bkModal(function(box, close){
+    var s = T[lang]; box.appendChild(el("h3",null,s.air_h)); box.appendChild(el("p",null,s.air_lead));
+    AIRLINES.forEach(function(a){
+      if (!/^https:\/\//i.test(a.url || "")) return;
+      var c = el("div","card"); c.appendChild(el("h3",null,tr(a.name)));
+      var nt = tr(a.note); if (nt) c.appendChild(el("p",null,nt));
+      var ph = String(a.phone || ""); if (ph) { var pp = el("p"), pl = el("a",null,ph); pl.href = "tel:" + ph.replace(/[^\d+]/g, ""); pl.setAttribute("dir","ltr"); pp.appendChild(pl); c.appendChild(pp); }
+      var ob = el("a","btn",s.air_btn); ob.href = a.url; ob.target = "_blank"; ob.rel = "noopener"; c.appendChild(ob); box.appendChild(c);
+    });
+    box.appendChild(el("p","bkterms",s.air_foot)); bkClose(box, close);
+  });
+}
 render = function(){
   _render5();
   var q = n3Quick(); if (!q) return;
@@ -3393,6 +3409,7 @@ render = function(){
   if (nwOn()) item("nqInv", n3("inv_link"), n3Invite);
   item("nqShare", n3("share_link"), function(){ n3Share(n3("share_text"), n3Site()); });
   item("nqDev", n3("dev_link"), n3Devices);
+  if (airOn()) item("nqAir", T[lang].tab_air, n3Airlines);                                        /* right under Share North Way / Other devices */
   if (pl) { var pl2 = pl; pl2.className = ""; pl2.textContent = n3("part_short"); var lip = pl2.parentNode && pl2.parentNode.tagName === "LI" ? pl2.parentNode : el("li"); if (pl2.parentNode !== lip) lip.appendChild(pl2); ul.appendChild(lip); }
   if (ow) { ow.className = ""; ow.textContent = n3("own_short"); var lio = ow.parentNode && ow.parentNode.tagName === "LI" ? ow.parentNode : el("li"); if (ow.parentNode !== lio) lio.appendChild(ow); ul.appendChild(lio); }
   n3QuickShow();
@@ -3641,9 +3658,9 @@ function cleanVal(k, v){
 }
 function applyContent(j){
   if (!j || typeof j !== "object") return;
-  var map = {ticker:"TICKER", notices:"NOTICES", flights:"FLIGHTS", numbers:"NUMBERS", events:"EVENTS", hotels:"HOTELS", taxis:"TAXIS", cars:"CARS", restaurants:"RESTAURANTS", sites:"SITES", quotes:"QUOTES", phrases:"PHRASES", episodes:"EPISODES", taxiplaces:"TAXIPLACES"};
+  var map = {ticker:"TICKER", notices:"NOTICES", airlines:"AIRLINES", flights:"FLIGHTS", numbers:"NUMBERS", events:"EVENTS", hotels:"HOTELS", taxis:"TAXIS", cars:"CARS", restaurants:"RESTAURANTS", sites:"SITES", quotes:"QUOTES", phrases:"PHRASES", episodes:"EPISODES", taxiplaces:"TAXIPLACES"};
   var set = {
-    TICKER:function(a){ TICKER = a; }, NOTICES:function(a){ NOTICES = a; }, FLIGHTS:function(a){ FLIGHTS = a; }, NUMBERS:function(a){ NUMBERS = a; },
+    TICKER:function(a){ TICKER = a; }, NOTICES:function(a){ NOTICES = a; }, AIRLINES:function(a){ AIRLINES = a; }, FLIGHTS:function(a){ FLIGHTS = a; }, NUMBERS:function(a){ NUMBERS = a; },
     EVENTS:function(a){ EVENTS = a; }, HOTELS:function(a){ HOTELS = a; }, TAXIS:function(a){ TAXIS = a; }, CARS:function(a){ CARS = a; }, RESTAURANTS:function(a){ RESTAURANTS = a; }, SITES:function(a){ SITES = a; },
     QUOTES:function(a){ QUOTES = a; }, PHRASES:function(a){ PHRASES = a; }, EPISODES:function(a){ EPISODES = a; }, TAXIPLACES:function(a){ TAXIPLACES = a; }
   };

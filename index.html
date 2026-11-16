@@ -212,7 +212,7 @@ details .body p{margin:0 0 8px}
 .bkerr{color:var(--warn);font-weight:600;min-height:1.2em;margin:8px 0}
 .bkok{color:var(--ok);font-weight:600}
 .bkprice{font-weight:700;color:var(--amber-text);margin:4px 0}
-.bkest{font-weight:600;margin:10px 0 0}
+.bkest{font-weight:600;margin:10px 0 0}.bknote{font-size:.86rem;line-height:1.45;margin:8px 0 0;padding:8px 10px;border-radius:10px;background:rgba(255,183,3,.14);border:1px solid rgba(255,183,3,.45)}
 .bkqr canvas{display:block;margin:8px auto;max-width:100%;height:auto;background:#fff;border-radius:6px;image-rendering:pixelated}
 .bkcode{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.4rem;text-align:center;letter-spacing:.08em;font-weight:700;margin:4px 0}
 .bkpay{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:10px}
@@ -862,36 +862,30 @@ var BEIRUT_URL = "https://www.beirutairport.gov.lb/_flight.php";
 /* NEWS STRIPE (the moving line at the top). One block per news item, with the text in each language (ar, en, fr).
    Keep each item short and say where it comes from. An empty list hides the stripe. */
 var TICKER = [
- {ar:"أعلن رئيس الحكومة نواف سلام أن 15 تشرين الثاني 2026 هو موعد إقلاع أول رحلة تجارية من مطار الرئيس رينيه معوّض في القليعات.",
-  en:"Prime Minister Nawaf Salam announced that 15 November 2026 is the date of the first commercial flight from René Mouawad Airport in Qlayaat.",
-  fr:"Le Premier ministre Nawaf Salam a annoncé que le 15 novembre 2026 est la date du premier vol commercial depuis l'aéroport René Mouawad à Qlayaat."},
- {ar:"يُعلَن جدول الرحلات والوجهات في 1 تشرين الثاني، بالتزامن مع فتح باب الحجوزات.",
-  en:"The flight schedule and destinations will be announced on 1 November, together with the opening of bookings.",
-  fr:"Le programme des vols et les destinations seront annoncés le 1er novembre, en même temps que l'ouverture des réservations."},
- {ar:"فازت شركة سكاي لاونج (Sky Lounge Services) بمشروع تجهيز المطار وتشغيله.",
-  en:"Sky Lounge Services won the project to equip and run the airport.",
-  fr:"Sky Lounge Services a remporté le projet d'équipement et d'exploitation de l'aéroport."},
- {ar:"المصدر: تقارير إعلامية لبنانية، 8 تشرين الأول 2026. للاطلاع فقط، تابع الإعلانات الرسمية.",
-  en:"Source: Lebanese media reports, 8 October 2026. For information only, follow the official announcements.",
-  fr:"Source : médias libanais, 8 octobre 2026. À titre d'information uniquement, suivez les annonces officielles."}
+ {ar:"تم تأجيل أول رحلة تجارية من مطار الرئيس رينيه معوّض في القليعات إلى 22 تشرين الثاني 2026.",
+  en:"The first commercial flight from René Mouawad Airport in Qlayaat has been rescheduled to 22 November 2026.",
+  fr:"Le premier vol commercial de l'aéroport René Mouawad à Qlayaat est reporté au 22 novembre 2026."},
+ {ar:"للاطلاع فقط. تابع الإعلانات الرسمية لأي تغيير في الموعد.",
+  en:"For information only. Follow the official announcements for any change of date.",
+  fr:"À titre d'information uniquement. Suivez les annonces officielles pour tout changement de date."}
 ];
 var AIRLINES = [{name:{en:"Middle East Airlines (MEA)", ar:"طيران الشرق الأوسط", fr:"Middle East Airlines (MEA)"}, url:"https://www.mea.com.lb", phone:"", note:{en:"", ar:"", fr:""}}];        /* default until the Sheet sends its own Airlines list */                       /* from the Airlines tab of the Sheet: {name:{en,ar,fr}, url, phone, note:{en,ar,fr}} */
 var NOTICES = [
- {date:{en:"8 Oct 2026",fr:"8 oct. 2026",ar:"8 تشرين الأول 2026"},
-  en:"Prime Minister Nawaf Salam announced 15 November 2026 as the date of the first commercial flight from René Mouawad Airport in Qlayaat. The flight schedule and destinations are due on 1 November, when bookings are expected to open.",
-  fr:"Le Premier ministre Nawaf Salam a annoncé que le 15 novembre 2026 sera la date du premier vol commercial depuis l'aéroport René Mouawad à Qlayaat. Le programme des vols et les destinations doivent être annoncés le 1er novembre, date à laquelle les réservations devraient ouvrir.",
-  ar:"أعلن رئيس الحكومة نواف سلام أن 15 تشرين الثاني 2026 هو موعد إقلاع أول رحلة تجارية من مطار الرئيس رينيه معوّض في القليعات. يُعلَن جدول الرحلات والوجهات في 1 تشرين الثاني، بالتزامن مع فتح باب الحجوزات.",
-  source:"Beirut 24", url:"https://www.beirut24.org/2026/10/08/%D8%B3%D9%84%D8%A7%D9%85-15-%D8%AA%D8%B4%D8%B1%D9%8A%D9%86-%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%8A-%D9%85%D9%88%D8%B9%D8%AF-%D8%A5%D9%82%D9%84%D8%A7%D8%B9-%D8%A3%D9%88%D9%84-%D8%B1%D8%AD%D9%84%D8%A9/"}
+ {date:{en:"15 Nov 2026",fr:"15 nov. 2026",ar:"15 تشرين الثاني 2026"},
+  en:"The first commercial flight from René Mouawad Airport in Qlayaat has been rescheduled to 22 November 2026. Follow the official announcements for any change.",
+  fr:"Le premier vol commercial de l'aéroport René Mouawad à Qlayaat est reporté au 22 novembre 2026. Suivez les annonces officielles pour tout changement.",
+  ar:"تم تأجيل أول رحلة تجارية من مطار الرئيس رينيه معوّض في القليعات إلى 22 تشرين الثاني 2026. تابع الإعلانات الرسمية لأي تغيير.",
+  source:"", url:""}
 ];
 /* SITE: fill in before you launch. owner = your name or business, contact = an email or WhatsApp number people can use
    to report errors or ask for removals. updated = the date you last changed the content (YYYY-MM-DD). */
 
 /* COUNTDOWN: the card on the main screen. date is the first flight day (year-month-day). It shows the days left, "Today is the day!" on the day,
    and disappears the day after. To use it for another date, change date and the note. */
-var COUNTDOWN = {date:"2026-11-15",
+var COUNTDOWN = {date:"2026-11-22",
   label:{en:"First commercial flight from René Mouawad Airport", fr:"Premier vol commercial de l'aéroport René Mouawad", ar:"أول رحلة تجارية من مطار رينيه معوض"},
-  note:{en:"Date announced by the Prime Minister on 8 October 2026. The schedule and destinations are due on 1 November.", fr:"Date annoncée par le Premier ministre le 8 octobre 2026. Le programme et les destinations sont attendus le 1er novembre.", ar:"التاريخ أعلنه رئيس الحكومة في 8 تشرين الأول 2026. يُنتظر الإعلان عن الجدول والوجهات في 1 تشرين الثاني."},
-  source:"Beirut 24", url:"https://www.beirut24.org/2026/10/08/%D8%B3%D9%84%D8%A7%D9%85-15-%D8%AA%D8%B4%D8%B1%D9%8A%D9%86-%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%8A-%D9%85%D9%88%D8%B9%D8%AF-%D8%A5%D9%82%D9%84%D8%A7%D8%B9-%D8%A3%D9%88%D9%84-%D8%B1%D8%AD%D9%84%D8%A9/"};
+  note:{en:"The first flight was rescheduled to 22 November 2026. Follow the official announcements for any change.", fr:"Le premier vol est reporté au 22 novembre 2026. Suivez les annonces officielles pour tout changement.", ar:"تم تأجيل أول رحلة إلى 22 تشرين الثاني 2026. تابع الإعلانات الرسمية لأي تغيير.", },
+  source:"", url:""};
 
 /* CONTENT_URL: the address of your Google Sheet content service (see SETUP-GOOGLE-SHEET.txt). While it is empty ("") the app uses only the
    content written in this file. When it is set, any section that has rows in the sheet replaces the matching section here. */
@@ -943,7 +937,8 @@ var TIMELINE = [
  {date:{en:"May 2026",fr:"Mai 2026",ar:"أيار 2026"}, text:{en:"Sky Lounge Services wins the bid for the airport project.",fr:"Sky Lounge Services remporte l'appel d'offres du projet de l'aéroport.",ar:"شركة Sky Lounge Services تفوز بالمناقصة الخاصة بمشروع المطار."}},
  {date:{en:"6 and 8 Jun 2026",fr:"6 et 8 juin 2026",ar:"6 و8 حزيران 2026"}, text:{en:"A foundation-stone ceremony is held on 6 June, and rehabilitation work begins on 8 June.",fr:"Une cérémonie de pose de la première pierre a lieu le 6 juin, et les travaux de réhabilitation commencent le 8 juin.",ar:"يُقام احتفال وضع الحجر الأساس في 6 حزيران، وتبدأ أعمال التأهيل في 8 حزيران."}},
  {date:{en:"19 Aug 2026",fr:"19 août 2026",ar:"19 آب 2026"}, text:{en:"An update says a partial opening is targeted for the end of October, and the terminal grows from 2,000 to 4,700 square metres.",fr:"Une mise à jour indique qu'une ouverture partielle est visée pour fin octobre, et que le terminal passe de 2 000 à 4 700 mètres carrés.",ar:"تفيد مستجدات بأن الافتتاح الجزئي مستهدف في نهاية تشرين الأول، وأن مساحة المبنى ترتفع من 2000 إلى 4700 متر مربع."}},
- {date:{en:"8 Oct 2026",fr:"8 octobre 2026",ar:"8 تشرين الأول 2026"}, text:{en:"Prime Minister Nawaf Salam announces 15 November 2026 as the date of the first commercial flight.",fr:"Le Premier ministre Nawaf Salam annonce que le 15 novembre 2026 sera la date du premier vol commercial.",ar:"يعلن رئيس الحكومة نواف سلام أن 15 تشرين الثاني 2026 هو موعد إقلاع أول رحلة تجارية."}}
+ {date:{en:"8 Oct 2026",fr:"8 octobre 2026",ar:"8 تشرين الأول 2026"}, text:{en:"The first commercial flight is announced for 15 November 2026.",fr:"Le premier vol commercial est annoncé pour le 15 novembre 2026.",ar:"إعلان موعد أول رحلة تجارية في 15 تشرين الثاني 2026."}},
+ {date:{en:"15 Nov 2026",fr:"15 novembre 2026",ar:"15 تشرين الثاني 2026"}, text:{en:"The first flight is rescheduled to 22 November 2026.",fr:"Le premier vol est reporté au 22 novembre 2026.",ar:"تأجيل أول رحلة إلى 22 تشرين الثاني 2026."}}
 ];
 var VIEWS = ["qyt","far","bey","hotels","restaurants","taxis","cars","sites","events","phrases","history","info","saved","notices"];
 var lang = "en", prefs = {}, view = "qyt", pageMode = false;
@@ -1249,14 +1244,14 @@ function render(){
 
   var tabs = document.getElementById("tabs"); tabs.textContent = "";
   var MAIN7 = ["qyt","bey","hotels","restaurants","cars","taxis","far"], bl = document.getElementById("bizList"); bl.textContent = "";
-  function tabLabel(v){ var t = s["tab_" + v]; if (v === "bey" || (v === "qyt" && qytOn())) t += "\u00A0\u2197"; return t; }      /* the arrow: this tab opens the official website */
+  function tabLabel(v){ var t = tabName(v); if (v === "bey" || (v === "qyt" && qytOn())) t += "\u00A0\u2197"; return t; }      /* the arrow: this tab opens the official website */
   function tabBtn(v){ var b = el("button",null,tabLabel(v)); b.type = "button"; b.setAttribute("role","tab"); b.setAttribute("data-v", v); b.addEventListener("click", function(){ tabGo(v); }); return b; }
-  VIEWS.filter(function(v){ return v !== "notices" && viewOn(v); }).forEach(function(v){
+  tabOrder(VIEWS).filter(function(v){ return v !== "notices" && viewOn(v); }).forEach(function(v){
     var li = el("li", MAIN7.indexOf(v) > -1 ? "m7" : null); li.appendChild(tabBtn(v)); tabs.appendChild(li);
   });
   var fl = document.getElementById("floatList"); fl.textContent = "";
-  ["qyt","bey","hotels","restaurants","cars","taxis"].filter(viewOn).forEach(function(v){ var li = el("li"); li.appendChild(tabBtn(v)); fl.appendChild(li); });
-  MAIN7.filter(viewOn).forEach(function(v){
+  tabOrder(["qyt","bey","hotels","restaurants","cars","taxis"]).filter(viewOn).forEach(function(v){ var li = el("li"); li.appendChild(tabBtn(v)); fl.appendChild(li); });
+  tabOrder(MAIN7).filter(viewOn).forEach(function(v){
     var li = el("li", v === "far" ? "wide" : null); li.appendChild(tabBtn(v)); bl.appendChild(li);
   });
 
@@ -1491,7 +1486,14 @@ function floatTabsUpdate(){
 function initWx(){ renderWx(); wxLoad(wxPlace); }
 
 /* ===== COUNTDOWN, QUICK BUTTONS, SHARE, NUMBERS, EVENTS, PHRASES, SAVED ===== */
+/* TABCFG: the owner's own tab names, order and hidden tabs (Google Sheet tab "Tabs", edited from the Only owner screen) */
+var TABCFG = null;
+function tabCfg(v){ if (!TABCFG) return null; for (var i = 0; i < TABCFG.length; i++) if (TABCFG[i].id === v) return TABCFG[i]; return null; }
+function tabShown(v){ var c = tabCfg(v); return !c || c.show !== false; }
+function tabName(v, l){ var c = tabCfg(v), L = l || lang; var n = c && c.name && c.name[L]; return n ? n : T[L]["tab_" + v]; }
+function tabOrder(list){ if (!TABCFG) return list; var pos = {}; TABCFG.forEach(function(c, i){ pos[c.id] = i; }); return list.slice().sort(function(a, b){ return (pos[a] === undefined ? 999 : pos[a]) - (pos[b] === undefined ? 999 : pos[b]); }); }
 function viewOn(v){
+  if (!tabShown(v)) return false;
   if (v === "saved") return savedItems().length > 0;
   return true;
 }
@@ -2138,7 +2140,7 @@ var BK = {
   p_paid:"Prepaid by the guest through North Way. Do not charge the guest.", p_notpaid:"Not prepaid: the guest pays you directly.", p_nobiz:"No bookable businesses found yet. Check your connection and try again.",
   e_pin:"Wrong PIN.", e_locked:"Too many wrong PINs. Try again in 1 hour.", e_notfound:"Booking not found for this business.", e_state:"This booking is cancelled or expired.", e_amount:"Please enter the total amount.",
   p_guest:"Guest", p_phone:"Phone", p_date:"Date", p_qty:"Quantity", p_note:"Note", p_status:"Status",
-  o_pick:"Choose a type", o_hotel:"Room types", o_car:"Car types", o_taxi:"Vehicle types", o_guests:"Up to {n} guests", o_book:"Book this one", o_act:"Activities nearby", p_opts:"My room / car / vehicle types", o_name:"Name (for example: Double room)", o_price:"Price (USD)", o_gf:"Guests (optional)", o_det:"Short details (optional)", o_photo:"Photo link (optional)", o_send:"Send for approval", o_wait:"waiting for approval", o_live:"live", o_del:"Remove", o_sent:"Sent. It goes live after North Way approves it.", o_none:"No types yet.", a_wifi:"Wi-Fi", a_parking:"Parking", a_breakfast:"Breakfast", a_pool:"Pool", a_ac:"Air conditioning", a_seaview:"Sea view", a_kitchen:"Kitchen", a_pets:"Pets allowed", a_airport:"Airport pickup", a_restaurant:"Restaurant", a_gym:"Gym", a_spa:"Spa", a_beach:"Beach access", a_family:"Family rooms", a_heating:"Heating", a_tv:"TV", a_laundry:"Laundry", a_reception:"24h reception", p_avail:"My availability", av_scope:"For", av_all:"Whole business", av_units:"How many rooms / cars do you have? (empty = no limit)", av_hint:"Tap a day to close it (full or not working). Tap again to open it. Days also close by themselves when all are booked.", av_save:"Save", av_saved:"Saved.", p_amen:"My amenities", am_more:"Add your own (optional)", am_send:"Send for approval", am_sent:"Sent. They show after North Way approves them.", am_live:"Your amenities are live.", am_wait:"Waiting for approval.", cal_note:"Grey days are not available. The final confirmation comes from the provider.", e_unavail_dates:"These dates are not available. Please choose other dates.", comm_terms:"I agree that North Way keeps a commission of 10% of the booking total, calculated on the price I display in the app (price × nights, days or km). The guest pays only the displayed price, with no extra fee. This commission is 0% during my free year.", t_from:"From", t_to:"To", t_pick:"Choose...", t_quote:"Get price", t_est:"About {km} km. Price: ${fare}", t_accept:"Accept and continue", t_fixed:"The price is fixed once you accept. The distance is an estimate by road.", e_route:"Please choose where from and where to (two different places).",
+  o_pick:"Choose a type", o_hotel:"Room types", o_car:"Car types", o_taxi:"Vehicle types", o_guests:"Up to {n} guests", o_book:"Book this one", o_act:"Activities nearby", p_opts:"My room / car / vehicle types", o_name:"Name (for example: Double room)", o_price:"Price (USD)", o_gf:"Guests (optional)", o_det:"Short details (optional)", o_photo:"Photo link (optional)", o_send:"Send for approval", o_wait:"waiting for approval", o_live:"live", o_del:"Remove", o_sent:"Sent. It goes live after North Way approves it.", o_none:"No types yet.", a_wifi:"Wi-Fi", a_parking:"Parking", a_breakfast:"Breakfast", a_pool:"Pool", a_ac:"Air conditioning", a_seaview:"Sea view", a_kitchen:"Kitchen", a_pets:"Pets allowed", a_airport:"Airport pickup", a_restaurant:"Restaurant", a_gym:"Gym", a_spa:"Spa", a_beach:"Beach access", a_family:"Family rooms", a_heating:"Heating", a_tv:"TV", a_laundry:"Laundry", a_reception:"24h reception", p_avail:"My availability", av_scope:"For", av_all:"Whole business", av_units:"How many rooms / cars do you have? (empty = no limit)", av_hint:"Tap a day to close it (full or not working). Tap again to open it. Days also close by themselves when all are booked.", av_save:"Save", av_saved:"Saved.", p_amen:"My amenities", am_more:"Add your own (optional)", am_send:"Send for approval", am_sent:"Sent. They show after North Way approves them.", am_live:"Your amenities are live.", am_wait:"Waiting for approval.", cal_note:"Grey days are not available. The final confirmation comes from the provider.", e_unavail_dates:"These dates are not available. Please choose other dates.", scope_prov:"I also agree that the displayed price covers only the days, nights or km the customer confirms in the app, that I will tell the customer my price for any extra days, nights or km before the service starts, and that any extra is agreed and paid directly between the customer and me. North Way is not part of that agreement and takes no commission on it.", scope:"The price covers only the days, nights or km you confirm here. Any extra after the service starts is agreed directly with the provider and is not paid through North Way.", comm_terms:"I agree that North Way keeps a commission of 10% of the booking total, calculated on the price I display in the app (price × nights, days or km). The guest pays only the displayed price, with no extra fee. This commission is 0% during my free year.", t_from:"From", t_to:"To", t_pick:"Choose...", t_quote:"Get price", t_trip:"How is your trip?", t_one:"One way", t_round:"Round trip", t_retd:"Return date", t_rett:"Return time", e_ret_date:"Please choose a return date (not before the pickup date).", t_est2:"About {km} km each way. Round trip total: ${fare}", t_est:"About {km} km. Price: ${fare}", t_accept:"Accept and continue", t_fixed:"The price is fixed once you accept. The distance is an estimate by road.", e_route:"Please choose where from and where to (two different places).",
   pay_wait:"Your QR code appears here after we receive and confirm your payment. This page updates by itself.", pay_ok:"Payment received. Show this QR code to the provider.", p_trip:"Trip",
   tab_far:"How far is the airport from me?", far_lead:"Find out how far you are from René Mouawad Airport in Qlayaat. Your location stays on your phone.",
   near_hotels:"How far are the hotels from me?", near_restaurants:"How far are the restaurants from me?", near_taxis:"How far are the taxis from me?", near_cars:"How far are the rental cars from me?", near_sites:"How far are the sites from me?",
@@ -2171,7 +2173,7 @@ var BK = {
   p_paid:"دفع الضيف مسبقاً عبر «طريق الشمال». لا تطلب منه الدفع.", p_notpaid:"غير مدفوع مسبقاً: يدفع الضيف لك مباشرة.", p_nobiz:"لا توجد مؤسسات تقبل الحجز بعد. تحقق من الاتصال وحاول مجدداً.",
   e_pin:"الرمز السري خاطئ.", e_locked:"محاولات خاطئة كثيرة. حاول بعد ساعة.", e_notfound:"الحجز غير موجود لهذه المؤسسة.", e_state:"هذا الحجز ملغى أو منتهي.", e_amount:"يرجى إدخال المبلغ الإجمالي.",
   p_guest:"الضيف", p_phone:"الهاتف", p_date:"التاريخ", p_qty:"العدد", p_note:"ملاحظة", p_status:"الحالة",
-  o_pick:"اختر النوع", o_hotel:"أنواع الغرف", o_car:"أنواع السيارات", o_taxi:"أنواع المركبات", o_guests:"حتى {n} أشخاص", o_book:"احجز هذا", o_act:"أنشطة قريبة", p_opts:"أنواع الغرف / السيارات / المركبات", o_name:"الاسم (مثلاً: غرفة مزدوجة)", o_price:"السعر (دولار)", o_gf:"عدد الأشخاص (اختياري)", o_det:"تفاصيل قصيرة (اختياري)", o_photo:"رابط صورة (اختياري)", o_send:"أرسل للموافقة", o_wait:"بانتظار الموافقة", o_live:"ظاهر", o_del:"احذف", o_sent:"تم الإرسال. يظهر بعد موافقة طريق الشمال.", o_none:"لا يوجد أنواع بعد.", a_wifi:"واي فاي", a_parking:"موقف سيارات", a_breakfast:"فطور", a_pool:"مسبح", a_ac:"تكييف", a_seaview:"إطلالة على البحر", a_kitchen:"مطبخ", a_pets:"يُسمح بالحيوانات", a_airport:"نقل من المطار", a_restaurant:"مطعم", a_gym:"نادي رياضي", a_spa:"سبا", a_beach:"وصول إلى الشاطئ", a_family:"غرف عائلية", a_heating:"تدفئة", a_tv:"تلفزيون", a_laundry:"غسيل ملابس", a_reception:"استقبال 24 ساعة", p_avail:"التوفّر عندي", av_scope:"لـ", av_all:"المؤسسة كلها", av_units:"كم غرفة / سيارة لديكم؟ (فارغ = بلا حد)", av_hint:"اضغطوا على يوم لإغلاقه (ممتلئ أو لا نعمل). اضغطوا مرة أخرى لفتحه. تُغلق الأيام وحدها عندما يكتمل الحجز.", av_save:"حفظ", av_saved:"تم الحفظ.", p_amen:"المرافق عندي", am_more:"أضيفوا مرافق أخرى (اختياري)", am_send:"أرسل للموافقة", am_sent:"تم الإرسال. تظهر بعد موافقة طريق الشمال.", am_live:"مرافقكم ظاهرة الآن.", am_wait:"بانتظار الموافقة.", cal_note:"الأيام الرمادية غير متاحة. التأكيد النهائي يأتي من مقدّم الخدمة.", e_unavail_dates:"هذه التواريخ غير متاحة. يرجى اختيار تواريخ أخرى.", comm_terms:"أوافق على أن «طريق الشمال» تحتفظ بعمولة 10٪ من إجمالي الحجز، محسوبة على السعر الذي أعرضه في التطبيق (السعر × عدد الليالي أو الأيام أو الكيلومترات). يدفع الزبون السعر المعروض فقط دون أي رسوم إضافية. تكون هذه العمولة 0٪ خلال سنتي المجانية.", t_from:"من", t_to:"إلى", t_pick:"اختر...", t_quote:"احسب السعر", t_est:"حوالي {km} كم. السعر: {fare}$", t_accept:"موافق، تابع", t_fixed:"السعر ثابت بعد الموافقة. المسافة تقديرية بالطريق.", e_route:"يرجى اختيار مكان الانطلاق والوصول (مكانان مختلفان).",
+  o_pick:"اختر النوع", o_hotel:"أنواع الغرف", o_car:"أنواع السيارات", o_taxi:"أنواع المركبات", o_guests:"حتى {n} أشخاص", o_book:"احجز هذا", o_act:"أنشطة قريبة", p_opts:"أنواع الغرف / السيارات / المركبات", o_name:"الاسم (مثلاً: غرفة مزدوجة)", o_price:"السعر (دولار)", o_gf:"عدد الأشخاص (اختياري)", o_det:"تفاصيل قصيرة (اختياري)", o_photo:"رابط صورة (اختياري)", o_send:"أرسل للموافقة", o_wait:"بانتظار الموافقة", o_live:"ظاهر", o_del:"احذف", o_sent:"تم الإرسال. يظهر بعد موافقة طريق الشمال.", o_none:"لا يوجد أنواع بعد.", a_wifi:"واي فاي", a_parking:"موقف سيارات", a_breakfast:"فطور", a_pool:"مسبح", a_ac:"تكييف", a_seaview:"إطلالة على البحر", a_kitchen:"مطبخ", a_pets:"يُسمح بالحيوانات", a_airport:"نقل من المطار", a_restaurant:"مطعم", a_gym:"نادي رياضي", a_spa:"سبا", a_beach:"وصول إلى الشاطئ", a_family:"غرف عائلية", a_heating:"تدفئة", a_tv:"تلفزيون", a_laundry:"غسيل ملابس", a_reception:"استقبال 24 ساعة", p_avail:"التوفّر عندي", av_scope:"لـ", av_all:"المؤسسة كلها", av_units:"كم غرفة / سيارة لديكم؟ (فارغ = بلا حد)", av_hint:"اضغطوا على يوم لإغلاقه (ممتلئ أو لا نعمل). اضغطوا مرة أخرى لفتحه. تُغلق الأيام وحدها عندما يكتمل الحجز.", av_save:"حفظ", av_saved:"تم الحفظ.", p_amen:"المرافق عندي", am_more:"أضيفوا مرافق أخرى (اختياري)", am_send:"أرسل للموافقة", am_sent:"تم الإرسال. تظهر بعد موافقة طريق الشمال.", am_live:"مرافقكم ظاهرة الآن.", am_wait:"بانتظار الموافقة.", cal_note:"الأيام الرمادية غير متاحة. التأكيد النهائي يأتي من مقدّم الخدمة.", e_unavail_dates:"هذه التواريخ غير متاحة. يرجى اختيار تواريخ أخرى.", scope_prov:"وأوافق أيضاً على أن السعر المعروض يشمل فقط الأيام أو الليالي أو الكيلومترات التي يؤكدها الزبون في التطبيق، وأنني سأخبر الزبون بسعري لأي أيام أو ليالٍ أو كيلومترات إضافية قبل بدء الخدمة، وأن أي زيادة يُتفق عليها وتُدفع مباشرة بيني وبين الزبون. «طريق الشمال» ليس طرفاً في هذا الاتفاق ولا يأخذ عمولة عليه.", scope:"يشمل السعر فقط الأيام أو الليالي أو الكيلومترات التي تؤكدها هنا. أي زيادة بعد بدء الخدمة يُتفق عليها مباشرة مع مزوّد الخدمة ولا تُدفع عبر «طريق الشمال».", comm_terms:"أوافق على أن «طريق الشمال» تحتفظ بعمولة 10٪ من إجمالي الحجز، محسوبة على السعر الذي أعرضه في التطبيق (السعر × عدد الليالي أو الأيام أو الكيلومترات). يدفع الزبون السعر المعروض فقط دون أي رسوم إضافية. تكون هذه العمولة 0٪ خلال سنتي المجانية.", t_from:"من", t_to:"إلى", t_pick:"اختر...", t_quote:"احسب السعر", t_trip:"كيف تريد رحلتك؟", t_one:"ذهاب فقط", t_round:"ذهاب وإياب", t_retd:"تاريخ العودة", t_rett:"وقت العودة", e_ret_date:"يرجى اختيار تاريخ العودة (ليس قبل تاريخ الاستلام).", t_est2:"حوالي {km} كم للاتجاه الواحد. مجموع الذهاب والإياب: {fare}$", t_est:"حوالي {km} كم. السعر: {fare}$", t_accept:"موافق، تابع", t_fixed:"السعر ثابت بعد الموافقة. المسافة تقديرية بالطريق.", e_route:"يرجى اختيار مكان الانطلاق والوصول (مكانان مختلفان).",
   pay_wait:"يظهر رمز QR هنا بعد أن نستلم دفعتك ونؤكدها. تتحدّث هذه الصفحة تلقائياً.", pay_ok:"تم استلام الدفعة. أظهر رمز QR هذا لمقدّم الخدمة.", p_trip:"الرحلة",
   tab_far:"كم يبعد المطار عني؟", far_lead:"اعرف كم تبعد عن مطار رينيه معوّض في القليعات. يبقى موقعك على هاتفك.",
   near_hotels:"كم تبعد الفنادق عني؟", near_restaurants:"كم تبعد المطاعم عني؟", near_taxis:"كم يبعد التاكسي عني؟", near_cars:"كم تبعد السيارات المؤجرة عني؟", near_sites:"كم تبعد المواقع عني؟",
@@ -2204,7 +2206,7 @@ var BK = {
   p_paid:"Prépayé par le client via North Way. Ne lui demandez pas de payer.", p_notpaid:"Non prépayé : le client vous paie directement.", p_nobiz:"Aucun établissement réservable pour l'instant. Vérifiez la connexion et réessayez.",
   e_pin:"PIN incorrect.", e_locked:"Trop d'erreurs de PIN. Réessayez dans 1 heure.", e_notfound:"Réservation introuvable pour cet établissement.", e_state:"Cette réservation est annulée ou expirée.", e_amount:"Saisissez le montant total.",
   p_guest:"Client", p_phone:"Téléphone", p_date:"Date", p_qty:"Quantité", p_note:"Note", p_status:"Statut",
-  o_pick:"Choisir un type", o_hotel:"Types de chambres", o_car:"Types de voitures", o_taxi:"Types de véhicules", o_guests:"Jusqu'à {n} personnes", o_book:"Réserver celui-ci", o_act:"Activités à proximité", p_opts:"Mes types de chambres / voitures / véhicules", o_name:"Nom (ex. : Chambre double)", o_price:"Prix (USD)", o_gf:"Personnes (facultatif)", o_det:"Détails courts (facultatif)", o_photo:"Lien photo (facultatif)", o_send:"Envoyer pour validation", o_wait:"en attente de validation", o_live:"en ligne", o_del:"Supprimer", o_sent:"Envoyé. Visible après validation par North Way.", o_none:"Aucun type pour le moment.", a_wifi:"Wi-Fi", a_parking:"Parking", a_breakfast:"Petit-déjeuner", a_pool:"Piscine", a_ac:"Climatisation", a_seaview:"Vue sur la mer", a_kitchen:"Cuisine", a_pets:"Animaux acceptés", a_airport:"Navette aéroport", a_restaurant:"Restaurant", a_gym:"Salle de sport", a_spa:"Spa", a_beach:"Accès plage", a_family:"Chambres familiales", a_heating:"Chauffage", a_tv:"TV", a_laundry:"Blanchisserie", a_reception:"Réception 24h", p_avail:"Mes disponibilités", av_scope:"Pour", av_all:"Tout l'établissement", av_units:"Combien de chambres / voitures avez-vous ? (vide = sans limite)", av_hint:"Touchez un jour pour le fermer (complet ou fermé). Touchez à nouveau pour le rouvrir. Les jours se ferment aussi tout seuls quand tout est réservé.", av_save:"Enregistrer", av_saved:"Enregistré.", p_amen:"Mes équipements", am_more:"Ajoutez les vôtres (facultatif)", am_send:"Envoyer pour validation", am_sent:"Envoyé. Visibles après validation par North Way.", am_live:"Vos équipements sont en ligne.", am_wait:"En attente de validation.", cal_note:"Les jours grisés ne sont pas disponibles. La confirmation finale vient du prestataire.", e_unavail_dates:"Ces dates ne sont pas disponibles. Veuillez choisir d'autres dates.", comm_terms:"J'accepte que North Way conserve une commission de 10 % du total de la réservation, calculée sur le prix que j'affiche dans l'application (prix × nuits, jours ou km). Le client paie uniquement le prix affiché, sans frais supplémentaires. Cette commission est de 0 % pendant mon année gratuite.", t_from:"De", t_to:"Vers", t_pick:"Choisir...", t_quote:"Voir le prix", t_est:"Environ {km} km. Prix : {fare} $", t_accept:"Accepter et continuer", t_fixed:"Le prix est fixe une fois accepté. La distance est une estimation par la route.", e_route:"Choisissez le départ et l'arrivée (deux lieux différents).",
+  o_pick:"Choisir un type", o_hotel:"Types de chambres", o_car:"Types de voitures", o_taxi:"Types de véhicules", o_guests:"Jusqu'à {n} personnes", o_book:"Réserver celui-ci", o_act:"Activités à proximité", p_opts:"Mes types de chambres / voitures / véhicules", o_name:"Nom (ex. : Chambre double)", o_price:"Prix (USD)", o_gf:"Personnes (facultatif)", o_det:"Détails courts (facultatif)", o_photo:"Lien photo (facultatif)", o_send:"Envoyer pour validation", o_wait:"en attente de validation", o_live:"en ligne", o_del:"Supprimer", o_sent:"Envoyé. Visible après validation par North Way.", o_none:"Aucun type pour le moment.", a_wifi:"Wi-Fi", a_parking:"Parking", a_breakfast:"Petit-déjeuner", a_pool:"Piscine", a_ac:"Climatisation", a_seaview:"Vue sur la mer", a_kitchen:"Cuisine", a_pets:"Animaux acceptés", a_airport:"Navette aéroport", a_restaurant:"Restaurant", a_gym:"Salle de sport", a_spa:"Spa", a_beach:"Accès plage", a_family:"Chambres familiales", a_heating:"Chauffage", a_tv:"TV", a_laundry:"Blanchisserie", a_reception:"Réception 24h", p_avail:"Mes disponibilités", av_scope:"Pour", av_all:"Tout l'établissement", av_units:"Combien de chambres / voitures avez-vous ? (vide = sans limite)", av_hint:"Touchez un jour pour le fermer (complet ou fermé). Touchez à nouveau pour le rouvrir. Les jours se ferment aussi tout seuls quand tout est réservé.", av_save:"Enregistrer", av_saved:"Enregistré.", p_amen:"Mes équipements", am_more:"Ajoutez les vôtres (facultatif)", am_send:"Envoyer pour validation", am_sent:"Envoyé. Visibles après validation par North Way.", am_live:"Vos équipements sont en ligne.", am_wait:"En attente de validation.", cal_note:"Les jours grisés ne sont pas disponibles. La confirmation finale vient du prestataire.", e_unavail_dates:"Ces dates ne sont pas disponibles. Veuillez choisir d'autres dates.", scope_prov:"J'accepte aussi que le prix affiché couvre uniquement les jours, nuits ou km confirmés par le client dans l'application, que j'indiquerai au client mon prix pour tout jour, nuit ou km supplémentaire avant le début du service, et que tout supplément est convenu et payé directement entre le client et moi. North Way n'est pas partie à cet accord et ne prélève aucune commission dessus.", scope:"Le prix couvre uniquement les jours, nuits ou km que vous confirmez ici. Tout supplément après le début du service est convenu directement avec le prestataire et n'est pas payé via North Way.", comm_terms:"J'accepte que North Way conserve une commission de 10 % du total de la réservation, calculée sur le prix que j'affiche dans l'application (prix × nuits, jours ou km). Le client paie uniquement le prix affiché, sans frais supplémentaires. Cette commission est de 0 % pendant mon année gratuite.", t_from:"De", t_to:"Vers", t_pick:"Choisir...", t_quote:"Voir le prix", t_trip:"Comment est votre trajet ?", t_one:"Aller simple", t_round:"Aller-retour", t_retd:"Date de retour", t_rett:"Heure de retour", e_ret_date:"Choisissez une date de retour (pas avant la date de prise en charge).", t_est2:"Environ {km} km par trajet. Total aller-retour : {fare} $", t_est:"Environ {km} km. Prix : {fare} $", t_accept:"Accepter et continuer", t_fixed:"Le prix est fixe une fois accepté. La distance est une estimation par la route.", e_route:"Choisissez le départ et l'arrivée (deux lieux différents).",
   pay_wait:"Votre QR code apparaît ici après réception et confirmation de votre paiement. Cette page se met à jour toute seule.", pay_ok:"Paiement reçu. Montrez ce QR code au prestataire.", p_trip:"Trajet",
   tab_far:"À quelle distance est l'aéroport ?", far_lead:"Voyez à quelle distance vous êtes de l'aéroport René Mouawad à Qlayaat. Votre position reste sur votre téléphone.",
   near_hotels:"À quelle distance sont les hôtels ?", near_restaurants:"À quelle distance sont les restaurants ?", near_taxis:"À quelle distance sont les taxis ?", near_cars:"À quelle distance sont les loueurs ?", near_sites:"À quelle distance sont les sites ?",
@@ -2223,7 +2225,7 @@ var FREE_OFFER = null;
 T.en.tab_mybook = "My bookings"; T.ar.tab_mybook = "حجوزاتي"; T.fr.tab_mybook = "Mes réservations";
 VIEWS.push("mybook");
 var _viewOn = viewOn;
-viewOn = function(v){ if (v === "mybook") return BOOKING_ON || bkList().length > 0; return _viewOn(v); };       /* always there while booking is open, so a guest who lost his QR can find it by code */
+viewOn = function(v){ if (v === "mybook") return tabShown("mybook") && (BOOKING_ON || bkList().length > 0); return _viewOn(v); };       /* always there while booking is open, so a guest who lost his QR can find it by code */
 
 function bk(k){ return (BK[lang] && BK[lang][k]) || BK.en[k] || k; }
 function bkFmt(s, o){ return String(s).replace(/\{(\w+)\}/g, function(m, k){ return o[k] != null ? o[k] : m; }); }
@@ -2383,13 +2385,26 @@ function bkForm(e){
     }
     if (cat === "taxi") {
       host.hidden = true;
-      var rb = el("div","bkroute"), sf = el("select"), st2 = el("select");
+      var trip = "one", tfn = null, rb = el("div","bkroute"), sf = el("select"), st2 = el("select");
       [sf, st2].forEach(function(sx){ var o0 = el("option",null,bk("t_pick")); o0.value = ""; sx.appendChild(o0); if (sx === sf && navigator.geolocation) { var om = el("option",null,"\uD83D\uDCCD " + bk("t_me")); om.value = "me"; sx.appendChild(om); } TAXIPLACES.forEach(function(pl){ var o = el("option",null,tr(pl.name)); o.value = pl.id; sx.appendChild(o); }); });
       bkField(rb, f, "from", bk("t_from"), sf); bkField(rb, f, "to", bk("t_to"), st2);
       var qout = el("p","bkprice"), qerr = el("p","bkerr"), qb = el("button","btn",bk("t_quote")); qb.type = "button";
       var acc = el("button","btn",bk("t_accept")); acc.type = "button"; acc.hidden = true;
       rb.appendChild(qb); rb.appendChild(qout); rb.appendChild(acc); rb.appendChild(el("p","bkterms",bk("t_fixed"))); rb.appendChild(qerr); box.appendChild(rb);
-      function resetQ(){ quote = null; acc.hidden = true; qout.textContent = ""; }
+      var tbox = el("div","bktrip");
+      rb.insertBefore(tbox, acc);
+      function tripFare(){ return !quote ? 0 : trip === "round" ? quote.fare_round : quote.fare_one; }
+      function drawTrip(){
+        tbox.textContent = ""; if (!quote) return;
+        tbox.appendChild(el("p","bkprice",bk("t_trip")));
+        [["one", quote.fare_one], ["round", quote.fare_round]].forEach(function(t){
+          var lb = el("label","bkchk"), rd = bkInput("radio"); rd.name = "bktrip"; rd.checked = trip === t[0];
+          rd.addEventListener("change", function(){ trip = t[0]; drawTrip(); if (typeof upd === "function") upd(); });
+          lb.appendChild(rd); lb.appendChild(el("span",null," " + bk("t_" + (t[0] === "one" ? "one" : "round")) + " \u2014 $" + t[1])); tbox.appendChild(lb);
+        });
+        qout.textContent = trip === "round" ? bkFmt(bk("t_est2"), {km:quote.km, fare:quote.fare_round}) : bkFmt(bk("t_est"), {km:quote.km, fare:quote.fare_one});
+      }
+      function resetQ(){ quote = null; trip = "one"; tbox.textContent = ""; acc.hidden = true; qout.textContent = ""; }
       sf.addEventListener("change", resetQ); st2.addEventListener("change", resetQ);
       qb.addEventListener("click", function(){
         qerr.textContent = ""; resetQ();
@@ -2401,7 +2416,7 @@ function bkForm(e){
           bkPost(body, function(r){
             qb.disabled = false;
             if (!r || !r.ok) { qerr.textContent = bkErr(r && r.err); return; }
-            quote = r; qout.textContent = bkFmt(bk("t_est"), {km:r.km, fare:r.fare}); acc.hidden = false;
+            quote = r; if (quote.fare_one == null) quote.fare_one = quote.fare; if (quote.fare_round == null) quote.fare_round = Math.round(quote.fare * 200) / 100; trip = "one"; drawTrip(); acc.hidden = false;
           });
         }
         if (sf.value === "me" && !myPos) bkAskPos(function(err){ if (err) { qb.disabled = false; qerr.textContent = err; } else ask(); }); else ask();
@@ -2430,13 +2445,15 @@ function bkForm(e){
       f.date.addEventListener("change", function(){ checkDates(); if (cal) cal.redraw(); });
     }
     if (cat === "restaurant" || cat === "taxi") bkField(host, f, "time", bk("f_time"), bkInput("time"));
+    var retBox = [];
+    if (cat === "taxi") { bkField(host, f, "retd", bk("t_retd"), bkInput("date")); f.retd.min = todayStr(); bkField(host, f, "rett", bk("t_rett"), bkInput("time")); retBox = [f.retd.parentNode, f.rett.parentNode]; }
     bkField(host, f, "note", bk("f_note"), bkInput("text")); f.note.maxLength = 200;
     var est = el("p","bkest"); host.appendChild(est);
-    function upd(){ var q = parseInt(f.qty.value, 10) || 1; est.textContent = (cat === "taxi" && quote) ? bkFmt(bk("t_est"), {km:quote.km, fare:quote.fare}) : (typeof curPrice() === "number" && (cat === "hotel" || cat === "car")) ? bkFmt(bk("est"), {x: Math.round(curPrice() * q * 100) / 100}) : ""; }
+    function upd(){ var q = parseInt(f.qty.value, 10) || 1; retBox.forEach(function(n){ n.hidden = trip !== "round"; }); est.textContent = (cat === "taxi" && quote) ? (trip === "round" ? bkFmt(bk("t_est2"), {km:quote.km, fare:quote.fare_round}) : bkFmt(bk("t_est"), {km:quote.km, fare:quote.fare_one})) : (typeof curPrice() === "number" && (cat === "hotel" || cat === "car")) ? bkFmt(bk("est"), {x: Math.round(curPrice() * q * 100) / 100}) : ""; }
     f.qty.addEventListener("input", function(){ upd(); checkDates(); }); upd(); if (pickFirst) pickFirst(); loadAvail();
     var hp = bkInput("text"); hp.className = "bkhp"; hp.tabIndex = -1; hp.autocomplete = "off"; hp.setAttribute("aria-hidden","true"); host.appendChild(hp);
     var needPay = PAY_MODE === "whish" && cat !== "restaurant";
-    var cl = el("label","bkchk"), cb = bkInput("checkbox"), cs = el("span",null,bk("consent") + (needPay ? " " + bk("pay_" + cat) : "") + " "); cl.appendChild(cb); cl.appendChild(cs);
+    var cl = el("label","bkchk"), cb = bkInput("checkbox"), cs = el("span",null,bk("consent") + (needPay ? " " + bk("pay_" + cat) : "") + (cat !== "restaurant" ? " " + bk("scope") : "") + " "); cl.appendChild(cb); cl.appendChild(cs);
     var tl = el("a",null,nw("terms")); tl.href = "privacy.html"; tl.target = "_blank"; tl.rel = "noopener"; cs.appendChild(tl); host.appendChild(cl);
     host.appendChild(el("p","bkterms",bk("f_terms")));
     var err = el("p","bkerr"); err.setAttribute("role","alert"); host.appendChild(err);
@@ -2448,10 +2465,11 @@ function bkForm(e){
       if (f.name.value.replace(/\s/g, "").length < 2 || digits.length < 7 || digits.length > 15 || !(q >= 1 && q <= 60)) { err.textContent = bk("e_details"); return; }
       if (!f.date.value || f.date.value < todayStr()) { err.textContent = bk("e_date"); return; }
       if (cat === "taxi" && !quote) { err.textContent = bk("e_route"); return; }
+      if (cat === "taxi" && trip === "round" && (!f.retd.value || f.retd.value < f.date.value)) { err.textContent = bk("e_ret_date"); return; }
       if (rangeBad()) { err.textContent = bk("e_unavail_dates"); return; }
       if (!cb.checked) { err.textContent = bk("e_consent"); return; }
       err.textContent = ""; go.disabled = true; go.textContent = bk("sending");
-      bkPost({a:"book", biz:e.id, opt: selOpt ? selOpt.id : undefined, name:f.name.value, phone:f.phone.value, date:f.date.value, time: f.time ? f.time.value : "", qty:q, note:f.note.value, consent:true, cref:(typeof nwCrefGet === "function" ? nwCrefGet() : ""), proof:(bkList()[0] ? bkList()[0].code : ""), terms:"v2", pay_terms: needPay ? true : undefined, hp:hp.value, lang:lang, from: f.from ? f.from.value : "", to: f.to ? f.to.value : "", from_lat: (f.from && f.from.value === "me" && myPos) ? myPos.lat : undefined, from_lng: (f.from && f.from.value === "me" && myPos) ? myPos.lng : undefined}, function(r){
+      bkPost({a:"book", biz:e.id, opt: selOpt ? selOpt.id : undefined, name:f.name.value, phone:f.phone.value, date:f.date.value, time: f.time ? f.time.value : "", qty:q, note:f.note.value, consent:true, cref:(typeof nwCrefGet === "function" ? nwCrefGet() : ""), proof:(bkList()[0] ? bkList()[0].code : ""), terms:"v2", pay_terms: needPay ? true : undefined, hp:hp.value, lang:lang, from: f.from ? f.from.value : "", to: f.to ? f.to.value : "", trip: cat === "taxi" ? trip : undefined, ret_date: (cat === "taxi" && trip === "round") ? f.retd.value : undefined, ret_time: (cat === "taxi" && trip === "round" && f.rett.value) ? f.rett.value : undefined, from_lat: (f.from && f.from.value === "me" && myPos) ? myPos.lat : undefined, from_lng: (f.from && f.from.value === "me" && myPos) ? myPos.lng : undefined}, function(r){
         go.disabled = false; go.textContent = bk("send");
         if (!r || !r.ok) { err.textContent = bkErr(r && r.err); return; }
         var rec = {code:r.code, biz:e.id, name:tr(e.name), cat:cat, date:r.date, qty:r.qty, est:r.est, route:r.route || "", pay:r.pay || null, disc:r.discount || 0, status:"pending", payStatus: r.pay ? "unpaid" : "direct"};
@@ -3095,7 +3113,8 @@ function nwJoin(){
     var pcl = el("label","bkchk"), pcb = bkInput("checkbox"); pcl.appendChild(pcb); pcl.appendChild(el("span",null,nw("j_photo_ok"))); box.appendChild(pcl);
     var hp = bkInput("text"); hp.className = "bkhp"; hp.tabIndex = -1; hp.autocomplete = "off"; hp.setAttribute("aria-hidden","true"); box.appendChild(hp);
     var cl = el("label","bkchk"), cb = bkInput("checkbox"); cl.appendChild(cb);
-    var sp = el("span",null,nw("j_terms") + " "), pa = el("a",null,nw("terms")); pa.href = "privacy.html"; pa.target = "_blank"; pa.rel = "noopener"; sp.appendChild(pa); cl.appendChild(sp); box.appendChild(cl);
+    var sp = el("span",null,nw("j_terms") + " "), pa = el("a",null,nw("terms")); pa.href = "privacy.html"; pa.target = "_blank"; pa.rel = "noopener"; sp.appendChild(pa); var spc = document.createTextNode(""); sp.appendChild(spc); cl.appendChild(sp); box.appendChild(cl);
+    function spShow(){ spc.nodeValue = sel.value === "restaurant" ? "" : " " + bk("scope_prov"); } sel.addEventListener("change", spShow); spShow();
     var ccl = el("label","bkchk"), ccb = bkInput("checkbox"); ccb.id = "bk-jcomm"; ccl.appendChild(ccb); ccl.appendChild(el("span",null,bk("comm_terms"))); box.appendChild(ccl);
     function ccShow(){ ccl.hidden = sel.value === "restaurant"; } sel.addEventListener("change", ccShow); ccShow();
     var err = el("p","bkerr"); err.setAttribute("role","alert"); box.appendChild(err);
@@ -3177,7 +3196,7 @@ NW.fr.ag_t = "Avant de réserver"; NW.fr.ag_hint = "Cochez la case pour activer 
 NW.fr.ag_direct_hotel = "Je comprends que je paie l'hôtel directement."; NW.fr.ag_direct_car = "Je comprends que je paie directement la société de location."; NW.fr.ag_direct_taxi = "Je comprends que je paie directement le chauffeur.";
 function nwTabKey(cat){ return "nw-agree-" + cat; }
 function nwTabAgreed(cat){ if (cat === "restaurant" || !cat) return true; try { return localStorage.getItem(nwTabKey(cat)) === "v2"; } catch(e){ return false; } }
-function nwTabText(cat){ return nw("w_agree") + ". " + (PAY_MODE === "whish" ? bk("pay_" + cat) : nw("ag_direct_" + cat)); }
+function nwTabText(cat){ return nw("w_agree") + ". " + (PAY_MODE === "whish" ? bk("pay_" + cat) : nw("ag_direct_" + cat)) + " " + bk("scope"); }
 var _fillList2 = fillList;
 fillList = function(id, noteId, list){
   _fillList2(id, noteId, list);
@@ -3409,7 +3428,7 @@ render = function(){
   if (nwOn()) item("nqInv", n3("inv_link"), n3Invite);
   item("nqShare", n3("share_link"), function(){ n3Share(n3("share_text"), n3Site()); });
   item("nqDev", n3("dev_link"), n3Devices);
-  if (airOn()) item("nqAir", T[lang].tab_air, n3Airlines);                                        /* right under Share North Way / Other devices */
+  if (airOn() && tabShown("air")) item("nqAir", tabName("air"), n3Airlines);                                        /* right under Share North Way / Other devices */
   if (pl) { var pl2 = pl; pl2.className = ""; pl2.textContent = n3("part_short"); var lip = pl2.parentNode && pl2.parentNode.tagName === "LI" ? pl2.parentNode : el("li"); if (pl2.parentNode !== lip) lip.appendChild(pl2); ul.appendChild(lip); }
   if (ow) { ow.className = ""; ow.textContent = n3("own_short"); var lio = ow.parentNode && ow.parentNode.tagName === "LI" ? ow.parentNode : el("li"); if (ow.parentNode !== lio) lio.appendChild(ow); ul.appendChild(lio); }
   n3QuickShow();
@@ -3554,7 +3573,7 @@ function nwOwner(openTab){
       nwO("owner_overview", {}, function(r){
         if (!r || !r.ok) { clear(); view.appendChild(msg); err(r); if (r && (r.err === "pin" || r.err === "locked")) nwOwnerPin = ""; btn("Back", start, "btn2"); return; }
         clear(); var nav = el("div","bkbtns");
-        [["Bookings", function(){ var p = nwOwnerPin; clearTimeout(idle); document.removeEventListener("visibilitychange", onHide); close(); bkDaily(p); }], ["Numbers", function(){ show("n"); }], ["Providers", function(){ show("p"); }], ["Settings", function(){ show("s"); }]].forEach(function(x){
+        [["Bookings", function(){ var p = nwOwnerPin; clearTimeout(idle); document.removeEventListener("visibilitychange", onHide); close(); bkDaily(p); }], ["Numbers", function(){ show("n"); }], ["Providers", function(){ show("p"); }], ["App tabs", function(){ show("t"); }], ["Settings", function(){ show("s"); }]].forEach(function(x){
           var b = el("button","btn2", x[0] + (x[0] === "Bookings" && r.bookings.todo ? " (" + r.bookings.todo + ")" : "")); b.type = "button"; b.addEventListener("click", function(){ arm(); x[1](); }); nav.appendChild(b); });
         if (r.sheet_url && /^https:\/\/docs\.google\.com\/spreadsheets\//.test(r.sheet_url)) { var sl = el("a","btn2","Open my Google Sheet"); sl.href = r.sheet_url; sl.target = "_blank"; sl.rel = "noopener noreferrer"; sl.style.cssText = "display:inline-block;text-align:center;text-decoration:none"; nav.appendChild(sl);
           var G = r.sheet_gids || {}, tl = el("div"); tl.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-top:4px";
@@ -3563,7 +3582,7 @@ function nwOwner(openTab){
           if (tl.firstChild) nav.appendChild(tl); }
         var body = el("div");
         function show(w){ while (body.firstChild) body.removeChild(body.firstChild); msg.textContent = ""; var save = view; view = body;
-          try { if (w === "n") numbers(r); else if (w === "p") providers(r); else settings(r); } catch(ex){ view = body; note("Error: " + (ex && ex.message)); }
+          try { if (w === "n") numbers(r); else if (w === "p") providers(r); else if (w === "t") tabsScreen(); else settings(r); } catch(ex){ view = body; note("Error: " + (ex && ex.message)); }
           view = save; box.scrollTop = 0; try { body.scrollIntoView(); } catch(e){} }
         function numbers(r){ var S = r.stats;
           row("App visits today / 7 days / 30 days", S.t[0] + " / " + S.w[0] + " / " + S.m[0]); row("Installs (Android, computer)", S.t[1] + " / " + S.w[1] + " / " + S.m[1]); row("Opened from the icon", S.t[2] + " / " + S.w[2] + " / " + S.m[2]);
@@ -3612,6 +3631,42 @@ function nwOwner(openTab){
           view.appendChild(el("h4",null,"Provider points (top 10)")); if (!r.top.length) note("No points yet."); r.top.forEach(function(t){ row(t.name, t.points + " pts, " + t.months + " free month(s) earned"); });
           view.appendChild(el("h4",null,"Paused after reports")); if (!r.paused.length) note("None."); r.paused.forEach(function(n){ row(n, "paused"); });
           note("To change a provider, open the tab in your Google Sheet."); }
+        function tabsScreen(){
+          note("Rename the tabs, move them up or down, or hide them. Nothing is deleted. Leave a name empty to keep the normal name. Changes show in the app in about 5 minutes.");
+          var holder = el("div"); view.appendChild(holder); var rows = null;
+          note("Loading..."); var ld = view.lastChild;
+          nwO("owner_tabs_get", {}, function(x){
+            if (ld.parentNode) ld.parentNode.removeChild(ld);
+            if (!x || !x.ok) { err(x); return; }
+            rows = x.rows.map(function(c){ return {id:c.id, show:c.show !== false, en:(c.name && c.name.en) || "", ar:(c.name && c.name.ar) || "", fr:(c.name && c.name.fr) || ""}; });
+            draw();
+          });
+          function dflt(id, l){ return (T[l] && T[l]["tab_" + id]) || id; }
+          function draw(){
+            while (holder.firstChild) holder.removeChild(holder.firstChild);
+            rows.forEach(function(r, i){
+              var card = el("div"); card.style.cssText = "border:1px solid var(--line,#ddd);border-radius:12px;padding:8px;margin:8px 0" + (r.show ? "" : ";opacity:.6");
+              var top = el("div"); top.style.cssText = "display:flex;align-items:center;gap:6px;flex-wrap:wrap";
+              var t = el("b", null, (i + 1) + ". " + dflt(r.id, "en")); t.style.flex = "1"; top.appendChild(t);
+              function mv(txt, d){ var b = el("button","btn2",txt); b.type = "button"; b.setAttribute("aria-label", txt === "\u2191" ? "Move up" : "Move down"); b.disabled = (d < 0 && i === 0) || (d > 0 && i === rows.length - 1);
+                b.addEventListener("click", function(){ arm(); var j = i + d, tmp = rows[j]; rows[j] = rows[i]; rows[i] = tmp; draw(); }); top.appendChild(b); }
+              mv("\u2191", -1); mv("\u2193", 1);
+              var lb = el("label"); lb.style.cssText = "display:flex;align-items:center;gap:4px"; var cb = bkInput("checkbox"); cb.checked = r.show; cb.addEventListener("change", function(){ arm(); r.show = cb.checked; draw(); }); lb.appendChild(cb); lb.appendChild(el("span", null, "Show")); top.appendChild(lb);
+              card.appendChild(top);
+              ["en","ar","fr"].forEach(function(l){
+                var f = el("label","bkf", l.toUpperCase()), inp = bkInput("text"); inp.maxLength = 40; inp.value = r[l]; inp.placeholder = dflt(r.id, l); if (l === "ar") inp.setAttribute("dir","rtl");
+                inp.addEventListener("input", function(){ r[l] = inp.value; }); f.appendChild(inp); card.appendChild(f); });
+              holder.appendChild(card);
+            });
+          }
+          function send(list, done){ nwO("owner_tabs_save", {rows: list.map(function(r){ return {id:r.id, show:r.show, name_en:r.en, name_ar:r.ar, name_fr:r.fr}; })}, done); }
+          function applyNow(x){ if (x && x.ok && Array.isArray(x.rows)) { try { TABCFG = x.rows.map(function(c){ var n = c.name || {}; return {id:c.id, show:c.show !== false, name:{en:n.en || "", ar:n.ar || "", fr:n.fr || ""}}; }); render(); } catch(e){} } }
+          btn("Save", function(bt){ if (!rows) return; bt.disabled = true; send(rows, function(x){ bt.disabled = false; if (!x || !x.ok) { err(x); return; } msg.textContent = "Saved. The app shows it in about 5 minutes."; applyNow(x); }); });
+          btn("Put everything back as it was", function(bt){ if (!rows) return; bt.disabled = true;
+            var ids = ["qyt","far","bey","hotels","restaurants","taxis","cars","sites","events","phrases","history","info","saved","mybook","air"];
+            rows = ids.map(function(id){ return {id:id, show:true, en:"", ar:"", fr:""}; });
+            send(rows, function(x){ bt.disabled = false; if (!x || !x.ok) { err(x); return; } msg.textContent = "Done. Everything is back to normal."; draw(); applyNow(x); }); }, "btn2");
+        }
         function settings(r){ var S = r.settings;
           row("Bookings open", S.booking_open); row("Commission hotels / taxis / cars", S.commission_hotels + "% / " + S.commission_taxis + "% / " + S.commission_cars + "%"); row("Restaurant fee", "$" + S.restaurant_fee + (String(S.restaurant_fee_period||"year").charAt(0)==="m" ? " a month" : " a year")); note("Change these in the Settings tab of your Google Sheet.");
           view.appendChild(el("h4",null,"Change my 4-digit key"));
@@ -3673,6 +3728,10 @@ function applyContent(j){
       if (cl.length) set[map[k]](cl);
     }
   });
+  if (Array.isArray(j.tabs)) {      /* the owner's tab names, order and hidden tabs */
+    var tc = []; j.tabs.forEach(function(x){ if (x && typeof x.id === "string" && VIEWS.concat(["air"]).indexOf(x.id) > -1) { var nm = x.name && typeof x.name === "object" ? x.name : {}; tc.push({id: x.id, show: x.show !== false, name: {en: String(nm.en || "").slice(0, 40), ar: String(nm.ar || "").slice(0, 40), fr: String(nm.fr || "").slice(0, 40)}}); } });
+    TABCFG = tc.length ? tc : null;
+  }
   if (j.founding && typeof j.founding === "object" && typeof j.founding.left === "number" && j.founding.left >= 0 && j.founding.left <= 1000) FOUNDING = {left: Math.floor(j.founding.left), counter: j.founding.counter !== false};
   var st = j.settings && typeof j.settings === "object" ? j.settings : {};
   BOOKING_ON = st.booking_open === "yes";

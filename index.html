@@ -3506,6 +3506,73 @@ var OERR = {pin:"Wrong key.", locked:"Too many wrong tries. Press \"Forgot key?\
 function nwO(action, extra, cb){ var o = {a:action, key:nwOwnerKey(), pin:nwOwnerPin}; for (var k in extra) o[k] = extra[k]; bkPost(o, cb); }
 function nwOwnerOpen(){ if (nwOwnerKey()) nwOwner(); }
 function nwOwnerTabClick(){ nwOwner(); }
+/* ===== APP TABS EDITOR (only owner): the home screen again, tabs in a lighter color. Press and hold a tab, then drag = move. Tap twice = rename. Eye = hide / show. ===== */
+function nwTabEditor(rows, onSave){
+  var L = lang, MAINIDS = ["qyt","bey","hotels","restaurants","cars","taxis","far"], changed = false, drag = null, timer = null, st = null, last = {t:0, id:""};
+  function dflt(id, l){ return (T[l] && T[l]["tab_" + id]) || (T.en && T.en["tab_" + id]) || id; }
+  function nameOf(r){ return r[L] || dflt(r.id, L); }
+  var ov = el("div"); ov.setAttribute("role","dialog"); ov.setAttribute("aria-label","Edit app tabs");
+  ov.style.cssText = "position:fixed;inset:0;z-index:100000;overflow:auto;background:#f4f1ea;color:#0b1f3a;font-family:inherit;-webkit-user-select:none;user-select:none";
+  var css = el("style"); css.textContent = ".nwte{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 12px 16px}.nwte .tl{position:relative;display:flex;align-items:center;justify-content:center;min-height:62px;padding:8px 34px;border-radius:14px;background:#ffe9b0;border:2px dashed #c68a00;color:#0b1f3a;font-weight:700;text-align:center;line-height:1.2;touch-action:pan-y;cursor:grab}.nwte .tl.wide{grid-column:1/-1}.nwte .tl.off{opacity:.45;text-decoration:line-through}.nwte .tl.drag{background:#ffd75e;box-shadow:0 8px 20px rgba(0,0,0,.35);transform:scale(1.05);z-index:2;cursor:grabbing}.nwte .hd{position:absolute;left:6px;top:50%;transform:translateY(-50%);opacity:.55;font-size:1.1rem}.nwte .ey{position:absolute;right:2px;top:50%;transform:translateY(-50%);border:0;background:transparent;font-size:1.15rem;padding:8px;cursor:pointer}.nwtb button{font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;border:2px solid #ffb703;cursor:pointer}";
+  ov.appendChild(css);
+  var bar = el("div"); bar.style.cssText = "position:sticky;top:0;z-index:5;background:#0b1f3a;color:#fff;padding:10px 12px";
+  var strip = el("div", null, "EDIT MODE: press and hold a tab, then drag it to move it. Tap a tab twice to rename it."); strip.style.cssText = "background:#ffb703;color:#0b1f3a;font-weight:700;padding:8px 10px;border-radius:8px;margin-bottom:8px;font-size:.9rem";
+  var tb = el("div","nwtb"); tb.style.cssText = "display:flex;gap:8px;align-items:center;flex-wrap:wrap";
+  var sv = el("button", null, "Save"); sv.type = "button"; sv.style.cssText = "background:#ffb703;color:#0b1f3a"; var cn = el("button", null, "Cancel"); cn.type = "button"; cn.style.cssText = "background:transparent;color:#fff";
+  var lg = el("span"); lg.style.cssText = "margin-left:auto;display:flex;gap:4px;align-items:center;font-size:.8rem"; lg.appendChild(el("span", null, "Names in:"));
+  var st2 = el("div"); st2.style.cssText = "color:#ffb703;font-size:.85rem;margin-top:6px;min-height:1em"; st2.setAttribute("role","status");
+  tb.appendChild(sv); tb.appendChild(cn); tb.appendChild(lg); bar.appendChild(strip); bar.appendChild(tb); bar.appendChild(st2); ov.appendChild(bar);
+  ["en","fr","ar"].forEach(function(l){ var b = el("button", null, l.toUpperCase()); b.type = "button"; b.style.cssText = "padding:4px 10px;background:" + (l === L ? "#ffb703;color:#0b1f3a" : "transparent;color:#fff"); b.addEventListener("click", function(){ L = l; [].forEach.call(lg.querySelectorAll("button"), function(x){ x.style.background = "transparent"; x.style.color = "#fff"; }); b.style.background = "#ffb703"; b.style.color = "#0b1f3a"; paint(); }); lg.appendChild(b); });
+  var h1 = el("h4", null, "Home screen tabs"), g1 = el("div","nwte"), h2 = el("h4", null, "More tabs"), g2 = el("div","nwte");
+  [h1, h2].forEach(function(h){ h.style.cssText = "margin:12px 14px 0;font-size:.85rem;opacity:.7"; });
+  ov.appendChild(h1); ov.appendChild(g1); ov.appendChild(h2); ov.appendChild(g2);
+  var byId = {}; rows.forEach(function(r){ byId[r.id] = r; });
+  function paint(){
+    while (g1.firstChild) g1.removeChild(g1.firstChild); while (g2.firstChild) g2.removeChild(g2.firstChild);
+    rows.forEach(function(r){ var g = MAINIDS.indexOf(r.id) > -1 ? g1 : g2; g.appendChild(tile(r, g === g1)); });
+  }
+  function tile(r, main){
+    var d = el("div", "tl" + (r.id === "far" ? " wide" : "") + (r.show ? "" : " off")); d.setAttribute("data-id", r.id);
+    d.appendChild(el("span","hd","⋮")); d.appendChild(el("span", null, nameOf(r)));
+    var e = el("button","ey", r.show ? "👁" : "⊗"); e.type = "button"; e.setAttribute("aria-label", r.show ? "Hide this tab" : "Show this tab");
+    e.addEventListener("pointerdown", function(ev){ ev.stopPropagation(); }); e.addEventListener("click", function(){ r.show = !r.show; changed = true; paint(); }); d.appendChild(e);
+    d.addEventListener("pointerdown", function(ev){ if (ev.target === e) return; st = {x:ev.clientX, y:ev.clientY, id:ev.pointerId, moved:false}; clearTimeout(timer); if (ev.pointerType !== "mouse") timer = setTimeout(function(){ begin(d); }, 450); });
+    d.addEventListener("pointermove", function(ev){
+      if (!st) return; if (Math.abs(ev.clientX - st.x) + Math.abs(ev.clientY - st.y) > 10) st.moved = true;
+      if (!drag) { if (st.moved) { clearTimeout(timer); if (ev.pointerType === "mouse" && ev.buttons) begin(d); } if (!drag) return; }
+      var hit = (document.elementsFromPoint(ev.clientX, ev.clientY) || []).filter(function(n){ return n.classList && n.classList.contains("tl") && n !== drag && n.parentNode === drag.parentNode; })[0];
+      if (hit) { var kids = [].slice.call(drag.parentNode.children); if (kids.indexOf(hit) > kids.indexOf(drag)) drag.parentNode.insertBefore(drag, hit.nextSibling); else drag.parentNode.insertBefore(drag, hit); }
+    });
+    function fin(ev){
+      clearTimeout(timer);
+      if (drag) { var g = drag.parentNode, ids = [].map.call(g.children, function(n){ return n.getAttribute("data-id"); }), k = 0, set = {}; ids.forEach(function(i){ set[i] = 1; });
+        var neu = rows.map(function(x){ return set[x.id] ? byId[ids[k++]] : x; }); if (neu.some(function(x, i){ return x !== rows[i]; })) { changed = true; rows.length = 0; neu.forEach(function(x){ rows.push(x); }); }
+        drag.classList.remove("drag"); drag = null; paint(); st = null; return; }
+      if (ev.type === "pointerup" && st && !st.moved) { var now = Date.now(); if (last.id === r.id && now - last.t < 400) { last = {t:0, id:""}; rename(r); } else last = {t:now, id:r.id}; }
+      st = null;
+    }
+    d.addEventListener("pointerup", fin); d.addEventListener("pointercancel", fin); d.addEventListener("contextmenu", function(ev){ ev.preventDefault(); });
+    return d;
+  }
+  function begin(d){ drag = d; d.classList.add("drag"); try { d.setPointerCapture(st.id); } catch(e){} try { if (navigator.vibrate) navigator.vibrate(20); } catch(e){} }
+  ov.addEventListener("touchmove", function(ev){ if (drag) ev.preventDefault(); }, {passive:false});
+  function rename(r){
+    var m = el("div"); m.style.cssText = "position:fixed;inset:0;z-index:100001;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px";
+    var bx = el("div"); bx.style.cssText = "background:#fff;color:#0b1f3a;border-radius:14px;padding:16px;width:100%;max-width:360px;-webkit-user-select:text;user-select:text";
+    var cur = L; bx.appendChild(el("h4", null, "Rename: " + dflt(r.id, "en")));
+    var row = el("div"); row.style.cssText = "display:flex;gap:6px;margin:8px 0"; var inp = bkInput("text"); inp.maxLength = 40; inp.style.width = "100%";
+    function sync(){ inp.value = r[cur]; inp.placeholder = dflt(r.id, cur); inp.setAttribute("dir", cur === "ar" ? "rtl" : "ltr"); [].forEach.call(row.children, function(b){ var on = b.getAttribute("data-l") === cur; b.style.background = on ? "#ffb703" : "#fff"; }); }
+    ["en","fr","ar"].forEach(function(l){ var b = el("button", null, l.toUpperCase()); b.type = "button"; b.setAttribute("data-l", l); b.style.cssText = "padding:6px 12px;border:2px solid #ffb703;border-radius:8px;font-weight:700;color:#0b1f3a"; b.addEventListener("click", function(){ r[cur] = inp.value; cur = l; sync(); }); row.appendChild(b); });
+    inp.addEventListener("input", function(){ r[cur] = inp.value; });
+    bx.appendChild(row); bx.appendChild(inp); bx.appendChild(el("p", null, "Leave a box empty to keep the normal name."));
+    var ok = el("button", null, "OK"); ok.type = "button"; ok.style.cssText = "background:#ffb703;color:#0b1f3a;font-weight:700;border:0;border-radius:10px;padding:10px 20px;margin-top:6px";
+    ok.addEventListener("click", function(){ r[cur] = inp.value; changed = true; ov.removeChild(m); paint(); }); bx.appendChild(ok); m.appendChild(bx); ov.appendChild(m); sync(); inp.focus();
+  }
+  function closeEd(){ if (ov.parentNode) ov.parentNode.removeChild(ov); }
+  cn.addEventListener("click", function(){ if (changed && !confirm("Throw away your changes?")) return; closeEd(); });
+  sv.addEventListener("click", function(){ sv.disabled = true; st2.textContent = "Saving..."; onSave(rows, function(ok, text){ sv.disabled = false; st2.textContent = text || ""; if (ok) { changed = false; setTimeout(closeEd, 900); } }); });
+  paint(); document.body.appendChild(ov);
+}
 function nwOwner(openTab){
   if (!nwOwnerKey()) return;
   bkModal(function(box, close){
@@ -3632,40 +3699,22 @@ function nwOwner(openTab){
           view.appendChild(el("h4",null,"Paused after reports")); if (!r.paused.length) note("None."); r.paused.forEach(function(n){ row(n, "paused"); });
           note("To change a provider, open the tab in your Google Sheet."); }
         function tabsScreen(){
-          note("Rename the tabs, move them up or down, or hide them. Nothing is deleted. Leave a name empty to keep the normal name. Changes show in the app in about 5 minutes.");
-          var holder = el("div"); view.appendChild(holder); var rows = null;
-          note("Loading..."); var ld = view.lastChild;
-          nwO("owner_tabs_get", {}, function(x){
-            if (ld.parentNode) ld.parentNode.removeChild(ld);
-            if (!x || !x.ok) { err(x); return; }
-            rows = x.rows.map(function(c){ return {id:c.id, show:c.show !== false, en:(c.name && c.name.en) || "", ar:(c.name && c.name.ar) || "", fr:(c.name && c.name.fr) || ""}; });
-            draw();
-          });
-          function dflt(id, l){ return (T[l] && T[l]["tab_" + id]) || id; }
-          function draw(){
-            while (holder.firstChild) holder.removeChild(holder.firstChild);
-            rows.forEach(function(r, i){
-              var card = el("div"); card.style.cssText = "border:1px solid var(--line,#ddd);border-radius:12px;padding:8px;margin:8px 0" + (r.show ? "" : ";opacity:.6");
-              var top = el("div"); top.style.cssText = "display:flex;align-items:center;gap:6px;flex-wrap:wrap";
-              var t = el("b", null, (i + 1) + ". " + dflt(r.id, "en")); t.style.flex = "1"; top.appendChild(t);
-              function mv(txt, d){ var b = el("button","btn2",txt); b.type = "button"; b.setAttribute("aria-label", txt === "\u2191" ? "Move up" : "Move down"); b.disabled = (d < 0 && i === 0) || (d > 0 && i === rows.length - 1);
-                b.addEventListener("click", function(){ arm(); var j = i + d, tmp = rows[j]; rows[j] = rows[i]; rows[i] = tmp; draw(); }); top.appendChild(b); }
-              mv("\u2191", -1); mv("\u2193", 1);
-              var lb = el("label"); lb.style.cssText = "display:flex;align-items:center;gap:4px"; var cb = bkInput("checkbox"); cb.checked = r.show; cb.addEventListener("change", function(){ arm(); r.show = cb.checked; draw(); }); lb.appendChild(cb); lb.appendChild(el("span", null, "Show")); top.appendChild(lb);
-              card.appendChild(top);
-              ["en","ar","fr"].forEach(function(l){
-                var f = el("label","bkf", l.toUpperCase()), inp = bkInput("text"); inp.maxLength = 40; inp.value = r[l]; inp.placeholder = dflt(r.id, l); if (l === "ar") inp.setAttribute("dir","rtl");
-                inp.addEventListener("input", function(){ r[l] = inp.value; }); f.appendChild(inp); card.appendChild(f); });
-              holder.appendChild(card);
-            });
-          }
+          var rows = null, opened = false;
           function send(list, done){ nwO("owner_tabs_save", {rows: list.map(function(r){ return {id:r.id, show:r.show, name_en:r.en, name_ar:r.ar, name_fr:r.fr}; })}, done); }
           function applyNow(x){ if (x && x.ok && Array.isArray(x.rows)) { try { TABCFG = x.rows.map(function(c){ var n = c.name || {}; return {id:c.id, show:c.show !== false, name:{en:n.en || "", ar:n.ar || "", fr:n.fr || ""}}; }); render(); } catch(e){} } }
-          btn("Save", function(bt){ if (!rows) return; bt.disabled = true; send(rows, function(x){ bt.disabled = false; if (!x || !x.ok) { err(x); return; } msg.textContent = "Saved. The app shows it in about 5 minutes."; applyNow(x); }); });
-          btn("Put everything back as it was", function(bt){ if (!rows) return; bt.disabled = true;
-            var ids = ["qyt","far","bey","hotels","restaurants","taxis","cars","sites","events","phrases","history","info","saved","mybook","air"];
-            rows = ids.map(function(id){ return {id:id, show:true, en:"", ar:"", fr:""}; });
-            send(rows, function(x){ bt.disabled = false; if (!x || !x.ok) { err(x); return; } msg.textContent = "Done. Everything is back to normal."; draw(); applyNow(x); }); }, "btn2");
+          function open(){ nwTabEditor(rows, function(list, done){ send(list, function(x){ if (!x || !x.ok) { done(false, OERR[x && x.err] || ("Error: " + ((x && x.err) || "no answer"))); return; } applyNow(x); msg.textContent = "Saved. Everyone sees it in about 5 minutes."; done(true, "Saved."); }); }); }
+          note("Loading the tab editor...");
+          nwO("owner_tabs_get", {}, function(x){
+            clear(); if (!x || !x.ok) { err(x); return; }
+            rows = x.rows.map(function(c){ return {id:c.id, show:c.show !== false, en:(c.name && c.name.en) || "", ar:(c.name && c.name.ar) || "", fr:(c.name && c.name.fr) || ""}; });
+            note("The tab editor is open. Press and hold a tab, then drag it. Tap twice to rename.");
+            btn("Open the tab editor again", function(){ open(); });
+            btn("Put everything back as it was", function(bt){ if (!confirm("Put all tabs back to their normal names and places?")) return; bt.disabled = true;
+              var ids = ["qyt","bey","hotels","restaurants","cars","taxis","far","sites","events","phrases","history","info","saved","mybook","air"];
+              var back = ids.map(function(id){ return {id:id, show:true, en:"", ar:"", fr:""}; });
+              send(back, function(y){ bt.disabled = false; if (!y || !y.ok) { err(y); return; } rows = back; msg.textContent = "Done. Everything is back to normal."; applyNow(y); }); }, "btn2");
+            open();
+          });
         }
         function settings(r){ var S = r.settings;
           row("Bookings open", S.booking_open); row("Commission hotels / taxis / cars", S.commission_hotels + "% / " + S.commission_taxis + "% / " + S.commission_cars + "%"); row("Restaurant fee", "$" + S.restaurant_fee + (String(S.restaurant_fee_period||"year").charAt(0)==="m" ? " a month" : " a year")); note("Change these in the Settings tab of your Google Sheet.");

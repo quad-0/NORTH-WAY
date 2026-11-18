@@ -3655,6 +3655,7 @@ function nwOwner(openTab){
           row("App visits today / 7 days / 30 days", S.t[0] + " / " + S.w[0] + " / " + S.m[0]); row("Installs (Android, computer)", S.t[1] + " / " + S.w[1] + " / " + S.m[1]); row("Opened from the icon", S.t[2] + " / " + S.w[2] + " / " + S.m[2]);
           var D = r.devices || {known:0, installed:0, week:0, android:0, ios:0, desktop:0};
           row("Installed phones (total)", D.installed); row("New installed phones, last 7 days", D.week); row("Installed: Android / iPhone / computer", D.android + " / " + D.ios + " / " + D.desktop); row("Phones counted so far (any visit)", D.known);
+          row("Total installs since the start (Android, computer)", D.total || 0); row("Probably gone (not opened from the icon for " + (D.days || 30) + " days)", D.gone || 0); row("Estimated installs still in use", D.active || 0);
           row("Bookings this week", r.bookings.week); row("Confirmed by QR", r.bookings.confirmed); row("Value of confirmed", "$" + r.bookings.usd); row("Your commission", "$" + r.bookings.commission); row("To do now (payments, shares)", r.bookings.todo);
           row("New provider sign-ups", r.signups_new); row("New problem reports", r.reports_new); row("Customers with verified email", r.verified); row("Customer points given this week", r.customer_points_week); }
         function providers(r){

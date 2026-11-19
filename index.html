@@ -3812,7 +3812,7 @@ function applyContent(j){
   if (typeof st.news_url === "string" && /^https:\/\//i.test(st.news_url)) NEWS_URL = st.news_url;
   if (typeof st.qyt_url === "string" && /^https:\/\//i.test(st.qyt_url)) QYT_URL = st.qyt_url;
   if (typeof st.beirut_url === "string" && /^https:\/\//i.test(st.beirut_url)) BEIRUT_URL = st.beirut_url;
-  if (typeof st.countdown_date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(st.countdown_date)) COUNTDOWN.date = st.countdown_date;
+  if (typeof st.countdown_date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(st.countdown_date)) { if (st.countdown_date > COUNTDOWN_TRIAL.date) COUNTDOWN.date = st.countdown_date; }   /* the commercial date must come after the trial date, so an old trial date left in the Sheet is ignored */
   if (typeof j.updated === "string" && /^\d{4}-\d{2}-\d{2}/.test(j.updated)) SITE.updated = j.updated.slice(0, 10);
 }
 function loadContent(){
